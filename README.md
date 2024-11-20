@@ -28,6 +28,6 @@ Exempel:
 
 Instruktioner för hur man installerar och konfigurerar projektet lokalt.
 
-```bash
 # Klona repositoriet
+```bash
 git clone https://github.com/Darkdusk234/RebelAllianceBank.git
