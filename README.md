@@ -30,4 +30,4 @@ Instruktioner för hur man installerar och konfigurerar projektet lokalt.
 
 ```bash
 # Klona repositoriet
-git clone https://github.com/ditt-användarnamn/projekt-namn.git
+git clone https://github.com/Darkdusk234/RebelAllianceBank.git
