@@ -2,9 +2,11 @@
 {
     public class Bank
     {
-        public static void Run()
+        public void Run()
         {
+            var Glen = new Customer();
 
+            Glen.ShowBankAccounts();
         }
     }
 }
