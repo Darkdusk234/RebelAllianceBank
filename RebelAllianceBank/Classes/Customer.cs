@@ -19,17 +19,14 @@ namespace RebelAllianceBank.Classes
                 Console.WriteLine("Du har inga konton att visa");
             }
 
-           
-            for (int i = 0; i < BankAccounts.Count; i++)
-            {
-                var account = BankAccounts[i];
-                Console.WriteLine($"{account.AccountName} - {account.Balance:00}{account.AccountCurrency}");
 
-            if (BankAccounts.Count - 1 != i)
+            List<string> keys = [];
+            foreach (var BankAccount in BankAccounts)
             {
-                Console.WriteLine("------------------------------------------");
+                keys.Add(BankAccount.AccountName);
+                keys.Add(BankAccount.Balance.ToString());
             }
-            }
+            Markdown.Table(["Konto Namn", "Saldo"], keys);
         }
     }
 }
