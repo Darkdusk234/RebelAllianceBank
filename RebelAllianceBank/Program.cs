@@ -1,10 +1,11 @@
-﻿namespace RebelAllianceBank
+﻿using RebelAllianceBank.Classes;
+namespace RebelAllianceBank
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Bank.Run();
         }
     }
 }
