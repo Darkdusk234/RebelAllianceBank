@@ -8,7 +8,7 @@ namespace RebelAllianceBank.Classes
 
         public void Run()
         {
-
+            Login();
         }
 
         public void Login()
@@ -17,7 +17,6 @@ namespace RebelAllianceBank.Classes
             {
                 Console.WriteLine("Välkommen till Rebel Alliance Bank. Vänligen skriv ditt användarnamn.");
                 string input = Console.ReadLine();
-                string username = "";
                 bool correctUser = false;
                 bool correctPass = false;
 
@@ -33,13 +32,14 @@ namespace RebelAllianceBank.Classes
 
                 if (correctUser)
                 {
-                    while ()
+                    while(true)
                     {
-                        Console.WriteLine($"God dag {username}. Vänligen skriv ditt lösenord.");
+                        Console.WriteLine($"God dag {currentUser.Username}. Vänligen skriv ditt lösenord.");
                         input = Console.ReadLine();
 
                         if (currentUser.Password.Equals(input))
                         {
+                            correctPass = true;
                             break;
                         }
                         else
