@@ -5,7 +5,7 @@ En kort och tydlig beskrivning av vad projektet är och vad det gör.
 
 ## Innehållsförteckning
 
-1. [Beskrivning](#beskrivning)
+1. [Description](#descripton)
 2. [Installation](#installation)
 3. [Användning](#användning)
 4. [Funktioner](#funktioner)
@@ -21,7 +21,7 @@ Ge en mer detaljerad beskrivning av projektet, dess syfte, och varför det är a
 Exempel:
 - **Teknologier:** Lista de viktigaste teknologierna som används.
 - **Status:** Pågående, färdigt, eller i planeringsfas.
-
+  
 ---
 
 ## Installation
