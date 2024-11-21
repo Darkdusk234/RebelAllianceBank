@@ -4,9 +4,7 @@
     {
         public void Run()
         {
-            var Glen = new Customer();
 
-            Glen.ShowBankAccounts();
         }
     }
 }
