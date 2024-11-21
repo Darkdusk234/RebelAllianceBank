@@ -1,16 +1,12 @@
 ﻿using RebelAllianceBank.Interfaces;
 namespace RebelAllianceBank.Classes
 {
-    public class Customer : IUser, IBankAccount
+    public class Customer : IUser
     {
         List<IBankAccount> accounts = new List<IBankAccount>();
 
-
-        public string userName { get; set; }
-        public string password { get; set; }
-        public string accountName { get; set; }
-        public decimal balance { get; set; }
-        public string accountCurrency { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
 
         public Customer()
         {
@@ -19,15 +15,15 @@ namespace RebelAllianceBank.Classes
 
         public void CreateCardAccount(string accountName, decimal balance, string accountCurrency)
         {
-           accounts.Add(new CardAccount());
+           accounts.Add(new CardAccount(accountName, 0 , accountCurrency ));
         }
         public void CreateISKAccount(string accountName, decimal balance, string accountCurrency)
         {
-            accounts.Add(new ISK());
+            accounts.Add(new ISK(accountName, 0, accountCurrency));
         }
         public void CreateSavingsAccount(string accountName, decimal balance, string accountCurrency)
         {
-            accounts.Add(new SavingsAccount());
+            accounts.Add(new SavingsAccount(accountName, 0, accountCurrency));
         }
     }
 }
