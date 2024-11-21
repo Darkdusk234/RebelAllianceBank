@@ -1,6 +1,5 @@
 # RebelAllianceBank
 
-A short 
 A short and clear description of what the project is and what it does.
 
 ## Innehållsförteckning
