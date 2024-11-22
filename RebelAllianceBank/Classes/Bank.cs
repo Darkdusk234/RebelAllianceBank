@@ -65,7 +65,7 @@ namespace RebelAllianceBank.Classes
             }
         }
 
-        public void CreateUsers()
+        public void CreateUser()
         {
             string userType = "";
             string username = "";
