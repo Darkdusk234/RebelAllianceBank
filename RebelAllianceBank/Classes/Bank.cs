@@ -64,5 +64,10 @@ namespace RebelAllianceBank.Classes
                 }
             }
         }
+
+        public void CreateUsers()
+        {
+
+        }
     }
 }
