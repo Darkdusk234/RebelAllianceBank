@@ -11,19 +11,19 @@ public static class Markdown
     /// <summary>
     /// This creates a markdown for a table and console out the result
     /// </summary>
-    /// <param name="headers"></param>
+    /// <param name="columnHeaders"></param>
     /// <param name="body"></param>
-    public static void Table(string[] headers, List<string> body)
+    public static void Table(string[] columnHeaders, List<string> body)
     {
-        int maxHeaderWidth = headers.OrderByDescending(item => item.Length).First().Length;
-        int maxBodyWith = body.OrderByDescending(item => item.Length).First().Length;
-        int maxWith = maxHeaderWidth < maxBodyWith ? maxBodyWith : maxHeaderWidth;
+        int maxColumnWidth = columnHeaders.OrderByDescending(item => item.Length).First().Length;
+        int maxRowWidth = body.OrderByDescending(item => item.Length).First().Length;
+        int maxCellWidth = maxColumnWidth < maxRowWidth ? maxRowWidth : maxColumnWidth;
 
         // Table header
-        for (int i = 0; i < headers.Length; i++)
+        for (int i = 0; i < columnHeaders.Length; i++)
         {
-            var header = headers[i];
-            int amountToAddSpace = maxWith - header.Length;
+            var header = columnHeaders[i];
+            int amountToAddSpace = maxCellWidth - header.Length;
 
             Console.Write("|");
             Console.Write(header);
@@ -32,7 +32,7 @@ public static class Markdown
             Spacer(amountToAddSpace);
 
             // Add the last separator to the end
-            if (headers.Length - 1 == i)
+            if (columnHeaders.Length - 1 == i)
             {
                 Console.Write("|");
             }
@@ -40,9 +40,9 @@ public static class Markdown
 
         Console.WriteLine();
 
-        for (int i = 0; i < headers.Length; i++)
+        for (int i = 0; i < columnHeaders.Length; i++)
         {
-            int amountToAddDivider = maxWith < 3 ? 3 : maxWith;
+            int amountToAddDivider = maxCellWidth < 3 ? 3 : maxCellWidth;
 
             Console.Write("|");
 
@@ -50,7 +50,7 @@ public static class Markdown
             Spacer(amountToAddDivider, "-");
 
             // Add the last separator to the end
-            if (headers.Length - 1 == i)
+            if (columnHeaders.Length - 1 == i)
             {
                 Console.Write("|");
             }
@@ -63,7 +63,7 @@ public static class Markdown
         {
             Console.Write("|");
             var currentBody = body[i];
-            int amountToAddSpace = maxWith - currentBody.Length;
+            int amountToAddSpace = maxCellWidth - currentBody.Length;
 
             Console.Write(currentBody);
 
@@ -71,13 +71,13 @@ public static class Markdown
             Spacer(amountToAddSpace);
 
             // Add the last separator to the end and add a new row by checking how many item it´s in heder 
-            if (((i + 1) % headers.Length) == 0)
+            if (((i + 1) % columnHeaders.Length) == 0)
             {
                 Console.WriteLine("|");
             }
         }
     }
-    
+
     /// <summary>
     /// Add a space withe given amount 
     /// </summary>
