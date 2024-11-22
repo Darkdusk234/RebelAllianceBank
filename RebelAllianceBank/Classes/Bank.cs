@@ -7,7 +7,7 @@ namespace RebelAllianceBank.Classes
     {
         public static void Run()
         {
-            CustomerMenu();
+            AdminMenu();
         }
 
         public static void AdminMenu()
