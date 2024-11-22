@@ -1,0 +1,3 @@
+0-0-CardAccount-20000-SEK
+0-1-SavingsAccount-10000-SEK
+0-2-ISK-199099-USD

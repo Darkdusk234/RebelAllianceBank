@@ -6,10 +6,11 @@ namespace RebelAllianceBank.Classes
     {
         public static void Run()
         {
-            List<IUser> users = new List<IUser>();
             FileHandler run = new FileHandler();
-            users = run.ReadUsersFromFile();
-            run.WriteUserToFile("Lars", "54321", false);
+            List<IUser> users = new List<IUser>(run.ReadUsersFromFile());
+            List<IBankAccount> accounts = new List<IBankAccount>(run.ReadAccountsFromFile());
+            run.WriteUserToFile(10, "Lars", "54321", false);
+            
         }
     }
 }
