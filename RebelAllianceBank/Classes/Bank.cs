@@ -69,6 +69,7 @@ namespace RebelAllianceBank.Classes
         {
             string userType = "";
             string username = "";
+            string password = "";
             while (true)
             {
                 Console.WriteLine("Vilken typ av användare vill du skapa." +
@@ -111,7 +112,7 @@ namespace RebelAllianceBank.Classes
 
                 if(input.Length < 5)
                 {
-                    Console.WriteLine("Användarnamnet måste vara 5 bokstäver eller längre. Tryck på valfri" +
+                    Console.WriteLine("Användarnamnet måste vara 5 symboler eller längre. Tryck på valfri" +
                         " tangent för att gå tillbaka och försök igen.");
                     Console.ReadKey();
                     Console.Clear();
@@ -120,6 +121,26 @@ namespace RebelAllianceBank.Classes
                 else
                 {
                     username = input;
+                    break;
+                }
+            }
+
+            while(true)
+            {
+                Console.WriteLine("Skriv lösenordet för användaren som ska skapas.");
+                string input = Console.ReadLine();
+
+                if(input.Length < 5)
+                {
+                    Console.WriteLine("Lösenordet måste vara 5 symboler eller längre. Tryck på valfri" +
+                        " tangent för att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else
+                {
+                    password = input;
                     break;
                 }
             }
