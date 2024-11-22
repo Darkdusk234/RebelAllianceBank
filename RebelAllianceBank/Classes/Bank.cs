@@ -68,6 +68,7 @@ namespace RebelAllianceBank.Classes
         public void CreateUsers()
         {
             string userType = "";
+            string username = "";
             while (true)
             {
                 Console.WriteLine("Vilken typ av användare vill du skapa." +
@@ -100,6 +101,26 @@ namespace RebelAllianceBank.Classes
                         " Tryck på valfri tangent tangent för att gå tillbaka till valen.");
                     Console.ReadKey();
                     Console.Clear();
+                }
+            }
+
+            while(true)
+            {
+                Console.WriteLine("Skriv användarnamnet på användaren som ska skapas.");
+                string input = Console.ReadLine();
+
+                if(input.Length < 5)
+                {
+                    Console.WriteLine("Användarnamnet måste vara 5 bokstäver eller längre. Tryck på valfri" +
+                        " tangent för att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else
+                {
+                    username = input;
+                    break;
                 }
             }
         }
