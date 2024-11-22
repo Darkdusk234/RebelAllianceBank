@@ -67,7 +67,41 @@ namespace RebelAllianceBank.Classes
 
         public void CreateUsers()
         {
+            string userType = "";
+            while (true)
+            {
+                Console.WriteLine("Vilken typ av användare vill du skapa." +
+                    "1. Kund" +
+                    "2. Admin");
+                string input = Console.ReadLine();
+                bool validInput = false;
 
+                switch (input)
+                {
+                    case "1":
+                        userType = "Kund";
+                        validInput = true;
+                        break;
+                    case "2":
+                        userType = "Admin";
+                        validInput = true;
+                        break;
+                    default:
+                        break;
+                }
+
+                if(validInput)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Det är inte et giltligt val. Skriv siffran av det val du vill välja." +
+                        " Tryck på valfri tangent tangent för att gå tillbaka till valen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+            }
         }
     }
 }
