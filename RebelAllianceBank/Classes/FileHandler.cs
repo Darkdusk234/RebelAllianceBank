@@ -43,7 +43,6 @@ namespace RebelAllianceBank.Classes
                         Password = row[2],
                         IsAdmin = bool.Parse(row[3])
                     };
-                    break;
                 case "false":
                     return new Customer
                     {
@@ -52,25 +51,28 @@ namespace RebelAllianceBank.Classes
                         Password = row[2],
                         IsAdmin = bool.Parse(row[3])
                     };
-                    break;
                 default:
                     return null;
-                    break;
             }
         }
 
-        public void WriteUserToFile(int id, string un, string pw, bool isAdmin)
+        public IUser WriteUserToFile(int id, string un, string pw, bool isAdmin)
         {
-            List<IUser> savedList = new List<IUser>();
             string filePath = "..\\..\\..\\users.txt";
             if (File.Exists(filePath))
             {
                 using (StreamWriter sw = new StreamWriter(filePath, append: true))
                 {
-                    string write = id + "-" + un + "-" + pw + "-" + isAdmin;
+                    string write = $"{id}-{un}-{pw}-{isAdmin}";
                     sw.WriteLine(write, Environment.NewLine);
                 }
             }
+            IUser user = StoredUser(new string[] { id.ToString(), un, pw, isAdmin.ToString().ToLower() });
+            if (user != null)
+            {
+                return user;
+            }
+            return null;
         }
         public List<IBankAccount> ReadAccountsFromFile()
         {
@@ -84,7 +86,7 @@ namespace RebelAllianceBank.Classes
                     while ((read = sr.ReadLine()) != null)
                     {
                         string[] row = read.Split('-');
-                        IBankAccount account = StoreBankAccount(row);
+                        IBankAccount account = StoredBankAccount(row);
                         if (account != null)
                         {
                             savedList.Add(account);
@@ -94,7 +96,7 @@ namespace RebelAllianceBank.Classes
             }
             return savedList;
         }
-        public IBankAccount StoreBankAccount(string[] row)
+        public IBankAccount StoredBankAccount(string[] row)
         {
             switch (row[0])
             {
@@ -107,7 +109,6 @@ namespace RebelAllianceBank.Classes
                         Balance = Convert.ToDecimal(row[3]),
                         AccountCurrency = row[4]
                     };
-                    break;
                 case "1":
                     return new SavingsAccount
                     {
@@ -117,7 +118,6 @@ namespace RebelAllianceBank.Classes
                         Balance = Convert.ToDecimal(row[3]),
                         AccountCurrency = row[4]
                     };
-                    break;
                 case "2":
                     return new ISK
                     {
@@ -127,12 +127,27 @@ namespace RebelAllianceBank.Classes
                         Balance = Convert.ToDecimal(row[3]),
                         AccountCurrency = row[4]
                     };
-                    break;
                 default:
                     return null;
-                    break;
-
             }
+        }
+        public IBankAccount WriteAccountToFile(int id, int accType, string name, decimal balance, string curr)
+        {
+            string filePath = "..\\..\\..\\accounts.txt";
+            if (File.Exists(filePath))
+            {
+                using (StreamWriter sw = new StreamWriter(filePath, append: true))
+                {
+                    string write = $"{id}-{accType}-{name}-{balance}-{curr}";
+                    sw.WriteLine(write, Environment.NewLine);
+                }
+            }
+            IBankAccount account = StoredBankAccount(new string[] { id.ToString(), accType.ToString(), name, balance.ToString(), curr });
+            if (account != null)
+            {
+                return account;
+            }
+            return null;
         }
     }
 }
