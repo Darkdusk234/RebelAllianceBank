@@ -8,7 +8,50 @@ namespace RebelAllianceBank.Classes
         public static void Run()
         {
             CustomerMenu();
+        }
 
+        public static void AdminMenu()
+        {
+            bool runAdminMenu = true;
+
+            while (runAdminMenu)
+            {
+                Console.Clear();
+                
+                Console.Write("ADMIN\n" +
+                              "[1] Skapa användare\n" +
+                              "[2] Ändra växelkurs\n" +
+                              "[3] Lås upp användarkonto???\n" +
+                              "[4] Logga ut\n" +
+                              "\n" +
+                              "Menyval: ");
+                
+                string choice = Console.ReadLine(); 
+                
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine("Skapa användare");
+                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        break;
+                    case "2": 
+                        Console.WriteLine("Ändra växelkurs");
+                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        break;
+                    case "3": 
+                        Console.WriteLine("Lås upp användarkonto???");
+                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        break;
+                    case "4":
+                        runAdminMenu = false;
+                        break; 
+                    default: 
+                        Console.Clear();
+                        Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
+                        Console.ReadKey();
+                        break;
+                }
+            }
         }
 
         public static void CustomerMenu()
@@ -46,7 +89,7 @@ namespace RebelAllianceBank.Classes
                         break;
                     default:
                         Console.Clear();
-                        Console.WriteLine("Ogiltig input! Försök igen!");
+                        Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
                         Console.ReadKey();
                         break;
                 }
