@@ -73,8 +73,8 @@ namespace RebelAllianceBank.Classes
             while (true)
             {
                 Console.WriteLine("Vilken typ av användare vill du skapa." +
-                    "1. Kund" +
-                    "2. Admin");
+                    "\n1. Kund" +
+                    "\n2. Admin");
                 string input = Console.ReadLine();
                 bool validInput = false;
 
