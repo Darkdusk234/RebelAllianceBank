@@ -7,7 +7,7 @@ namespace RebelAllianceBank.Classes
         private List<IBankAccount> BankAccounts = new List<IBankAccount> {
             new CardAccount("Card Akount", 7800.56789m, "Kr"),
             new ISK("ISK", 100000, "USD"),
-            new SavingsAccount("Savings Account", 100000, "$"),
+            new SavingsAccount("Savings Account", 100500, "$"),
         };
 
         public void ShowBankAccounts()
@@ -20,13 +20,13 @@ namespace RebelAllianceBank.Classes
             }
 
 
-            List<string> keys = [];
+            List<string> bodyKeys = [];
             foreach (var BankAccount in BankAccounts)
             {
-                keys.Add(BankAccount.AccountName);
-                keys.Add(BankAccount.Balance.ToString());
+                bodyKeys.Add(BankAccount.AccountName);
+                bodyKeys.Add(BankAccount.Balance.ToString("N2"));
             }
-            Markdown.Table(["Konto Namn", "Saldo"], keys);
+            Markdown.Table(["Konto Namn", "Saldo"], bodyKeys);
         }
     }
 }
