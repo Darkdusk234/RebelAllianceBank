@@ -17,6 +17,7 @@ namespace RebelAllianceBank.Classes
             if (BankAccounts.Count == 0)
             {
                 Console.WriteLine("Du har inga konton att visa");
+                return;
             }
 
 
