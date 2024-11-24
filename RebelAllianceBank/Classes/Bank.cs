@@ -7,8 +7,8 @@ namespace RebelAllianceBank.Classes
         public static void Run()
         {
             DatabaseHandler db = new DatabaseHandler();
-            //db.WriteUserToDatabase(0, "Göran", "apa123", true);
-            //db.WriteUserToDatabase(1, "Lars", "päron", false);
+            db.WriteUserToDatabase(0, "Göran", "apa123", true);
+            db.WriteUserToDatabase(1, "Lars", "päron", false);
             List<IUser> usersdb = new List<IUser>(db.GetUsersFromDatabase());
             
 

@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
 using RebelAllianceBank.Interfaces;
 namespace RebelAllianceBank.Classes
 {
     internal class DatabaseHandler
     {
-        private string _connect = @"Data Source = (localDB)\MSSQLLocalDB; AttachDBFilename = |DataDirectory|BankDB.mdf; Integrated Security = true";
+        private string _connect = @"Data Source=Database\RebelAllianceBankDB.db;Version=3;";
         public List<IUser> GetUsersFromDatabase()
         {
             List<IUser> users = new List<IUser>();
-            using (SqlConnection connection = new SqlConnection(_connect))
+            using (SQLiteConnection connection = new SQLiteConnection(_connect))
             {
                 string query = "SELECT * FROM Users";
-                SqlCommand command = new SqlCommand(query, connection);
+                SQLiteCommand command = new SQLiteCommand(query, connection);
                 connection.Open();
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -54,10 +54,10 @@ namespace RebelAllianceBank.Classes
         }
         public IUser WriteUserToDatabase(int id, string un, string pw, bool isAdmin)
         {
-            using (SqlConnection connection = new SqlConnection(_connect))
+            using (SQLiteConnection connection = new SQLiteConnection(_connect))
             {
                 string query = "INSERT INTO Users (Id, Username, Password, IsAdmin) VALUES (@id, @un, @pw, @isAdmin)";
-                SqlCommand command = new SqlCommand(query, connection);
+                SQLiteCommand command = new SQLiteCommand(query, connection);
                 command.Parameters.AddWithValue("@id", id);
                 command.Parameters.AddWithValue("@un", un);
                 command.Parameters.AddWithValue("@pw", pw);
@@ -73,12 +73,12 @@ namespace RebelAllianceBank.Classes
         public List<IBankAccount> GetAccountsFromDatabase()
         {
             List<IBankAccount> accounts = new List<IBankAccount>();
-            using (SqlConnection connection = new SqlConnection(_connect))
+            using (SQLiteConnection connection = new SQLiteConnection(_connect))
             {
                 string query = "SELECT * FROM Accounts";
-                SqlCommand command = new SqlCommand(query, connection);
+                SQLiteCommand command = new SQLiteCommand(query, connection);
                 connection.Open();
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -124,10 +124,10 @@ namespace RebelAllianceBank.Classes
         }
         public IBankAccount WriteAccountToDatabase(int id, int type, string name, decimal balance, string currency)
         {
-            using (SqlConnection connection = new SqlConnection(_connect))
+            using (SQLiteConnection connection = new SQLiteConnection(_connect))
             {
                 string query = "INSERT INTO Accounts (Id, AccountType, AccountName, Balance, Currency) VALUES (@id, @type, @name, @balance, @currency)";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
                 {
                     connection.Open();
                     command.ExecuteNonQuery();
