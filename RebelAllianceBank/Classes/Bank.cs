@@ -107,7 +107,8 @@ namespace RebelAllianceBank.Classes
 
             while(true)
             {
-                Console.WriteLine("Skriv användarnamnet på användaren som ska skapas.");
+                Console.WriteLine("Skriv användarnamnet på användaren som ska skapas." +
+                    " Användarnamnet måste vara minst 5 symboler.");
                 string input = Console.ReadLine();
 
                 if(input.Length < 5)
@@ -127,7 +128,7 @@ namespace RebelAllianceBank.Classes
 
             while(true)
             {
-                Console.WriteLine("Skriv lösenordet för användaren som ska skapas.");
+                Console.WriteLine("Skriv lösenordet för användaren som ska skapas. Lösenordet måste vara minst 5 symboler.");
                 string input = Console.ReadLine();
 
                 if(input.Length < 5)
