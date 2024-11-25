@@ -362,6 +362,10 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+# Docker Continer 
+/.devcontainer
+
+
 # Rider
 bin/
 obj/
