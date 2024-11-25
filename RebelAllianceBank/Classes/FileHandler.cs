@@ -2,7 +2,7 @@
 
 namespace RebelAllianceBank.Classes
 {
-    internal class FileHandler
+    public class FileHandler
     {
         /// <summary>
         /// Reads a list of users from the file.
