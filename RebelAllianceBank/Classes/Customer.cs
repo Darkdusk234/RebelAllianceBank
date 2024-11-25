@@ -30,12 +30,12 @@ namespace RebelAllianceBank.Classes
 
                 string accountName = "";
                 string accountCurrency = "";
-                
+
                 if (isInt && userChoice == 4)
                 {
                     break;
                 }
-                else if (isInt)
+                else if (isInt && userChoice > 0 && userChoice < 4)
                 {
                     Console.Write("Vad vill du kalla kontot: ");
                     accountName = Console.ReadLine();
@@ -49,20 +49,16 @@ namespace RebelAllianceBank.Classes
                     case 1:
                         accounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
                         createAccount = true;
-                        Console.WriteLine($"Konto namn: {accountName}\nValuta: {accountCurrency}");
                         Console.ReadKey();
                         break;
                     case 2:
                         accounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
                         createAccount = true;
-                        Console.WriteLine($"Konto namn: {accountName}\nValuta: {accountCurrency}");
                         Console.ReadKey();
                         break;
                     case 3:
                         accounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
                         createAccount = true;
-                        Console.WriteLine($"Konto namn: {accountName}\nValuta: {accountCurrency}");
-                        Console.ReadKey();
                         break;
                     case 4:
                         createAccount = true;
