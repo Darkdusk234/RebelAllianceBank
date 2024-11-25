@@ -16,13 +16,13 @@ namespace RebelAllianceBank.Classes
             while (true)
             {
                 Console.WriteLine("Välkommen till Rebel Alliance Bank. Vänligen skriv ditt användarnamn.");
-                string input = Console.ReadLine();
+                string usernameInput = Console.ReadLine();
                 bool correctUser = false;
                 bool correctPass = false;
 
                 foreach (var user in users)
                 {
-                    if (user.Username.Equals(input))
+                    if (user.Username.Equals(usernameInput))
                     {
                         currentUser = user;
                         correctUser = true;
@@ -35,9 +35,9 @@ namespace RebelAllianceBank.Classes
                     while(true)
                     {
                         Console.WriteLine($"God dag {currentUser.Username}. Vänligen skriv ditt lösenord.");
-                        input = Console.ReadLine();
+                        string passwordInput = Console.ReadLine();
 
-                        if (currentUser.Password.Equals(input))
+                        if (currentUser.Password.Equals(passwordInput))
                         {
                             correctPass = true;
                             break;
