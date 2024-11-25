@@ -70,11 +70,13 @@ namespace RebelAllianceBank.Classes
             string userType = "";
             string username = "";
             string password = "";
-            while (true)
+            bool methodRun = true;
+            while (methodRun)
             {
                 Console.WriteLine("Vilken typ av användare vill du skapa." +
                     "\n1. Kund" +
-                    "\n2. Admin");
+                    "\n2. Admin" +
+                    "\n3. Gå tillbak till menyn.");
                 string input = Console.ReadLine();
                 bool validInput = false;
 
@@ -88,11 +90,18 @@ namespace RebelAllianceBank.Classes
                         userType = "Admin";
                         validInput = true;
                         break;
+                    case "3":
+                        methodRun = false;
+                        break;
                     default:
                         break;
                 }
 
-                if(validInput)
+                if(!methodRun)
+                {
+                    break;
+                }
+                else if(validInput)
                 {
                     break;
                 }
@@ -105,13 +114,18 @@ namespace RebelAllianceBank.Classes
                 }
             }
 
-            while(true)
+            while(methodRun)
             {
                 Console.WriteLine("Skriv användarnamnet på användaren som ska skapas." +
-                    " Användarnamnet måste vara minst 5 symboler.");
+                    " Användarnamnet måste vara minst 5 symboler. Skriv exit om du vill gå tillbaka till menyn.");
                 string input = Console.ReadLine();
 
-                if(input.Length < 5)
+                if(input.ToUpper().Equals("EXIT"))
+                {
+                    methodRun = false;
+                    break;
+                }
+                else if(input.Length < 5)
                 {
                     Console.WriteLine("Användarnamnet måste vara 5 symboler eller längre. Tryck på valfri" +
                         " tangent för att gå tillbaka och försök igen.");
@@ -126,12 +140,17 @@ namespace RebelAllianceBank.Classes
                 }
             }
 
-            while(true)
+            while(methodRun)
             {
                 Console.WriteLine("Skriv lösenordet för användaren som ska skapas. Lösenordet måste vara minst 5 symboler.");
                 string input = Console.ReadLine();
 
-                if(input.Length < 5)
+                if (input.ToUpper().Equals("EXIT"))
+                {
+                    methodRun = false;
+                    break;
+                }
+                else if (input.Length < 5)
                 {
                     Console.WriteLine("Lösenordet måste vara 5 symboler eller längre. Tryck på valfri" +
                         " tangent för att gå tillbaka och försök igen.");
@@ -146,18 +165,21 @@ namespace RebelAllianceBank.Classes
                 }
             }
 
-            if(userType.Equals("Kund"))
+            if(methodRun)
             {
-                users.Add(new Customer(username, password));
-            }
-            else if(userType.Equals("Admin"))
-            {
-                users.Add(new Admin(username, password));
-            }
+                if (userType.Equals("Kund"))
+                {
+                    users.Add(new Customer(username, password));
+                }
+                else if (userType.Equals("Admin"))
+                {
+                    users.Add(new Admin(username, password));
+                }
 
-            Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
-            Console.ReadKey();
-            Console.Clear();
+                Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
+                Console.ReadKey();
+                Console.Clear();
+            }
         }
     }
 }
