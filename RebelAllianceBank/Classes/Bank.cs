@@ -4,7 +4,7 @@ namespace RebelAllianceBank.Classes
     public class Bank
     {
         List<IUser> users = new List<IUser>() { new Admin("FullAccessLogin", "02492512") };
-        IUser currentUser;
+        IUser? currentUser;
 
         public void Run()
         {
@@ -16,7 +16,7 @@ namespace RebelAllianceBank.Classes
             while (true)
             {
                 Console.WriteLine("Välkommen till Rebel Alliance Bank. Vänligen skriv ditt användarnamn.");
-                string usernameInput = Console.ReadLine();
+                string? usernameInput = Console.ReadLine();
                 bool correctUser = false;
                 bool correctPass = false;
 
@@ -35,7 +35,7 @@ namespace RebelAllianceBank.Classes
                     while(true)
                     {
                         Console.WriteLine($"God dag {currentUser.Username}. Vänligen skriv ditt lösenord.");
-                        string passwordInput = Console.ReadLine();
+                        string? passwordInput = Console.ReadLine();
 
                         if (currentUser.Password.Equals(passwordInput))
                         {
