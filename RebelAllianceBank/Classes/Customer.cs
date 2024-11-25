@@ -13,92 +13,68 @@ namespace RebelAllianceBank.Classes
             Username = username;
             Password = password;
         }
-
-        public void CreateCardAccount(string accountName, decimal balance, string accountCurrency, decimal intrestRate)
+        public void CreateAccount()
         {
-            Console.WriteLine($"Räntan för detta kontot blir: {intrestRate}%");
-            Console.WriteLine("Vill du fortsätta? (J)a,(N)ej?");
+            bool createAccount = false;
 
-            bool keepRunning = true;
-            while (keepRunning)
+            do
             {
-                var key = Console.ReadKey().Key;
+                Console.WriteLine("Vilket konto vill du skapa?\n");
+                Console.WriteLine("1. Kreditkort");
+                Console.WriteLine("2. ISK (investeringssparkonto");
+                Console.WriteLine("3. Sparkonto");
+                Console.WriteLine("4. Avsluta");
+                string input = Console.ReadLine();
+                int userChoice;
+                bool isInt = int.TryParse(input, out userChoice);
 
-                if (key == ConsoleKey.J)
+                string accountName = "";
+                string accountCurrency = "";
+                
+                if (isInt && userChoice == 4)
                 {
-                    accounts.Add(new CardAccount(accountName, 0, accountCurrency, intrestRate));
-                    Console.WriteLine($"\nDet nya kontot har skapats.");
-                    keepRunning = false;
+                    break;
                 }
-                else if (key == ConsoleKey.N)
+                else if (isInt)
                 {
-                    Console.WriteLine("\nInget konto har skapats.");
-                    keepRunning = false;
-                }
-                else
-                {
-                    Console.WriteLine("\nFel inmatning, försök med \"Y\" eller \"N\"");
-                }
-            }
-            Console.ReadKey();
-        }
+                    Console.Write("Vad vill du kalla kontot: ");
+                    accountName = Console.ReadLine();
 
-        public void CreateISKAccount(string accountName, decimal balance, string accountCurrency, decimal intrestRate)
-        {
-            Console.WriteLine($"Räntan för detta kontot blir: {intrestRate}%");
-            Console.WriteLine("Vill du fortsätta? (J)a,(N)ej?");
+                    Console.Write("Vilken valuta vill du ha på kontot: ");
+                    accountCurrency = Console.ReadLine().ToUpper();
+                }
 
-            bool keepRunning = true;
-            while (keepRunning)
-            {
-                var key = Console.ReadKey().Key;
-
-                if (key == ConsoleKey.J)
+                switch (userChoice)
                 {
-                    accounts.Add(new ISK(accountName, 0, accountCurrency, intrestRate));
-                    Console.WriteLine($"\nDet nya kontot har skapats..");
-                    keepRunning = false;
+                    case 1:
+                        accounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
+                        createAccount = true;
+                        Console.WriteLine($"Konto namn: {accountName}\nValuta: {accountCurrency}");
+                        Console.ReadKey();
+                        break;
+                    case 2:
+                        accounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
+                        createAccount = true;
+                        Console.WriteLine($"Konto namn: {accountName}\nValuta: {accountCurrency}");
+                        Console.ReadKey();
+                        break;
+                    case 3:
+                        accounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
+                        createAccount = true;
+                        Console.WriteLine($"Konto namn: {accountName}\nValuta: {accountCurrency}");
+                        Console.ReadKey();
+                        break;
+                    case 4:
+                        createAccount = true;
+                        break;
+                    default:
+                        Console.WriteLine("Fel inmatning, inget konto har skapats.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        createAccount = false;
+                        break;
                 }
-                else if (key == ConsoleKey.N)
-                {
-                    Console.WriteLine("\nInget nytt konto har skapats.");
-                    keepRunning = false;
-                }
-                else
-                {
-                    Console.WriteLine("\nFel inmatning, försök med \"Y\" eller \"N\"");
-                }
-            }
-            Console.ReadKey();
-        }
-
-        public void CreateSavingsAccount(string accountName, decimal balance, string accountCurrency, decimal intrestRate)
-        {
-            Console.WriteLine($"Räntan för detta kontot blir: {intrestRate}%");
-            Console.WriteLine("Vill du fortsätta? (J)a,(N)ej?");
-
-            bool keepRunning = true;
-            while (keepRunning)
-            {
-                var key = Console.ReadKey().Key;
-
-                if (key == ConsoleKey.J)
-                {
-                    accounts.Add(new SavingsAccount(accountName, 0, accountCurrency, intrestRate));
-                    Console.WriteLine($"\nDet nya kontot har skapats.");
-                    keepRunning = false;
-                }
-                else if (key == ConsoleKey.N)
-                {
-                    Console.WriteLine("\nInget konto har skapats.");
-                    keepRunning = false;
-                }
-                else
-                {
-                    Console.WriteLine("\nFel inmatning, försök med \"Y\" eller \"N\"");
-                }
-            }
-            Console.ReadKey();
+            } while (createAccount == false);
         }
     }
 }
