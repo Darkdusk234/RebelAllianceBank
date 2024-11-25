@@ -148,13 +148,15 @@ namespace RebelAllianceBank.Classes
             if(userType.Equals("Kund"))
             {
                 users.Add(new Customer(username, password));
-                Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
             }
             else if(userType.Equals("Admin"))
             {
                 users.Add(new Admin(username, password));
-                Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
             }
+
+            Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
+            Console.ReadKey();
+            Console.Clear();
         }
     }
 }
