@@ -1,18 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RebelAllianceBank.Interfaces;
+﻿using RebelAllianceBank.Interfaces;
 
 namespace RebelAllianceBank.Classes
 {
     internal class FileHandler
     {
-        public List<IUser> ReadUsersFromFile()
+        /// <summary>
+        /// Reads a list of users from the file.
+        /// </summary>
+        /// <returns>A list of <see cref="IUser"/> objects read from the file.</returns>
+        public List<IUser> ReadUser()
         {
-            List<IUser> savedList = new List<IUser>();
-            string filePath = "..\\..\\..\\users.txt";
+            string filePath = $"..\\..\\..\\users.txt";
+            return ReadFromFile(filePath, StoredUser);
+        }
+        /// <summary>
+        /// Reads a list of accounts from the file.
+        /// </summary>
+        /// <returns>A list of <see cref="IBankAccount"/> objects read from the file.</returns>
+        public List<IBankAccount> ReadAccount()
+        {
+            string filePath = $"..\\..\\..\\accounts.txt";
+            return ReadFromFile(filePath, StoredBankAccount);
+        }
+        /// <summary>
+        /// Reads data from a specified file and converts each line into an object of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of objects to be created from the file data.</typeparam>
+        /// <param name="filePath">The path to the file that contains the data to be read.</param>
+        /// <param name="StoredData">A delegate method that takes a string array (representing a line split into parts)
+        /// and returns an object of type <typeparamref name="T"/>.</param>
+        /// <returns>A list of objects of type <typeparamref name="T"/> created from the file data.</returns>
+        public static List<T> ReadFromFile<T>(string filePath, Func<string[], T> StoredData)
+        {
+            List<T> savedList = new List<T>();
             if (File.Exists(filePath))
             {
                 using (StreamReader sr = new StreamReader(filePath))
@@ -21,16 +41,21 @@ namespace RebelAllianceBank.Classes
                     while ((read = sr.ReadLine()) != null)
                     {
                         string[] row = read.Split('-');
-                        IUser user = StoredUser(row);
-                        if (user != null)
+                        T instance = StoredData(row);
+                        if (instance != null)
                         {
-                            savedList.Add(user);
+                            savedList.Add(instance);
                         }
                     }
                 }
             }
             return savedList;
         }
+        /// <summary>
+        /// Converts a string array to an <see cref="IUser"/> object.
+        /// </summary>
+        /// <param name="row">A string array representing a user row from the file.</param>
+        /// <returns>An <see cref="IUser"/> object or null if the row is invalid.</returns>
         public IUser StoredUser(string[] row)
         {
             switch (row[3])
@@ -55,7 +80,14 @@ namespace RebelAllianceBank.Classes
                     return null;
             }
         }
-
+        /// <summary>
+        /// Writes a user to the file and returns the created <see cref="IUser"/> object.
+        /// </summary>
+        /// <param name="id">The ID of the user.</param>
+        /// <param name="un">The username of the user.</param>
+        /// <param name="pw">The password of the user.</param>
+        /// <param name="isAdmin">Specifies whether the user is an admin or not.</param>
+        /// <returns>The created <see cref="IUser"/> object or null if writing failed.</returns>
         public IUser WriteUserToFile(int id, string un, string pw, bool isAdmin)
         {
             string filePath = "..\\..\\..\\users.txt";
@@ -74,28 +106,11 @@ namespace RebelAllianceBank.Classes
             }
             return null;
         }
-        public List<IBankAccount> ReadAccountsFromFile()
-        {
-            List<IBankAccount> savedList = new List<IBankAccount>();
-            string filePath = "..\\..\\..\\accounts.txt";
-            if (File.Exists(filePath))
-            {
-                using (StreamReader sr = new StreamReader(filePath))
-                {
-                    string read;
-                    while ((read = sr.ReadLine()) != null)
-                    {
-                        string[] row = read.Split('-');
-                        IBankAccount account = StoredBankAccount(row);
-                        if (account != null)
-                        {
-                            savedList.Add(account);
-                        }
-                    }
-                }
-            }
-            return savedList;
-        }
+        /// <summary>
+        /// Converts a string array to an <see cref="IBankAccount"/> object.
+        /// </summary>
+        /// <param name="row">A string array representing the accounts from each row.</param>
+        /// <returns>An object of <see cref="IBankAccount"/> or null if row is invalid.</returns>
         public IBankAccount StoredBankAccount(string[] row)
         {
             switch (row[0])
@@ -131,6 +146,15 @@ namespace RebelAllianceBank.Classes
                     return null;
             }
         }
+        /// <summary>
+        /// Writes a bank account to the file and returns the created <see cref="IBankAccount"/> object.
+        /// </summary>
+        /// <param name="id">The ID of the account.</param>
+        /// <param name="accType">The type of the account.</param>
+        /// <param name="name">The name of the account.</param>
+        /// <param name="balance">The balance of the account.</param>
+        /// <param name="curr">The currency of the account.</param>
+        /// <returns>The created <see cref="IBankAccount"/> object or null if writing fails.</returns>
         public IBankAccount WriteAccountToFile(int id, int accType, string name, decimal balance, string curr)
         {
             string filePath = "..\\..\\..\\accounts.txt";
