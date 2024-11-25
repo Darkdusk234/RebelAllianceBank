@@ -365,7 +365,6 @@ FodyWeavers.xsd
 # Docker Continer 
 /.devcontainer
 
-
 # Rider
 bin/
 obj/
