@@ -1,4 +1,5 @@
-﻿using RebelAllianceBank.Interfaces;
+﻿using RebelAllianceBank.Enums;
+using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.utils;
 namespace RebelAllianceBank.Classes
 {
@@ -6,7 +7,11 @@ namespace RebelAllianceBank.Classes
     {
         public string Username { get; set; }
         public string Password { get; set; }
-        private List<IBankAccount> BankAccounts = [];
+        private List<IBankAccount> BankAccounts = [
+            new CardAccount("Card", 500, "SEK"),
+            new CardAccount("Card", 500, "SEK"),
+            new CardAccount("Card", 500, "SEK"),
+        ];
 
         public Customer(string username, string password)
         {
@@ -91,6 +96,93 @@ namespace RebelAllianceBank.Classes
                         break;
                 }
             } while (createAccount == false);
+        }
+
+        public void TransferManyBetwinAcount()
+        {
+            List<string> bodyKeys = [];
+            for (int i = 0; i < BankAccounts.Count; i++)
+            {
+                var BankAccount = BankAccounts[i];
+                bodyKeys.Add((i + 1).ToString());
+                bodyKeys.Add(BankAccount.AccountName);
+                bodyKeys.Add(BankAccount.Balance.ToString("N2"));
+            }
+
+            var menu = new SelectOneOrMore(["id", "Konto Namn", "Saldo"], bodyKeys);
+
+            menu.Show();
+
+
+            // Markdown.Heder(message: "Wowo", headerLevel: HeaderLevel.Header2);
+            // Markdown.Table(["id", "Konto Namn", "Saldo"], bodyKeys);
+
+            // Markdown.Paragrath("Vilket konto vill du överföra ifrån");
+            // int accountFromIndex;
+            // while (
+            //     !int.TryParse(Console.ReadLine(), out accountFromIndex) ||
+            //     accountFromIndex <= 0 ||
+            //     accountFromIndex > BankAccounts.Count
+            //     )
+            // {
+            //     Console.Clear();
+            //     Markdown.Table(["id", "Konto Namn", "Saldo"], bodyKeys);
+            //     Markdown.Paragrath("Det måste vara ett nummer so mantchar konto nummer");
+            // };
+            // Console.Clear();
+            // Markdown.Table(["id", "Konto Namn", "Saldo"], bodyKeys);
+            // Markdown.Paragrath("Vilket konto vill du överföra till");
+            // int accountToIndex;
+            // while (
+            //     !int.TryParse(Console.ReadLine(), out accountToIndex) ||
+            //     accountToIndex == accountFromIndex ||
+            //     accountToIndex <= 0 ||
+            //     accountToIndex > BankAccounts.Count
+            //     )
+            // {
+            //     Console.Clear();
+            //     Markdown.Table(["id", "Konto Namn", "Saldo"], bodyKeys);
+            //     Markdown.Paragrath("Det måste vara ett nummer so mantchar konto nummer");
+            // };
+
+            // var acountFrom = BankAccounts[accountToIndex - 1];
+            // var acountTo = BankAccounts[accountFromIndex - 1];
+
+            // Console.Clear();
+            // Markdown.Table(["id", "Konto Namn", "Saldo"], bodyKeys);
+            // Markdown.Paragrath($"Hur mycket vill du dra från {acountFrom.AccountName}");
+            // int manyAmount;
+            // while (
+            //     !int.TryParse(Console.ReadLine(), out manyAmount) ||
+            //     manyAmount <= 0 ||
+            //     manyAmount > acountFrom.Balance
+            //     )
+            // {
+            //     Console.Clear();
+            //     Markdown.Table(["id", "Konto Namn", "Saldo"], bodyKeys);
+            //     Markdown.Paragrath($"Man kan inte dra mer eller mindre än vad som finns på {acountFrom.AccountName}");
+            // };
+
+            // acountFrom.Balance -= manyAmount;
+            // acountTo.Balance += manyAmount;
+
+            // IBankAccount[] updatedAccounts = [
+            //     acountFrom,
+            //     acountTo,
+            // ];
+
+            // List<string> body = [];
+
+            // for (int i = 0; i < updatedAccounts.Length; i++)
+            // {
+            //     var updatedAccount = updatedAccounts[i];
+            //     body.Add((i + 1).ToString());
+            //     body.Add(updatedAccount.AccountName);
+            //     body.Add(updatedAccount.Balance.ToString("N2"));
+            // }
+            // Console.Clear();
+            // Markdown.Heder(HeaderLevel.Header2, "De nya ballansen på de konton är");
+            // Markdown.Table(["id", "Konto Namn", "Saldo"], body);
         }
     }
 }
