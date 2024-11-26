@@ -409,5 +409,10 @@ namespace RebelAllianceBank.Classes
                 Console.Clear();
             }
         }
+
+        public void UnlockUser()
+        {
+
+        }
     }
 }
