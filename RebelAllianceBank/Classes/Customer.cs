@@ -8,6 +8,12 @@ namespace RebelAllianceBank.Classes
         public string Password { get; set; }
         private List<IBankAccount> BankAccounts = [];
 
+        public Customer(string username, string password)
+        {
+            Username = username;
+            Password = password;
+        }
+
         public void ShowBankAccounts()
         {
             Console.WriteLine("Konton");
