@@ -5,8 +5,8 @@ namespace RebelAllianceBank
     {
         static void Main(string[] args)
         {
-            var rebelAllianceBank = new Bank();
-            rebelAllianceBank.Run();
+            Bank bank = new Bank();
+            bank.Run();
         }
     }
 }
