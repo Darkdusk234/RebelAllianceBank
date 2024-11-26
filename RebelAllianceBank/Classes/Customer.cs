@@ -5,14 +5,15 @@ namespace RebelAllianceBank.Classes
     public class Customer : IUser
     {
         public int ID { get; set; }
-        public string Username { get; set; }
+        public string PersonalNum { get; set; }
         public string Password { get; set; }
-        public bool IsAdmin { get; set; }
+        public string Surname { get; set; }
+        public string Lastname { get; set; }
         private List<IBankAccount> BankAccounts = [];
-
-        public Customer(string username, string password)
+        public Customer() { }
+        public Customer(string pNum, string password)
         {
-            Username = username;
+            PersonalNum = pNum;
             Password = password;
         }
 

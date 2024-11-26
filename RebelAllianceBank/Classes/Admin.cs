@@ -4,12 +4,14 @@ namespace RebelAllianceBank.Classes
     public class Admin : IUser
     {
         public int ID { get; set; }
-        public string Username { get; set; }
+        public string PersonalNum { get; set; }
         public string Password { get; set; }
-        public bool IsAdmin { get; set; }
-        public Admin(string username, string password)
+        public string Surname { get; set; }
+        public string Lastname { get; set; }
+        public Admin() { }
+        public Admin(string pNum, string password)
         {
-            Username = username;
+            PersonalNum = pNum;
             Password = password;
         }
     }

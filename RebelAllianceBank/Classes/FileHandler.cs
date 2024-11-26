@@ -30,7 +30,7 @@ namespace RebelAllianceBank.Classes
         /// <param name="StoredData">A delegate method that takes a string array (representing a line split into parts)
         /// and returns an object of type <typeparamref name="T"/>.</param>
         /// <returns>A list of objects of type <typeparamref name="T"/> created from the file data.</returns>
-        public static List<T> ReadFromFile<T>(string filePath, Func<string[], T> StoredData)
+        public static List<T> ReadFromFile<T>(string filePath, Func<string[], T> StoredData) 
         {
             List<T> savedList = new List<T>();
             if (File.Exists(filePath))
@@ -63,18 +63,22 @@ namespace RebelAllianceBank.Classes
                 case "true":
                     return new Admin
                     {
-                        ID = Convert.ToInt16(row[0]),
-                        Username = row[1],
+                        ID = Convert.ToInt16(row[0]), // unique id
+                        PersonalNum = row[1], // 8802252525
                         Password = row[2],
-                        IsAdmin = bool.Parse(row[3])
+                        Surname = row[3],
+                        Lastname = row[4],
+                        //IsAdmin = bool.Parse(row[3]),
                     };
                 case "false":
                     return new Customer
                     {
                         ID = Convert.ToInt16(row[0]),
-                        Username = row[1],
+                        PersonalNum = row[2],
                         Password = row[2],
-                        IsAdmin = bool.Parse(row[3])
+                        Surname = row[3],
+                        Lastname = row[4],
+                        //IsAdmin = bool.Parse(row[3]),
                     };
                 default:
                     return null;
@@ -119,28 +123,31 @@ namespace RebelAllianceBank.Classes
                     return new CardAccount
                     {
                         ID = Convert.ToInt32(row[0]),
-                        AccountType = Convert.ToInt32(row[1]),
-                        AccountName = row[2],
-                        Balance = Convert.ToDecimal(row[3]),
-                        AccountCurrency = row[4]
+                        UserId = row[1],
+                        AccountType = Convert.ToInt32(row[2]),
+                        AccountName = row[3],
+                        Balance = Convert.ToDecimal(row[4]),
+                        AccountCurrency = row[5]
                     };
                 case "1":
                     return new SavingsAccount
                     {
                         ID = Convert.ToInt32(row[0]),
-                        AccountType = Convert.ToInt32(row[1]),
-                        AccountName = row[2],
-                        Balance = Convert.ToDecimal(row[3]),
-                        AccountCurrency = row[4]
+                        UserId = row[1],
+                        AccountType = Convert.ToInt32(row[2]),
+                        AccountName = row[3],
+                        Balance = Convert.ToDecimal(row[4]),
+                        AccountCurrency = row[5]
                     };
                 case "2":
                     return new ISK
                     {
                         ID = Convert.ToInt32(row[0]),
-                        AccountType = Convert.ToInt32(row[1]),
-                        AccountName = row[2],
-                        Balance = Convert.ToDecimal(row[3]),
-                        AccountCurrency = row[4]
+                        UserId = row[1],
+                        AccountType = Convert.ToInt32(row[2]),
+                        AccountName = row[3],
+                        Balance = Convert.ToDecimal(row[4]),
+                        AccountCurrency = row[5]
                     };
                 default:
                     return null;
