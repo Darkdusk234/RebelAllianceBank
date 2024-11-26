@@ -49,7 +49,7 @@ namespace RebelAllianceBank.Classes
                             Console.ReadKey();
                             Console.Clear();
                         }
-                       
+
                         if (correctPass)
                         {
                             break;
@@ -383,5 +383,6 @@ namespace RebelAllianceBank.Classes
                 Console.ReadKey();
                 Console.Clear();
             }
+        }
     }
 }
