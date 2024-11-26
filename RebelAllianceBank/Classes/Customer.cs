@@ -1,4 +1,5 @@
 ﻿using RebelAllianceBank.Interfaces;
+using RebelAllianceBank.utils;
 namespace RebelAllianceBank.Classes
 {
     public class Customer : IUser
@@ -39,6 +40,12 @@ namespace RebelAllianceBank.Classes
                 {
                     Console.Write("Vad vill du kalla kontot: ");
                     accountName = Console.ReadLine();
+        
+        private List<IBankAccount> BankAccounts = [];
+
+        public void ShowBankAccounts()
+        {
+            Console.WriteLine("Konton");
 
                     Console.Write("Vilken valuta vill du ha på kontot: ");
                     accountCurrency = Console.ReadLine().ToUpper();
@@ -71,6 +78,21 @@ namespace RebelAllianceBank.Classes
                         break;
                 }
             } while (createAccount == false);
+        }
+            if (BankAccounts.Count == 0)
+            {
+                Console.WriteLine("Du har inga konton att visa");
+                return;
+            }
+
+
+            List<string> bodyKeys = [];
+            foreach (var BankAccount in BankAccounts)
+            {
+                bodyKeys.Add(BankAccount.AccountName);
+                bodyKeys.Add(BankAccount.Balance.ToString("N2"));
+            }
+            Markdown.Table(["Konto Namn", "Saldo"], bodyKeys);
         }
     }
 }
