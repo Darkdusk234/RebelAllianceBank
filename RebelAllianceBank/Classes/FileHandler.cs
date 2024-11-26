@@ -67,7 +67,7 @@ namespace RebelAllianceBank.Classes
                         PersonalNum = row[1], // 8802252525
                         Password = row[2],
                         Surname = row[3],
-                        Lastname = row[4],
+                        Forename = row[4],
                         //IsAdmin = bool.Parse(row[3]),
                     };
                 case "false":
@@ -77,7 +77,7 @@ namespace RebelAllianceBank.Classes
                         PersonalNum = row[2],
                         Password = row[2],
                         Surname = row[3],
-                        Lastname = row[4],
+                        Forename = row[4],
                         //IsAdmin = bool.Parse(row[3]),
                     };
                 default:

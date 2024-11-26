@@ -8,13 +8,15 @@ namespace RebelAllianceBank.Classes
         public string PersonalNum { get; set; }
         public string Password { get; set; }
         public string Surname { get; set; }
-        public string Lastname { get; set; }
+        public string Forename { get; set; }
         private List<IBankAccount> BankAccounts = [];
         public Customer() { }
-        public Customer(string pNum, string password)
+        public Customer(string pNum, string password, string surname, string forename)
         {
             PersonalNum = pNum;
             Password = password;
+            Surname = surname;
+            Forename = forename;
         }
 
         public void ShowBankAccounts()
