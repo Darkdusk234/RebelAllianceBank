@@ -412,6 +412,36 @@ namespace RebelAllianceBank.Classes
 
         public void UnlockUser()
         {
+            Console.WriteLine("Skriv användarnamnet av den användare du vill låsa upp.");
+            string usernameInput = Console.ReadLine();
+
+            foreach (var user in users)
+            {
+                if (user.Username.Equals(usernameInput) && user.LoginLock == false)
+                {
+                    Console.WriteLine("Användaren är inte låst. Kolla om du skrivit rätt användarnamn. Tryck på valfri" +
+                        " tangent för att gå tillbaka till början.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
+                }
+                else if (user.Username.Equals(usernameInput))
+                {
+                    user.LoginLock = false;
+                    Console.WriteLine("Användaren har låsts upp. Tryck på valfri tangent för att gå tillbaka till menyn.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Det finns ingen användare med det användarenamnet. Tryck på valfri tangent för att" +
+                        " gå tillbaka till början.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
+                }
+            }
 
         }
     }
