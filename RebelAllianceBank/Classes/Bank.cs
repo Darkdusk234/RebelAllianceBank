@@ -414,10 +414,16 @@ namespace RebelAllianceBank.Classes
         {
             while (true)
             {
-                Console.WriteLine("Skriv användarnamnet av den användare du vill låsa upp.");
+                Console.WriteLine("Skriv användarnamnet av den användare du vill låsa upp. Skriv exit om du vill gå" +
+                    " tillbaka till menyn");
                 string usernameInput = Console.ReadLine();
                 bool correctInput = false;
                 bool notLockedUser = false;
+
+                if(usernameInput.ToUpper().Equals("EXIT"))
+                {
+                    break;
+                }
 
                 foreach (var user in users)
                 {
