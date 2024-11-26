@@ -412,34 +412,48 @@ namespace RebelAllianceBank.Classes
 
         public void UnlockUser()
         {
-            Console.WriteLine("Skriv användarnamnet av den användare du vill låsa upp.");
-            string usernameInput = Console.ReadLine();
-
-            foreach (var user in users)
+            while (true)
             {
-                if (user.Username.Equals(usernameInput) && user.LoginLock == false)
+                Console.WriteLine("Skriv användarnamnet av den användare du vill låsa upp.");
+                string usernameInput = Console.ReadLine();
+                bool correctInput = false;
+                bool notLockedUser = false;
+
+                foreach (var user in users)
                 {
-                    Console.WriteLine("Användaren är inte låst. Kolla om du skrivit rätt användarnamn. Tryck på valfri" +
-                        " tangent för att gå tillbaka till början.");
-                    Console.ReadKey();
-                    Console.Clear();
-                    break;
+                    if (user.Username.Equals(usernameInput) && user.LoginLock == false)
+                    {
+                        Console.WriteLine("Användaren är inte låst. Kolla om du skrivit rätt användarnamn. Tryck på valfri rangent" +
+                            " för att gå vidare.");
+                        correctInput = true;
+                        notLockedUser = true;
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    }
+                    else if (user.Username.Equals(usernameInput))
+                    {
+                        user.LoginLock = false;
+                        Console.WriteLine("Användaren har låsts upp. Tryck på valfri tangent för att gå vidare.");
+                        correctInput = true;
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    }
                 }
-                else if (user.Username.Equals(usernameInput))
+
+                if(correctInput && notLockedUser)
                 {
-                    user.LoginLock = false;
-                    Console.WriteLine("Användaren har låsts upp. Tryck på valfri tangent för att gå tillbaka till menyn.");
-                    Console.ReadKey();
-                    Console.Clear();
+                    continue;
+                }
+                else if(correctInput)
+                {
                     break;
                 }
                 else
                 {
-                    Console.WriteLine("Det finns ingen användare med det användarenamnet. Tryck på valfri tangent för att" +
-                        " gå tillbaka till början.");
-                    Console.ReadKey();
-                    Console.Clear();
-                    break;
+                    Console.WriteLine("Det finns ingen användare med det användarnamnet.tryck på " +
+                        "valfri tangent för att gå tillbaka och försök igen.");
                 }
             }
 
