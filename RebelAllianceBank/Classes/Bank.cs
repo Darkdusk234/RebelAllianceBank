@@ -4,25 +4,76 @@ namespace RebelAllianceBank.Classes
 {
     public class Bank
     {
+        List<IUser> users = new List<IUser>() { new Admin("FullAccessLogin", "02492512") };
+        IUser? currentUser;
 
         public void Run()
         {
-            FileHandler run = new FileHandler();
-            List<IUser> users = new List<IUser>(run.ReadUser());
-            List<IBankAccount> accounts = new List<IBankAccount>(run.ReadAccount());
-            users.Add(run.WriteUserToFile(10, "Lars", "54321", false));
-            accounts.Add(run.WriteAccountToFile(0, 2, "ISK2", 1000, "SEK"));
-            Console.ReadKey();
+            Login();
         }
-        
-         public static void AdminMenu()
+
+        public void Login()
+        {
+            while (true)
+            {
+                Console.WriteLine("Välkommen till Rebel Alliance Bank. Vänligen skriv ditt användarnamn.");
+                string? usernameInput = Console.ReadLine();
+                bool correctUser = false;
+                bool correctPass = false;
+
+                foreach (var user in users)
+                {
+                    if (user.Username.Equals(usernameInput))
+                    {
+                        currentUser = user;
+                        correctUser = true;
+                        break;
+                    }
+                }
+
+                if (correctUser)
+                {
+                    while (true)
+                    {
+                        Console.WriteLine($"God dag {currentUser.Username}. Vänligen skriv ditt lösenord.");
+                        string? passwordInput = Console.ReadLine();
+
+                        if (currentUser.Password.Equals(passwordInput))
+                        {
+                            correctPass = true;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Felaktigt lösenord. Tryck på valfri tangent för att försöka igen.");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
+                       
+                        if (correctPass)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Det finns ingen användare med det användarnamnet. Tryck på valfri " +
+                        "tangent för att gå tillbaka och försöka igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+            }
+        }
+
+        public static void AdminMenu()
         {
             bool runAdminMenu = true;
 
             while (runAdminMenu)
             {
                 Console.Clear();
-                
+
                 Console.Write("ADMIN\n" +
                               "[1] Skapa användare\n" +
                               "[2] Ändra växelkurs\n" +
@@ -30,27 +81,27 @@ namespace RebelAllianceBank.Classes
                               "[4] Logga ut\n" +
                               "\n" +
                               "Menyval: ");
-                
-                string choice = Console.ReadLine(); 
-                
+
+                string choice = Console.ReadLine();
+
                 switch (choice)
                 {
                     case "1":
                         Console.WriteLine("Skapa användare");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
-                    case "2": 
+                    case "2":
                         Console.WriteLine("Ändra växelkurs");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
-                    case "3": 
+                    case "3":
                         Console.WriteLine("Lås upp användarkonto???");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case "4":
                         runAdminMenu = false;
-                        break; 
-                    default: 
+                        break;
+                    default:
                         Console.Clear();
                         Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
                         Console.ReadKey();
@@ -90,7 +141,7 @@ namespace RebelAllianceBank.Classes
                         CustomerMenuLoan();
                         break;
                     case "4":
-                        runCustomerMenu = false; 
+                        runCustomerMenu = false;
                         break;
                     default:
                         Console.Clear();
@@ -99,7 +150,6 @@ namespace RebelAllianceBank.Classes
                         break;
                 }
             }
-
         }
 
         private static void CustomerMenuAccounts()
@@ -109,7 +159,7 @@ namespace RebelAllianceBank.Classes
             while (runCustomerMenuAccounts)
             {
                 Console.Clear();
-                
+
                 Console.Write("KONTON:\n" +
                               "[1] Se över mina konton\n" +
                               "[2] Öppna nytt konto\n" +
@@ -129,14 +179,14 @@ namespace RebelAllianceBank.Classes
                         Console.WriteLine("Öppna nytt konto");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
-                    case "3": 
-                        runCustomerMenuAccounts = false; 
+                    case "3":
+                        runCustomerMenuAccounts = false;
                         break;
-                    default: 
+                    default:
                         Console.Clear();
                         Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
                         Console.ReadKey();
-                        break; 
+                        break;
                 }
             }
         }
@@ -154,26 +204,26 @@ namespace RebelAllianceBank.Classes
                               "[3] Återgå till huvudmenyn\n" +
                               "\n" +
                               "Menyval: ");
-                
-                string choice = Console.ReadLine(); 
-                
+
+                string choice = Console.ReadLine();
+
                 switch (choice)
                 {
                     case "1":
                         Console.WriteLine("Ny överföring");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
-                        break; 
+                        break;
                     case "2":
                         Console.WriteLine("Ny betalning");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
-                        break; 
+                        break;
                     case "3":
                         runCustomerMenuTransaction = false;
                         break;
                     default:
                         Console.Clear();
                         Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
-                        Console.ReadKey(); 
+                        Console.ReadKey();
                         break;
                 }
             }
@@ -186,7 +236,7 @@ namespace RebelAllianceBank.Classes
             while (runCustomerMenuLoan)
             {
                 Console.Clear();
-                
+
                 Console.Write("LÅN:\n" +
                               "[1] Mina lån\n" +
                               "[2] Ansök om nytt lån\n" +
@@ -194,7 +244,7 @@ namespace RebelAllianceBank.Classes
                               "\n" +
                               "Menyval: ");
 
-                string choice = Console.ReadLine(); 
+                string choice = Console.ReadLine();
 
                 switch (choice)
                 {
@@ -215,6 +265,123 @@ namespace RebelAllianceBank.Classes
                         Console.ReadKey();
                         break;
                 }
+            }
+        }
+
+        public void CreateUser()
+        {
+            string userType = "";
+            string username = "";
+            string password = "";
+            bool methodRun = true;
+            while (methodRun)
+            {
+                Console.WriteLine("Vilken typ av användare vill du skapa." +
+                    "\n1. Kund" +
+                    "\n2. Admin" +
+                    "\n3. Gå tillbak till menyn.");
+                string input = Console.ReadLine();
+                bool validInput = false;
+
+                switch (input)
+                {
+                    case "1":
+                        userType = "Kund";
+                        validInput = true;
+                        break;
+                    case "2":
+                        userType = "Admin";
+                        validInput = true;
+                        break;
+                    case "3":
+                        methodRun = false;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (!methodRun)
+                {
+                    break;
+                }
+                else if (validInput)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Det är inte et giltligt val. Skriv siffran av det val du vill välja." +
+                        " Tryck på valfri tangent tangent för att gå tillbaka till valen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+            }
+
+            while (methodRun)
+            {
+                Console.WriteLine("Skriv användarnamnet på användaren som ska skapas." +
+                    " Användarnamnet måste vara minst 5 symboler. Skriv exit om du vill gå tillbaka till menyn.");
+                string input = Console.ReadLine();
+
+                if (input.ToUpper().Equals("EXIT"))
+                {
+                    methodRun = false;
+                    break;
+                }
+                else if (input.Length < 5)
+                {
+                    Console.WriteLine("Användarnamnet måste vara 5 symboler eller längre. Tryck på valfri" +
+                        " tangent för att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else
+                {
+                    username = input;
+                    break;
+                }
+            }
+
+            while (methodRun)
+            {
+                Console.WriteLine("Skriv lösenordet för användaren som ska skapas. Lösenordet måste vara minst 5 symboler.");
+                string input = Console.ReadLine();
+
+                if (input.ToUpper().Equals("EXIT"))
+                {
+                    methodRun = false;
+                    break;
+                }
+                else if (input.Length < 5)
+                {
+                    Console.WriteLine("Lösenordet måste vara 5 symboler eller längre. Tryck på valfri" +
+                        " tangent för att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else
+                {
+                    password = input;
+                    break;
+                }
+            }
+
+            if (methodRun)
+            {
+                if (userType.Equals("Kund"))
+                {
+                    users.Add(new Customer(username, password));
+                }
+                else if (userType.Equals("Admin"))
+                {
+                    users.Add(new Admin(username, password));
+                }
+
+                Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
+                Console.ReadKey();
+                Console.Clear();
             }
     }
 }
