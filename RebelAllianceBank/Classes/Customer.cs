@@ -4,16 +4,35 @@ namespace RebelAllianceBank.Classes
 {
     public class Customer : IUser
     {
-        List<IBankAccount> accounts = new List<IBankAccount>();
         public string Username { get; set; }
         public string Password { get; set; }
-
+        private List<IBankAccount> BankAccounts = [];
 
         public Customer(string username, string password)
         {
             Username = username;
             Password = password;
         }
+
+        public void ShowBankAccounts()
+        {
+            Console.WriteLine("Konton");
+
+            if (BankAccounts.Count == 0)
+            {
+                Console.WriteLine("Du har inga konton att visa");
+                return;
+            }
+
+            List<string> bodyKeys = [];
+            foreach (var BankAccount in BankAccounts)
+            {
+                bodyKeys.Add(BankAccount.AccountName);
+                bodyKeys.Add(BankAccount.Balance.ToString("N2"));
+            }
+            Markdown.Table(["Konto Namn", "Saldo"], bodyKeys);
+        }
+
         public void CreateAccount()
         {
             bool createAccount = false;
@@ -40,12 +59,6 @@ namespace RebelAllianceBank.Classes
                 {
                     Console.Write("Vad vill du kalla kontot: ");
                     accountName = Console.ReadLine();
-        
-        private List<IBankAccount> BankAccounts = [];
-
-        public void ShowBankAccounts()
-        {
-            Console.WriteLine("Konton");
 
                     Console.Write("Vilken valuta vill du ha på kontot: ");
                     accountCurrency = Console.ReadLine().ToUpper();
@@ -54,17 +67,17 @@ namespace RebelAllianceBank.Classes
                 switch (userChoice)
                 {
                     case 1:
-                        accounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
+                        BankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
                         createAccount = true;
                         Console.ReadKey();
                         break;
                     case 2:
-                        accounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
+                        BankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
                         createAccount = true;
                         Console.ReadKey();
                         break;
                     case 3:
-                        accounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
+                        BankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
                         createAccount = true;
                         break;
                     case 4:
@@ -78,21 +91,6 @@ namespace RebelAllianceBank.Classes
                         break;
                 }
             } while (createAccount == false);
-        }
-            if (BankAccounts.Count == 0)
-            {
-                Console.WriteLine("Du har inga konton att visa");
-                return;
-            }
-
-
-            List<string> bodyKeys = [];
-            foreach (var BankAccount in BankAccounts)
-            {
-                bodyKeys.Add(BankAccount.AccountName);
-                bodyKeys.Add(BankAccount.Balance.ToString("N2"));
-            }
-            Markdown.Table(["Konto Namn", "Saldo"], bodyKeys);
         }
     }
 }

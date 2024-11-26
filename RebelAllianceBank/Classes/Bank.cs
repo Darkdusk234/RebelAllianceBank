@@ -48,30 +48,31 @@ namespace RebelAllianceBank.Classes
                             Console.ReadKey();
                             Console.Clear();
                         }
+                       
                         if (correctPass)
                         {
                             break;
                         }
-                    }
-                else
-                    {
-                        Console.WriteLine("Det finns ingen användare med det användarnamnet. Tryck på valfri " +
-                            "tangent för att gå tillbaka och försöka igen.");
-                        Console.ReadKey();
-                        Console.Clear();
+                        else
+                        {
+                            Console.WriteLine("Det finns ingen användare med det användarnamnet. Tryck på valfri " +
+                                "tangent för att gå tillbaka och försöka igen.");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
                     }
                 }
             }
         }
-        
-         public static void AdminMenu()
+
+        public static void AdminMenu()
         {
             bool runAdminMenu = true;
 
             while (runAdminMenu)
             {
                 Console.Clear();
-                
+
                 Console.Write("ADMIN\n" +
                               "[1] Skapa användare\n" +
                               "[2] Ändra växelkurs\n" +
@@ -79,27 +80,27 @@ namespace RebelAllianceBank.Classes
                               "[4] Logga ut\n" +
                               "\n" +
                               "Menyval: ");
-                
-                string choice = Console.ReadLine(); 
-                
+
+                string choice = Console.ReadLine();
+
                 switch (choice)
                 {
                     case "1":
                         Console.WriteLine("Skapa användare");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
-                    case "2": 
+                    case "2":
                         Console.WriteLine("Ändra växelkurs");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
-                    case "3": 
+                    case "3":
                         Console.WriteLine("Lås upp användarkonto???");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case "4":
                         runAdminMenu = false;
-                        break; 
-                    default: 
+                        break;
+                    default:
                         Console.Clear();
                         Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
                         Console.ReadKey();
@@ -139,7 +140,7 @@ namespace RebelAllianceBank.Classes
                         CustomerMenuLoan();
                         break;
                     case "4":
-                        runCustomerMenu = false; 
+                        runCustomerMenu = false;
                         break;
                     default:
                         Console.Clear();
@@ -148,7 +149,6 @@ namespace RebelAllianceBank.Classes
                         break;
                 }
             }
-
         }
 
         private static void CustomerMenuAccounts()
@@ -158,7 +158,7 @@ namespace RebelAllianceBank.Classes
             while (runCustomerMenuAccounts)
             {
                 Console.Clear();
-                
+
                 Console.Write("KONTON:\n" +
                               "[1] Se över mina konton\n" +
                               "[2] Öppna nytt konto\n" +
@@ -178,14 +178,14 @@ namespace RebelAllianceBank.Classes
                         Console.WriteLine("Öppna nytt konto");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
-                    case "3": 
-                        runCustomerMenuAccounts = false; 
+                    case "3":
+                        runCustomerMenuAccounts = false;
                         break;
-                    default: 
+                    default:
                         Console.Clear();
                         Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
                         Console.ReadKey();
-                        break; 
+                        break;
                 }
             }
         }
@@ -203,26 +203,26 @@ namespace RebelAllianceBank.Classes
                               "[3] Återgå till huvudmenyn\n" +
                               "\n" +
                               "Menyval: ");
-                
-                string choice = Console.ReadLine(); 
-                
+
+                string choice = Console.ReadLine();
+
                 switch (choice)
                 {
                     case "1":
                         Console.WriteLine("Ny överföring");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
-                        break; 
+                        break;
                     case "2":
                         Console.WriteLine("Ny betalning");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
-                        break; 
+                        break;
                     case "3":
                         runCustomerMenuTransaction = false;
                         break;
                     default:
                         Console.Clear();
                         Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
-                        Console.ReadKey(); 
+                        Console.ReadKey();
                         break;
                 }
             }
@@ -235,7 +235,7 @@ namespace RebelAllianceBank.Classes
             while (runCustomerMenuLoan)
             {
                 Console.Clear();
-                
+
                 Console.Write("LÅN:\n" +
                               "[1] Mina lån\n" +
                               "[2] Ansök om nytt lån\n" +
@@ -243,7 +243,7 @@ namespace RebelAllianceBank.Classes
                               "\n" +
                               "Menyval: ");
 
-                string choice = Console.ReadLine(); 
+                string choice = Console.ReadLine();
 
                 switch (choice)
                 {
