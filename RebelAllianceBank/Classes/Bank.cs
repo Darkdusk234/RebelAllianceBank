@@ -22,7 +22,12 @@ namespace RebelAllianceBank.Classes
 
                 foreach (var user in users)
                 {
-                    if (user.Username.Equals(usernameInput))
+                    if (user.Username.Equals(usernameInput) && user.LoginLock == true)
+                    {
+                        Console.WriteLine("Användaren är låst. Kontakta admin för att låsa upp användaren.");
+                        break;
+                    }
+                    else if (user.Username.Equals(usernameInput))
                     {
                         currentUser = user;
                         correctUser = true;
@@ -36,6 +41,7 @@ namespace RebelAllianceBank.Classes
                     {
                         Console.WriteLine($"God dag {currentUser.Username}. Vänligen skriv ditt lösenord.");
                         string? passwordInput = Console.ReadLine();
+                        int tries = 0;
 
                         if (currentUser.Password.Equals(passwordInput))
                         {
@@ -44,9 +50,22 @@ namespace RebelAllianceBank.Classes
                         }
                         else
                         {
-                            Console.WriteLine("Felaktigt lösenord. Tryck på valfri tangent för att försöka igen.");
-                            Console.ReadKey();
-                            Console.Clear();
+                            tries++;
+                            if (tries == 3)
+                            {
+                                Console.WriteLine("Inlogging misslyckades 3 gånger i rad. Användaren är nu låst." +
+                                    " Kontakta en admin för att låsa upp kontot.");
+                                currentUser.LoginLock = true;
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Felaktigt lösenord. Tryck på valfri tangent för att försöka igen.");
+                                Console.ReadKey();
+                                Console.Clear();
+                            }
                         }
                        
                         if (correctPass)
