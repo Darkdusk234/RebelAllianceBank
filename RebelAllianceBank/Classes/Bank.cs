@@ -1,15 +1,27 @@
 ﻿using RebelAllianceBank.Interfaces;
+using RebelAllianceBank.utils;
 
 namespace RebelAllianceBank.Classes
 {
     public class Bank
     {
-        List<IUser> users = new List<IUser>() { new Admin("FullAccessLogin", "02492512") };
         IUser? currentUser;
-
+        List<IUser> users;
+        List<IBankAccount> accounts;
         public void Run()
         {
-            Login();
+            FileHandler fH = new FileHandler();
+            users = new List<IUser>(fH.ReadUser());
+            accounts = new List<IBankAccount>(fH.ReadAccount());
+            string[] headersUsers = { "PersonalNum", "Forename", "Surname" };
+            string[] headersAccounts = { "Kontonamn", "Saldo" };
+            MarkdownUtils.HighLightChoiceWithMarkdown<IBankAccount>(false, headersAccounts, accounts, accounts => new string[] { accounts.AccountName, accounts.Balance.ToString() });
+            MarkdownUtils.HighLightChoiceWithMarkdown<IUser>(false, headersUsers, users, user => new string[] { user.PersonalNum, user.Forename, user.Surname });
+            List<string> menuOptions = new List<string>{ "Överföring", "Se konton", "Skapa konto", "Avsluta" };
+            string[] headersMenu = { "Menyalternativ" };
+            MarkdownUtils.HighLightChoiceWithMarkdown(false, headersMenu, menuOptions, option => new string[] { option });
+            Console.ReadKey();
+            //Login();
         }
 
         /// <summary>
@@ -30,7 +42,7 @@ namespace RebelAllianceBank.Classes
                 //Checks if inputted username is a valid username. Also checks if that user is locked from logging in.
                 foreach (var user in users)
                 {
-                    if (user.Username.Equals(usernameInput) && user.LoginLock == true)
+                    if (user.Forename.Equals(usernameInput) && user.LoginLock == true)
                     {
                         Console.WriteLine("Användaren är låst. Kontakta admin för att låsa upp användaren. Tryck på" +
                             " valfri tangent för att gå tillbaka.");
@@ -38,7 +50,7 @@ namespace RebelAllianceBank.Classes
                         Console.ReadKey();
                         break;
                     }
-                    else if (user.Username.Equals(usernameInput))
+                    else if (user.Forename.Equals(usernameInput))
                     {
                         currentUser = user;
                         correctUser = true;
@@ -49,7 +61,7 @@ namespace RebelAllianceBank.Classes
                 if (correctUser)
                 {
                     tries = 0;
-                    
+
                     //Loops until correct password is inputted or if wrong password is inputted 3 times.
                     while (true)
                     {
@@ -86,14 +98,14 @@ namespace RebelAllianceBank.Classes
                         }
                     }
                 }
-                else if(!userLocked)
+                else if (!userLocked)
                 {
                     Console.WriteLine("Det finns ingen användare med det användarnamnet. Tryck på valfri " +
                         "tangent för att gå tillbaka och försöka igen.");
                     Console.ReadKey();
                 }
 
-                if(correctPass)
+                if (correctPass)
                 {
                     break;
                 }
@@ -442,7 +454,7 @@ namespace RebelAllianceBank.Classes
                 {
                     //Checks if users username is the inputted username and checks if that user is locked. If not tells
                     // current user that that useraccount isn't locked and waits for a key press to go back to input.
-                    if (user.Username.Equals(usernameInput) && user.LoginLock == false)
+                    if (user.PersonalNum.Equals(usernameInput) && user.LoginLock == false)
                     {
                         Console.WriteLine("Användaren är inte låst. Kolla om du skrivit rätt användarnamn. Tryck på valfri rangent" +
                             " för att gå vidare.");
@@ -454,7 +466,7 @@ namespace RebelAllianceBank.Classes
                     }
                     //Checks if users username is the inputted username and unlocks that useraccount if it is and it is
                     //locked.
-                    else if (user.Username.Equals(usernameInput))
+                    else if (user.PersonalNum.Equals(usernameInput))
                     {
                         user.LoginLock = false;
                         Console.WriteLine("Användaren har låsts upp. Tryck på valfri tangent för att gå vidare.");

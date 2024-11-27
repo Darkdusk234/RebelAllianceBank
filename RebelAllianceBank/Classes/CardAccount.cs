@@ -11,6 +11,8 @@ namespace RebelAllianceBank.Classes
         public string AccountCurrency { get; set; }
         public decimal IntrestRate { get; set; }
         public CardAccount() { }
+        // Dummy constructor
+        public CardAccount(string acc, int aa, string ab, decimal al) {  }
         public CardAccount(string userId, int accountType, string accountName, decimal balance, string accountCurrency, decimal intrestRate = 0)
         {
             UserId = userId;

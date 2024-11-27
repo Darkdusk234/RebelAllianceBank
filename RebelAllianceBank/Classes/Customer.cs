@@ -13,6 +13,8 @@ namespace RebelAllianceBank.Classes
         private List<IBankAccount> BankAccounts = [];
         
         public Customer() { }
+        // dummy constructor
+        public Customer(string password, string username) { }
         public Customer(string pNum, string password, string surname, string forename)
         {
             PersonalNum = pNum;

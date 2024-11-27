@@ -58,7 +58,7 @@ namespace RebelAllianceBank.Classes
         /// <returns>An <see cref="IUser"/> object or null if the row is invalid.</returns>
         public IUser StoredUser(string[] row)
         {
-            switch (row[3])
+            switch (row[5])
             {
                 case "true":
                     return new Admin
@@ -66,18 +66,18 @@ namespace RebelAllianceBank.Classes
                         ID = Convert.ToInt16(row[0]), // unique id
                         PersonalNum = row[1], // 8802252525
                         Password = row[2],
-                        Surname = row[3],
-                        Forename = row[4],
+                        Surname = row[4],
+                        Forename = row[3],
                         //IsAdmin = bool.Parse(row[3]),
                     };
                 case "false":
                     return new Customer
                     {
                         ID = Convert.ToInt16(row[0]),
-                        PersonalNum = row[2],
+                        PersonalNum = row[1],
                         Password = row[2],
-                        Surname = row[3],
-                        Forename = row[4],
+                        Surname = row[4],
+                        Forename = row[3],
                         //IsAdmin = bool.Parse(row[3]),
                     };
                 default:

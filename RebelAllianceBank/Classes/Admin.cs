@@ -11,6 +11,8 @@ namespace RebelAllianceBank.Classes
         public bool LoginLock { get; set; } = false;
         
         public Admin() { }
+        // dummy constructor
+        public Admin(string username, string password) { }
         public Admin(string pNum, string password, string surname, string forename)
         {
             PersonalNum = pNum;
