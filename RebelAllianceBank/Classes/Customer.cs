@@ -6,6 +6,7 @@ namespace RebelAllianceBank.Classes
     {
         public string Username { get; set; }
         public string Password { get; set; }
+        public bool LoginLock { get; set; } = false;
         private List<IBankAccount> BankAccounts = [];
 
         public Customer(string username, string password)
