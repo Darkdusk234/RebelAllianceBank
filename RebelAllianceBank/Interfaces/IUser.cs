@@ -7,5 +7,6 @@
         public string Password { get; set; }
         public string Surname { get; set; }
         public string Forename { get; set; }
+        public bool LoginLock { get; set; }
     }
 }

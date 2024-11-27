@@ -9,7 +9,9 @@ namespace RebelAllianceBank.Classes
         public string Password { get; set; }
         public string Surname { get; set; }
         public string Forename { get; set; }
+        public bool LoginLock { get; set; } = false;
         private List<IBankAccount> BankAccounts = [];
+        
         public Customer() { }
         public Customer(string pNum, string password, string surname, string forename)
         {

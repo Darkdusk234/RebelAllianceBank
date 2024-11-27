@@ -12,18 +12,33 @@ namespace RebelAllianceBank.Classes
             Login();
         }
 
+        /// <summary>
+        /// Method that runs the login system and loops until successful login was done.
+        /// </summary>
         public void Login()
         {
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("Välkommen till Rebel Alliance Bank. Vänligen skriv ditt användarnamn.");
                 string? usernameInput = Console.ReadLine();
                 bool correctUser = false;
                 bool correctPass = false;
+                bool userLocked = false;
+                int tries = 0;
 
+                //Checks if inputted username is a valid username. Also checks if that user is locked from logging in.
                 foreach (var user in users)
                 {
-                    if (user.PersonalNum.Equals(usernameInput))
+                    if (user.Username.Equals(usernameInput) && user.LoginLock == true)
+                    {
+                        Console.WriteLine("Användaren är låst. Kontakta admin för att låsa upp användaren. Tryck på" +
+                            " valfri tangent för att gå tillbaka.");
+                        userLocked = true;
+                        Console.ReadKey();
+                        break;
+                    }
+                    else if (user.Username.Equals(usernameInput))
                     {
                         currentUser = user;
                         correctUser = true;
@@ -33,8 +48,12 @@ namespace RebelAllianceBank.Classes
 
                 if (correctUser)
                 {
+                    tries = 0;
+                    
+                    //Loops until correct password is inputted or if wrong password is inputted 3 times.
                     while (true)
                     {
+                        Console.Clear();
                         Console.WriteLine($"God dag {currentUser.Surname}. Vänligen skriv ditt lösenord.");
                         string? passwordInput = Console.ReadLine();
 
@@ -45,9 +64,20 @@ namespace RebelAllianceBank.Classes
                         }
                         else
                         {
-                            Console.WriteLine("Felaktigt lösenord. Tryck på valfri tangent för att försöka igen.");
-                            Console.ReadKey();
-                            Console.Clear();
+                            tries++;
+                            if (tries == 3)
+                            {
+                                Console.WriteLine("Inlogging misslyckades 3 gånger i rad. Användaren är nu låst." +
+                                    " Kontakta en admin för att låsa upp kontot.");
+                                currentUser.LoginLock = true;
+                                Console.ReadKey();
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Felaktigt lösenord. Tryck på valfri tangent för att försöka igen.");
+                                Console.ReadKey();
+                            }
                         }
 
                         if (correctPass)
@@ -56,12 +86,16 @@ namespace RebelAllianceBank.Classes
                         }
                     }
                 }
-                else
+                else if(!userLocked)
                 {
                     Console.WriteLine("Det finns ingen användare med det användarnamnet. Tryck på valfri " +
                         "tangent för att gå tillbaka och försöka igen.");
                     Console.ReadKey();
-                    Console.Clear();
+                }
+
+                if(correctPass)
+                {
+                    break;
                 }
             }
         }
@@ -383,6 +417,70 @@ namespace RebelAllianceBank.Classes
                 Console.ReadKey();
                 Console.Clear();
             }
+        }
+
+        /// <summary>
+        /// Method that runs function to unlock a locked user.
+        /// </summary>
+        public void UnlockUser()
+        {
+            while (true)
+            {
+                Console.WriteLine("Skriv användarnamnet av den användare du vill låsa upp. Skriv exit om du vill gå" +
+                    " tillbaka till menyn");
+                string usernameInput = Console.ReadLine();
+                bool correctInput = false;
+                bool notLockedUser = false;
+
+                //Checks if user wants to exit from function and breaks loop if exit is inputted.
+                if(usernameInput.ToUpper().Equals("EXIT"))
+                {
+                    break;
+                }
+
+                foreach (var user in users)
+                {
+                    //Checks if users username is the inputted username and checks if that user is locked. If not tells
+                    // current user that that useraccount isn't locked and waits for a key press to go back to input.
+                    if (user.Username.Equals(usernameInput) && user.LoginLock == false)
+                    {
+                        Console.WriteLine("Användaren är inte låst. Kolla om du skrivit rätt användarnamn. Tryck på valfri rangent" +
+                            " för att gå vidare.");
+                        correctInput = true;
+                        notLockedUser = true;
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    }
+                    //Checks if users username is the inputted username and unlocks that useraccount if it is and it is
+                    //locked.
+                    else if (user.Username.Equals(usernameInput))
+                    {
+                        user.LoginLock = false;
+                        Console.WriteLine("Användaren har låsts upp. Tryck på valfri tangent för att gå vidare.");
+                        correctInput = true;
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    }
+                }
+
+                //Continues the loop if a correct username was inputted but that useraccount wasn't locked.
+                if(correctInput && notLockedUser)
+                {
+                    continue;
+                }
+                else if(correctInput)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Det finns ingen användare med det användarnamnet.tryck på " +
+                        "valfri tangent för att gå tillbaka och försök igen.");
+                }
+            }
+
         }
     }
 }
