@@ -11,6 +11,9 @@ namespace RebelAllianceBank.Classes
             Login();
         }
 
+        /// <summary>
+        /// Method that runs the login system and loops until successful login was done.
+        /// </summary>
         public void Login()
         {
             while (true)
@@ -21,6 +24,7 @@ namespace RebelAllianceBank.Classes
                 bool correctPass = false;
                 int tries = 0;
 
+                //Checks if inputted username is a valid username. Also checks if that user is locked from logging in.
                 foreach (var user in users)
                 {
                     if (user.Username.Equals(usernameInput) && user.LoginLock == true)
@@ -39,7 +43,8 @@ namespace RebelAllianceBank.Classes
                 if (correctUser)
                 {
                     tries = 0;
-
+                    
+                    //Loops until correct password is inputted or if wrong password is inputted 3 times.
                     while (true)
                     {
                         Console.WriteLine($"God dag {currentUser.Username}. Vänligen skriv ditt lösenord.");
@@ -410,6 +415,9 @@ namespace RebelAllianceBank.Classes
             }
         }
 
+        /// <summary>
+        /// Method that runs function to unlock a locked user.
+        /// </summary>
         public void UnlockUser()
         {
             while (true)
@@ -420,6 +428,7 @@ namespace RebelAllianceBank.Classes
                 bool correctInput = false;
                 bool notLockedUser = false;
 
+                //Checks if user wants to exit from function and breaks loop if exit is inputted.
                 if(usernameInput.ToUpper().Equals("EXIT"))
                 {
                     break;
@@ -427,6 +436,8 @@ namespace RebelAllianceBank.Classes
 
                 foreach (var user in users)
                 {
+                    //Checks if users username is the inputted username and checks if that user is locked. If not tells
+                    // current user that that useraccount isn't locked and waits for a key press to go back to input.
                     if (user.Username.Equals(usernameInput) && user.LoginLock == false)
                     {
                         Console.WriteLine("Användaren är inte låst. Kolla om du skrivit rätt användarnamn. Tryck på valfri rangent" +
@@ -437,6 +448,8 @@ namespace RebelAllianceBank.Classes
                         Console.Clear();
                         break;
                     }
+                    //Checks if users username is the inputted username and unlocks that useraccount if it is and it is
+                    //locked.
                     else if (user.Username.Equals(usernameInput))
                     {
                         user.LoginLock = false;
@@ -448,6 +461,7 @@ namespace RebelAllianceBank.Classes
                     }
                 }
 
+                //Continues the loop if a correct username was inputted but that useraccount wasn't locked.
                 if(correctInput && notLockedUser)
                 {
                     continue;
