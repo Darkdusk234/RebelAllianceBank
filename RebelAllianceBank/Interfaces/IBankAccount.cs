@@ -2,6 +2,10 @@
 {
     public interface IBankAccount
     {
+        public string AccountName { get; set; }
+        public decimal Balance { get; set; }
+        public string AccountCurrency { get; set; }
+        public decimal IntrestRate { get; set; }
 
     }
 }
