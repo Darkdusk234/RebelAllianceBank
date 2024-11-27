@@ -18,10 +18,12 @@ namespace RebelAllianceBank.Classes
         {
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("Välkommen till Rebel Alliance Bank. Vänligen skriv ditt användarnamn.");
                 string? usernameInput = Console.ReadLine();
                 bool correctUser = false;
                 bool correctPass = false;
+                bool userLocked = false;
                 int tries = 0;
 
                 //Checks if inputted username is a valid username. Also checks if that user is locked from logging in.
@@ -29,7 +31,10 @@ namespace RebelAllianceBank.Classes
                 {
                     if (user.Username.Equals(usernameInput) && user.LoginLock == true)
                     {
-                        Console.WriteLine("Användaren är låst. Kontakta admin för att låsa upp användaren.");
+                        Console.WriteLine("Användaren är låst. Kontakta admin för att låsa upp användaren. Tryck på" +
+                            " valfri tangent för att gå tillbaka.");
+                        userLocked = true;
+                        Console.ReadKey();
                         break;
                     }
                     else if (user.Username.Equals(usernameInput))
@@ -47,6 +52,7 @@ namespace RebelAllianceBank.Classes
                     //Loops until correct password is inputted or if wrong password is inputted 3 times.
                     while (true)
                     {
+                        Console.Clear();
                         Console.WriteLine($"God dag {currentUser.Username}. Vänligen skriv ditt lösenord.");
                         string? passwordInput = Console.ReadLine();
 
@@ -64,14 +70,12 @@ namespace RebelAllianceBank.Classes
                                     " Kontakta en admin för att låsa upp kontot.");
                                 currentUser.LoginLock = true;
                                 Console.ReadKey();
-                                Console.Clear();
                                 break;
                             }
                             else
                             {
                                 Console.WriteLine("Felaktigt lösenord. Tryck på valfri tangent för att försöka igen.");
                                 Console.ReadKey();
-                                Console.Clear();
                             }
                         }
                        
@@ -81,12 +85,11 @@ namespace RebelAllianceBank.Classes
                         }
                     }
                 }
-                else
+                else if(!userLocked)
                 {
                     Console.WriteLine("Det finns ingen användare med det användarnamnet. Tryck på valfri " +
                         "tangent för att gå tillbaka och försöka igen.");
                     Console.ReadKey();
-                    Console.Clear();
                 }
 
                 if(correctPass)
