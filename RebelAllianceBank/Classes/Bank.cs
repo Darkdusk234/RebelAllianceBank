@@ -1,4 +1,5 @@
 ﻿using RebelAllianceBank.Interfaces;
+
 namespace RebelAllianceBank.Classes
 {
     public class Bank
@@ -53,7 +54,7 @@ namespace RebelAllianceBank.Classes
                     while (true)
                     {
                         Console.Clear();
-                        Console.WriteLine($"God dag {currentUser.Username}. Vänligen skriv ditt lösenord.");
+                        Console.WriteLine($"God dag {currentUser.Surname}. Vänligen skriv ditt lösenord.");
                         string? passwordInput = Console.ReadLine();
 
                         if (currentUser.Password.Equals(passwordInput))
@@ -78,7 +79,7 @@ namespace RebelAllianceBank.Classes
                                 Console.ReadKey();
                             }
                         }
-                       
+
                         if (correctPass)
                         {
                             break;
