@@ -451,7 +451,7 @@ namespace RebelAllianceBank.Classes
                 }
                 else
                 {
-                    forename = input;
+                    surname = input;
                     break;
                 }
             }
@@ -460,11 +460,11 @@ namespace RebelAllianceBank.Classes
             {
                 if (userType.Equals("Kund"))
                 {
-                    users.Add(new Customer(username, password));
+                    users.Add(new Customer(username, password, surname, forename));
                 }
                 else if (userType.Equals("Admin"))
                 {
-                    users.Add(new Admin(username, password));
+                    users.Add(new Admin(username, password, surname, forename));
                 }
 
                 Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
