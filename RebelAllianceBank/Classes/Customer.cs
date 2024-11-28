@@ -28,7 +28,7 @@ namespace RebelAllianceBank.Classes
 
             if (BankAccounts.Count == 0)
             {
-                Console.WriteLine("Du har inga konton att visa");
+                Console.WriteLine($"{TextColor.Red}Du har inga konton att visa{TextColor.NORMAL}");
                 return;
             }
 
@@ -106,6 +106,11 @@ namespace RebelAllianceBank.Classes
 
         public void Transfer()
         {
+            if (BankAccounts.Count < 2)
+            {
+                Console.WriteLine($"{TextColor.Red}Du har inga tillräkligt många konton att överföra mellan{TextColor.NORMAL}");
+                return;
+            }
             List<string> bodyKeys = [];
             for (int i = 0; i < BankAccounts.Count; i++)
             {
