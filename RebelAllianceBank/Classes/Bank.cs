@@ -10,16 +10,32 @@ namespace RebelAllianceBank.Classes
         List<IBankAccount> accounts;
         public void Run()
         {
+            IUser currentUser = new Customer
+            {
+                PersonalNum = "9201010101",
+                Forename = "Test",
+                Surname = "User"
+            };
             FileHandler fH = new FileHandler();
             users = new List<IUser>(fH.ReadUser());
             accounts = new List<IBankAccount>(fH.ReadAccount());
             string[] headersUsers = { "PersonalNum", "Forename", "Surname" };
             string[] headersAccounts = { "Kontonamn", "Saldo" };
-            MarkdownUtils.HighLightChoiceWithMarkdown<IBankAccount>(false, headersAccounts, accounts, accounts => new string[] { accounts.AccountName, accounts.Balance.ToString() });
-            MarkdownUtils.HighLightChoiceWithMarkdown<IUser>(false, headersUsers, users, user => new string[] { user.PersonalNum, user.Forename, user.Surname });
-            List<string> menuOptions = new List<string>{ "Överföring", "Se konton", "Skapa konto", "Avsluta" };
+            //MarkdownUtils.HighLightChoiceWithMarkdown<IBankAccount>(false, headersAccounts, accounts, accounts => new string[] { accounts.AccountName, accounts.Balance.ToString() });
+            MarkdownUtils.HighLightChoiceWithMarkdown<IUser>(
+                false,
+                headersUsers,
+                MarkdownUtils.FilterCustomerAndCurrentUser(users, currentUser),
+                user => new string[]
+                {
+                    user.PersonalNum,
+                    user.Forename,
+                    user.Surname
+                }
+                );
+            List<string> menuOptions = new List<string> { "Överföring", "Se konton", "Skapa konto", "Avsluta" };
             string[] headersMenu = { "Menyalternativ" };
-            MarkdownUtils.HighLightChoiceWithMarkdown(false, headersMenu, menuOptions, option => new string[] { option });
+            //MarkdownUtils.HighLightChoiceWithMarkdown(false, headersMenu, menuOptions, option => new string[] { option });
             Console.ReadKey();
             //Login();
         }
@@ -445,7 +461,7 @@ namespace RebelAllianceBank.Classes
                 bool notLockedUser = false;
 
                 //Checks if user wants to exit from function and breaks loop if exit is inputted.
-                if(usernameInput.ToUpper().Equals("EXIT"))
+                if (usernameInput.ToUpper().Equals("EXIT"))
                 {
                     break;
                 }
@@ -478,11 +494,11 @@ namespace RebelAllianceBank.Classes
                 }
 
                 //Continues the loop if a correct username was inputted but that useraccount wasn't locked.
-                if(correctInput && notLockedUser)
+                if (correctInput && notLockedUser)
                 {
                     continue;
                 }
-                else if(correctInput)
+                else if (correctInput)
                 {
                     break;
                 }
