@@ -92,5 +92,14 @@ namespace RebelAllianceBank.Classes
                 }
             } while (createAccount == false);
         }
+        public void TransferUserToUser(string currentUser, List<IUser> users)
+        {
+            Console.WriteLine("Vilken användare vill du föra över till?");
+            string secondUser = Console.ReadLine();
+            foreach (var user in users)
+            {
+                if (user.PersonalNum)
+            }
+        }
     }
 }
