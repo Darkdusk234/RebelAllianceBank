@@ -6,7 +6,7 @@ namespace RebelAllianceBank.Classes
     {
         public string Username { get; set; }
         public string Password { get; set; }
-        private List<IBankAccount> BankAccounts = [new CardAccount("kreditkort", 500m, "SEK", 13.95m), new ISK("investeringskonto", 4000m, "SEK", 2.94m), new SavingsAccount("sparkonto", 10000m, "SEK", 4m)]; 
+        private List<IBankAccount> BankAccounts = []; 
         
         public Customer(string username, string password)
         {
@@ -98,7 +98,7 @@ namespace RebelAllianceBank.Classes
             // Checks if customer has an account.
             if (BankAccounts.Count > 0)
             {
-                Console.WriteLine("Lån\n");
+                Console.WriteLine("         Lån\n");
 
                 // Checks how much the customer want to loan.                
                 Console.Write("Hur stort lån vill du ansöka om: ");
@@ -118,7 +118,7 @@ namespace RebelAllianceBank.Classes
                 }
                 else
                 {
-                    Console.WriteLine("Vilket konto skulle du vilja sätta in pengarna på.");
+                    Console.WriteLine("\nVilket konto skulle du vilja sätta in pengarna på.");
                     int counter = 1;
                     foreach (var item in BankAccounts)
                     {
@@ -126,40 +126,44 @@ namespace RebelAllianceBank.Classes
                         counter++;
                     }
                     Console.Write("\nKontoval: ");
-                    Console.ReadKey();
 
                     int choosenAccount = 0;
-                    while (int.TryParse(Console.ReadLine(), out choosenAccount) || choosenAccount < 1 || choosenAccount > BankAccounts.Count)
+                    while (!int.TryParse(Console.ReadLine(), out choosenAccount) || choosenAccount < 0 || choosenAccount > BankAccounts.Count)
                     {
                         Console.WriteLine("Fel inmatning, försök igen");
                     }
-
-                    Console.WriteLine($"Din lånansökan på {askedLoan} har accepterats.\n" +
-                        $"Räntan för detta lån ligger på {RentOnLoan(askedLoan)}.");
                     
-                    // Checks if user want to accept the loan with the terms.
-                    Console.Write("\nAccepterar du villkoren för detta lån? (J)a/(N)ej");
-                    Console.Write("Svar: ");
-                    Console.ReadKey();
+                    Console.WriteLine($"Din lånansökan på {askedLoan} {BankAccounts[choosenAccount - 1].AccountCurrency} har accepterats.\n" +
+                        $"Räntan för detta lån ligger på {BankAccounts[choosenAccount-1].IntrestRate:F2}%\n" +
+                        $"Månadsbeloppet blir {RentOnLoan(askedLoan, choosenAccount):F2} {BankAccounts[choosenAccount - 1].AccountCurrency}/månaden.");
                     
-                    string terms = Console.ReadLine().ToLower();
-
-                    while (terms != "y" && terms != "n")
+                    // Checks if user want to accept the loan with the terms (YES/NO).
+                    Console.Write("\nAccepterar du villkoren för detta lån? (J)a / (N)ej");
+                    string terms;
+                    bool okTerms = false;
+                    
+                    while (!okTerms)
                     {
-                        Console.WriteLine("Fel inmatning, försök igen");
-                    }
-
-                    if (terms == "n")
-                    {
-                        Console.WriteLine("Lånet har avbrutits...");
-                        Console.ReadKey();
-                        return;
-                    }
-                    else if (terms == "j")
-                    {
-                        BankAccounts[choosenAccount -1].Balance += askedLoan;
-                        Console.WriteLine($"{askedLoan} har satts in på kontot {BankAccounts[choosenAccount -1].AccountName}");
-                        Console.ReadKey();
+                        Console.Write("\nSvar: ");
+                        terms = Console.ReadLine().ToLower(); ;
+                        if (terms == "j")
+                        {
+                            BankAccounts[choosenAccount -1].Balance += askedLoan;
+                            Console.WriteLine($"{askedLoan} {BankAccounts[choosenAccount-1].AccountCurrency} har satts in på följande konto: {BankAccounts[choosenAccount -1].AccountName}");
+                            Console.ReadKey();
+                            okTerms = true;
+                        }
+                        else if (terms == "n")
+                        {
+                            Console.WriteLine("Lånet har avbrutits...");
+                            Console.ReadKey();
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Fel inmatning, försök igen");
+                            okTerms = false;
+                        }
                     }
                 }
             }
@@ -184,7 +188,7 @@ namespace RebelAllianceBank.Classes
                 currentBalance += item.Balance;
             }
 
-            if (askedLoan > currentBalance * 5)
+            if (askedLoan > (currentBalance * 5))
             {
                 return false;
             }
@@ -212,11 +216,14 @@ namespace RebelAllianceBank.Classes
         /// </summary>
         /// <param name="loanAmmount"></param>
         /// <returns></returns>
-        public decimal RentOnLoan(decimal loanAmmount)
+        public decimal RentOnLoan(decimal loanAmmount, int index)
         {
             foreach (var item in BankAccounts)
             {
-               loanAmmount /= item.IntrestRate;
+                if (item == BankAccounts[index-1])
+                {
+                    loanAmmount = loanAmmount / 100 * item.IntrestRate;
+                }
             }
             return loanAmmount;
         }
