@@ -98,7 +98,7 @@ namespace RebelAllianceBank.Classes
             } while (createAccount == false);
         }
 
-        public void TransferManyBetwinAcount()
+        public void TransferManyBetweenAccount()
         {
             List<string> bodyKeys = [];
             for (int i = 0; i < BankAccounts.Count; i++)
@@ -106,12 +106,12 @@ namespace RebelAllianceBank.Classes
                 var BankAccount = BankAccounts[i];
                 bodyKeys.Add((i + 1).ToString());
                 bodyKeys.Add(BankAccount.AccountName);
-                bodyKeys.Add(BankAccount.Balance.ToString("N2"));
+                bodyKeys.Add(BankAccount.Balance.ToString("C"));
             }
 
             var menu = new SelectOneOrMore(["id", "Konto Namn", "Saldo"], bodyKeys);
 
-            menu.Show();
+           var selectedAccounts = menu.Show(2);
 
 
             // Markdown.Heder(message: "Wowo", headerLevel: HeaderLevel.Header2);
