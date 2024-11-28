@@ -303,122 +303,149 @@ namespace RebelAllianceBank.Classes
         }
 
         //To Be Fixed -DO NOT USE
-        //public void CreateUser()
-        //{
-        //    string userType = "";
-        //    string username = "";
-        //    string password = "";
-        //    bool methodRun = true;
-        //    while (methodRun)
-        //    {
-        //        Console.WriteLine("Vilken typ av användare vill du skapa." +
-        //            "\n1. Kund" +
-        //            "\n2. Admin" +
-        //            "\n3. Gå tillbak till menyn.");
-        //        string input = Console.ReadLine();
-        //        bool validInput = false;
+        public void CreateUser()
+        {
+            string userType = "";
+            string username = "";
+            string password = "";
+            string forename = "";
+            bool methodRun = true;
+            while (methodRun)
+            {
+                Console.WriteLine("Vilken typ av användare vill du skapa." +
+                    "\n1. Kund" +
+                    "\n2. Admin" +
+                    "\n3. Gå tillbak till menyn.");
+                string input = Console.ReadLine();
+                bool validInput = false;
 
-        //        switch (input)
-        //        {
-        //            case "1":
-        //                userType = "Kund";
-        //                validInput = true;
-        //                break;
-        //            case "2":
-        //                userType = "Admin";
-        //                validInput = true;
-        //                break;
-        //            case "3":
-        //                methodRun = false;
-        //                break;
-        //            default:
-        //                break;
-        //        }
+                switch (input)
+                {
+                    case "1":
+                        userType = "Kund";
+                        validInput = true;
+                        break;
+                    case "2":
+                        userType = "Admin";
+                        validInput = true;
+                        break;
+                    case "3":
+                        methodRun = false;
+                        break;
+                    default:
+                        break;
+                }
 
-        //        if (!methodRun)
-        //        {
-        //            break;
-        //        }
-        //        else if (validInput)
-        //        {
-        //            break;
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Det är inte et giltligt val. Skriv siffran av det val du vill välja." +
-        //                " Tryck på valfri tangent tangent för att gå tillbaka till valen.");
-        //            Console.ReadKey();
-        //            Console.Clear();
-        //        }
-        //    }
+                if (!methodRun)
+                {
+                    break;
+                }
+                else if (validInput)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Det är inte et giltligt val. Skriv siffran av det val du vill välja." +
+                        " Tryck på valfri tangent tangent för att gå tillbaka till valen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+            }
 
-        //    while (methodRun)
-        //    {
-        //        Console.WriteLine("Skriv användarnamnet på användaren som ska skapas." +
-        //            " Användarnamnet måste vara minst 5 symboler. Skriv exit om du vill gå tillbaka till menyn.");
-        //        string input = Console.ReadLine();
+            //Needs to update to personal nummer. Not sure how to solve it. Talk with someone else about solutions
+            while (methodRun)
+            {
+                Console.WriteLine("Skriv användarnamnet på användaren som ska skapas." +
+                    " Användarnamnet måste vara minst 5 symboler. Skriv exit om du vill gå tillbaka till menyn.");
+                string input = Console.ReadLine();
 
-        //        if (input.ToUpper().Equals("EXIT"))
-        //        {
-        //            methodRun = false;
-        //            break;
-        //        }
-        //        else if (input.Length < 5)
-        //        {
-        //            Console.WriteLine("Användarnamnet måste vara 5 symboler eller längre. Tryck på valfri" +
-        //                " tangent för att gå tillbaka och försök igen.");
-        //            Console.ReadKey();
-        //            Console.Clear();
-        //            continue;
-        //        }
-        //        else
-        //        {
-        //            username = input;
-        //            break;
-        //        }
-        //    }
+                if (input.ToUpper().Equals("EXIT"))
+                {
+                    methodRun = false;
+                    break;
+                }
+                else if (input.Length < 5)
+                {
+                    Console.WriteLine("Användarnamnet måste vara 5 symboler eller längre. Tryck på valfri" +
+                        " tangent för att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else
+                {
+                    username = input;
+                    break;
+                }
+            }
 
-        //    while (methodRun)
-        //    {
-        //        Console.WriteLine("Skriv lösenordet för användaren som ska skapas. Lösenordet måste vara minst 5 symboler.");
-        //        string input = Console.ReadLine();
+            while (methodRun)
+            {
+                Console.WriteLine("Skriv lösenordet för användaren som ska skapas. Lösenordet måste vara minst 5 symboler.");
+                string input = Console.ReadLine();
 
-        //        if (input.ToUpper().Equals("EXIT"))
-        //        {
-        //            methodRun = false;
-        //            break;
-        //        }
-        //        else if (input.Length < 5)
-        //        {
-        //            Console.WriteLine("Lösenordet måste vara 5 symboler eller längre. Tryck på valfri" +
-        //                " tangent för att gå tillbaka och försök igen.");
-        //            Console.ReadKey();
-        //            Console.Clear();
-        //            continue;
-        //        }
-        //        else
-        //        {
-        //            password = input;
-        //            break;
-        //        }
-        //    }
+                if (input.ToUpper().Equals("EXIT"))
+                {
+                    methodRun = false;
+                    break;
+                }
+                else if (input.Length < 5)
+                {
+                    Console.WriteLine("Lösenordet måste vara 5 symboler eller längre. Tryck på valfri" +
+                        " tangent för att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else
+                {
+                    password = input;
+                    break;
+                }
+            }
 
-        //    if (methodRun)
-        //    {
-        //        if (userType.Equals("Kund"))
-        //        {
-        //            users.Add(new Customer(username, password));
-        //        }
-        //        else if (userType.Equals("Admin"))
-        //        {
-        //            users.Add(new Admin(username, password));
-        //        }
+            while (methodRun)
+            {
+                Console.WriteLine("Skriv Förnamnet för användaren som ska skapas.");
+                string input = Console.ReadLine();
 
-        //        Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
-        //        Console.ReadKey();
-        //        Console.Clear();
-        //    }
-        //}
+                if (input.ToUpper().Equals("EXIT"))
+                {
+                    methodRun = false;
+                    break;
+                }
+                else if(input.Length <= 1)
+                {
+                    Console.WriteLine("Förnamnet måste vara minst 2 bokstäver långt. Tryck på valfri tangent för att" +
+                        " gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else
+                {
+                    forename = input;
+                    break;
+                }
+            }
+
+            if (methodRun)
+            {
+                if (userType.Equals("Kund"))
+                {
+                    users.Add(new Customer(username, password));
+                }
+                else if (userType.Equals("Admin"))
+                {
+                    users.Add(new Admin(username, password));
+                }
+
+                Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
 
         /// <summary>
         /// Method that runs function to unlock a locked user.
