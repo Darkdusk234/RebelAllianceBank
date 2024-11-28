@@ -58,7 +58,7 @@ namespace RebelAllianceBank.Classes
         /// <returns>An <see cref="IUser"/> object or null if the row is invalid.</returns>
         public IUser StoredUser(string[] row)
         {
-            switch (row[3])
+            switch (row[5])
             {
                 case "true":
                     return new Admin
@@ -71,15 +71,18 @@ namespace RebelAllianceBank.Classes
                         //IsAdmin = bool.Parse(row[3]),
                     };
                 case "false":
-                    return new Customer
+                    var customer = new Customer
                     {
                         ID = Convert.ToInt16(row[0]),
-                        PersonalNum = row[2],
+                        PersonalNum = row[1],
                         Password = row[2],
                         Surname = row[3],
                         Forename = row[4],
                         //IsAdmin = bool.Parse(row[3]),
                     };
+                    List<IBankAccount> accounts = ReadAccount();
+                    customer.BankAccounts.AddRange(accounts.Where(account => account.UserId.ToString() == customer.PersonalNum.ToString()));
+                    return customer;
                 default:
                     return null;
             }
@@ -117,7 +120,7 @@ namespace RebelAllianceBank.Classes
         /// <returns>An object of <see cref="IBankAccount"/> or null if row is invalid.</returns>
         public IBankAccount StoredBankAccount(string[] row)
         {
-            switch (row[0])
+            switch (row[2])
             {
                 case "0":
                     return new CardAccount

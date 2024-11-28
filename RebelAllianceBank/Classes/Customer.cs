@@ -1,4 +1,5 @@
-﻿using RebelAllianceBank.Interfaces;
+﻿using System.Linq;
+using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.utils;
 namespace RebelAllianceBank.Classes
 {
@@ -10,7 +11,7 @@ namespace RebelAllianceBank.Classes
         public string Surname { get; set; }
         public string Forename { get; set; }
         public bool LoginLock { get; set; } = false;
-        private List<IBankAccount> BankAccounts = [];
+        public List<IBankAccount> BankAccounts { get; set; } = new List<IBankAccount>();
         
         public Customer() { }
         public Customer(string pNum, string password, string surname, string forename)
@@ -71,42 +72,79 @@ namespace RebelAllianceBank.Classes
                     accountCurrency = Console.ReadLine().ToUpper();
                 }
 
-                switch (userChoice)
-                {
-                    case 1:
-                        BankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
-                        createAccount = true;
-                        Console.ReadKey();
-                        break;
-                    case 2:
-                        BankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
-                        createAccount = true;
-                        Console.ReadKey();
-                        break;
-                    case 3:
-                        BankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
-                        createAccount = true;
-                        break;
-                    case 4:
-                        createAccount = true;
-                        break;
-                    default:
-                        Console.WriteLine("Fel inmatning, inget konto har skapats.");
-                        Console.ReadKey();
-                        Console.Clear();
-                        createAccount = false;
-                        break;
-                }
+                //switch (userChoice)
+                //{
+                //    case 1:
+                //        BankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
+                //        createAccount = true;
+                //        Console.ReadKey();
+                //        break;
+                //    case 2:
+                //        BankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
+                //        createAccount = true;
+                //        Console.ReadKey();
+                //        break;
+                //    case 3:
+                //        BankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
+                //        createAccount = true;
+                //        break;
+                //    case 4:
+                //        createAccount = true;
+                //        break;
+                //    default:
+                //        Console.WriteLine("Fel inmatning, inget konto har skapats.");
+                //        Console.ReadKey();
+                //        Console.Clear();
+                //        createAccount = false;
+                //        break;
+                //}
             } while (createAccount == false);
         }
         public void TransferUserToUser(string currentUser, List<IUser> users)
         {
-            Console.WriteLine("Vilken användare vill du föra över till?");
-            string secondUser = Console.ReadLine();
-            foreach (var user in users)
+            bool userFound = true;
+            string secondUser = null;
+            string userChoice;
+            while (userFound)
             {
-                if (user.PersonalNum)
+                Console.WriteLine("Vilken användare vill du föra över till?");
+                secondUser = Console.ReadLine();
+                foreach (var user in users)
+                {
+                    if (user.PersonalNum == secondUser)
+                    {
+                        userFound = false;
+                    }
+                }
+                if (userFound == true)
+                {
+                    Console.WriteLine("Användaren kunde inte hittas! Försök igen.");
+                }
             }
+            while (userFound == false)
+            {
+                Console.WriteLine("Till vilket konto vill du föra över till? Skriv in namnet.");
+                foreach (var account in BankAccounts)
+                {
+                    if (secondUser.Equals(account.AccountName))
+                    {
+                        Console.WriteLine($"{account.AccountName}");
+                    }
+                }
+                userChoice = Console.ReadLine();
+                foreach( var account in BankAccounts)
+                {
+                    if (userChoice == account.AccountName)
+                    {
+                        userFound = true;
+                    }
+                }
+                if (userFound == false)
+                {
+                    Console.WriteLine("Du valde inte ett konto.");
+                }
+            }
+
         }
     }
 }

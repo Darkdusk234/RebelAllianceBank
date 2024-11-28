@@ -4,11 +4,12 @@ namespace RebelAllianceBank.Classes
 {
     public class Bank
     {
-        List<IUser> users = new List<IUser>() { new Admin("FullAccessLogin", "02492512") };
         IUser? currentUser;
 
         public void Run()
         {
+            FileHandler fh = new FileHandler();
+            List<IUser> users = new List<IUser>(fh.ReadUser());
             Login();
         }
 
@@ -27,29 +28,29 @@ namespace RebelAllianceBank.Classes
                 bool userLocked = false;
                 int tries = 0;
 
-                //Checks if inputted username is a valid username. Also checks if that user is locked from logging in.
-                foreach (var user in users)
-                {
-                    if (user.Username.Equals(usernameInput) && user.LoginLock == true)
-                    {
-                        Console.WriteLine("Användaren är låst. Kontakta admin för att låsa upp användaren. Tryck på" +
-                            " valfri tangent för att gå tillbaka.");
-                        userLocked = true;
-                        Console.ReadKey();
-                        break;
-                    }
-                    else if (user.Username.Equals(usernameInput))
-                    {
-                        currentUser = user;
-                        correctUser = true;
-                        break;
-                    }
-                }
+                ////Checks if inputted username is a valid username. Also checks if that user is locked from logging in.
+                //foreach (var user in users)
+                //{
+                //    if (user.Username.Equals(usernameInput) && user.LoginLock == true)
+                //    {
+                //        Console.WriteLine("Användaren är låst. Kontakta admin för att låsa upp användaren. Tryck på" +
+                //            " valfri tangent för att gå tillbaka.");
+                //        userLocked = true;
+                //        Console.ReadKey();
+                //        break;
+                //    }
+                //    else if (user.Username.Equals(usernameInput))
+                //    {
+                //        currentUser = user;
+                //        correctUser = true;
+                //        break;
+                //    }
+                //}
 
                 if (correctUser)
                 {
                     tries = 0;
-                    
+
                     //Loops until correct password is inputted or if wrong password is inputted 3 times.
                     while (true)
                     {
@@ -86,14 +87,14 @@ namespace RebelAllianceBank.Classes
                         }
                     }
                 }
-                else if(!userLocked)
+                else if (!userLocked)
                 {
                     Console.WriteLine("Det finns ingen användare med det användarnamnet. Tryck på valfri " +
                         "tangent för att gå tillbaka och försöka igen.");
                     Console.ReadKey();
                 }
 
-                if(correctPass)
+                if (correctPass)
                 {
                     break;
                 }
@@ -402,21 +403,21 @@ namespace RebelAllianceBank.Classes
                 }
             }
 
-            if (methodRun)
-            {
-                if (userType.Equals("Kund"))
-                {
-                    users.Add(new Customer(username, password));
-                }
-                else if (userType.Equals("Admin"))
-                {
-                    users.Add(new Admin(username, password));
-                }
+            //if (methodRun)
+            //{
+            //    if (userType.Equals("Kund"))
+            //    {
+            //        users.Add(new Customer(username, password));
+            //    }
+            //    else if (userType.Equals("Admin"))
+            //    {
+            //        users.Add(new Admin(username, password));
+            //    }
 
-                Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
-                Console.ReadKey();
-                Console.Clear();
-            }
+            //    Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
+            //    Console.ReadKey();
+            //    Console.Clear();
+            //}
         }
 
         /// <summary>
@@ -433,44 +434,44 @@ namespace RebelAllianceBank.Classes
                 bool notLockedUser = false;
 
                 //Checks if user wants to exit from function and breaks loop if exit is inputted.
-                if(usernameInput.ToUpper().Equals("EXIT"))
+                if (usernameInput.ToUpper().Equals("EXIT"))
                 {
                     break;
                 }
 
-                foreach (var user in users)
-                {
-                    //Checks if users username is the inputted username and checks if that user is locked. If not tells
-                    // current user that that useraccount isn't locked and waits for a key press to go back to input.
-                    if (user.Username.Equals(usernameInput) && user.LoginLock == false)
-                    {
-                        Console.WriteLine("Användaren är inte låst. Kolla om du skrivit rätt användarnamn. Tryck på valfri rangent" +
-                            " för att gå vidare.");
-                        correctInput = true;
-                        notLockedUser = true;
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    }
-                    //Checks if users username is the inputted username and unlocks that useraccount if it is and it is
-                    //locked.
-                    else if (user.Username.Equals(usernameInput))
-                    {
-                        user.LoginLock = false;
-                        Console.WriteLine("Användaren har låsts upp. Tryck på valfri tangent för att gå vidare.");
-                        correctInput = true;
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    }
-                }
+                //foreach (var user in users)
+                //{
+                //    //Checks if users username is the inputted username and checks if that user is locked. If not tells
+                //    // current user that that useraccount isn't locked and waits for a key press to go back to input.
+                //    if (user.Username.Equals(usernameInput) && user.LoginLock == false)
+                //    {
+                //        Console.WriteLine("Användaren är inte låst. Kolla om du skrivit rätt användarnamn. Tryck på valfri rangent" +
+                //            " för att gå vidare.");
+                //        correctInput = true;
+                //        notLockedUser = true;
+                //        Console.ReadKey();
+                //        Console.Clear();
+                //        break;
+                //    }
+                //    //Checks if users username is the inputted username and unlocks that useraccount if it is and it is
+                //    //locked.
+                //    else if (user.Username.Equals(usernameInput))
+                //    {
+                //        user.LoginLock = false;
+                //        Console.WriteLine("Användaren har låsts upp. Tryck på valfri tangent för att gå vidare.");
+                //        correctInput = true;
+                //        Console.ReadKey();
+                //        Console.Clear();
+                //        break;
+                //    }
+                //}
 
                 //Continues the loop if a correct username was inputted but that useraccount wasn't locked.
-                if(correctInput && notLockedUser)
+                if (correctInput && notLockedUser)
                 {
                     continue;
                 }
-                else if(correctInput)
+                else if (correctInput)
                 {
                     break;
                 }
