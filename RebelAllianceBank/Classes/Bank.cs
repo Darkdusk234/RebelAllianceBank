@@ -10,7 +10,7 @@ namespace RebelAllianceBank.Classes
         {
             // Login();
             Customer customer = new("Josef", "1234");
-            customer.TransferManyBetweenAccount();
+            customer.Transfer();
         }
 
         public void Login()
