@@ -81,7 +81,7 @@ namespace RebelAllianceBank.Classes
                         //IsAdmin = bool.Parse(row[3]),
                     };
                     List<IBankAccount> accounts = ReadAccount();
-                    customer.BankAccounts.AddRange(accounts.Where(account => account.UserId.ToString() == customer.PersonalNum.ToString()));
+                    customer.BankAccounts.AddRange(accounts.Where(account => account.UserId == customer.PersonalNum));
                     return customer;
                 default:
                     return null;

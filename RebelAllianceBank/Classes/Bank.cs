@@ -5,11 +5,14 @@ namespace RebelAllianceBank.Classes
     public class Bank
     {
         IUser? currentUser;
-
+        List<IUser> users;
         public void Run()
         {
             FileHandler fh = new FileHandler();
-            List<IUser> users = new List<IUser>(fh.ReadUser());
+            users = new List<IUser>(fh.ReadUser());
+            Customer aas = new Customer();
+            currentUser = users[0];
+            aas.TransferUserToUser(currentUser.PersonalNum, users);
             Login();
         }
 
