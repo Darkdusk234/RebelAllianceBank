@@ -1,13 +1,12 @@
 
+using RebelAllianceBank.Enums;
+
 namespace RebelAllianceBank.utils;
 
 public class SelectOneOrMore
 {
     private List<string> _ColumnHeders;
     private List<string> _Body;
-    private bool _isSelected = false;
-    private List<int> _SelectedOption = [];
-    private int _currentSelected = 0;
 
     public SelectOneOrMore(string[] columnHeders, List<string> body)
     {
@@ -33,9 +32,12 @@ public class SelectOneOrMore
         _Body = tempBody;
     }
 
-    public int[] Show(int maxAllowedSelected)
+    public int[] Show(int maxAllowedSelected = 1)
     {
-        Console.Clear();
+        bool _isSelected = false;
+        List<int> _SelectedOption = [];
+        int _currentSelected = 0;
+
         (int Left, int Top) = Console.GetCursorPosition();
 
 
@@ -52,7 +54,7 @@ public class SelectOneOrMore
 
 
             Console.SetCursorPosition(Left, Top);
-            Markdown.Heder(Enums.HeaderLevel.Header2, "Tryck på upp eller ner för att navigera. Välj med mellanslag och bekrefta med enter");
+            Markdown.Heder(HeaderLevel.Header2, "Tryck på upp eller ner för att navigera. Välj med mellanslag och bekräfta med enter");
             Markdown.Table(_ColumnHeders.ToArray(), _Body);
             Console.WriteLine($"\nDu är på rad {TextColor.Yellow}{_currentSelected + 1}{TextColor.NORMAL}");
 
@@ -67,7 +69,7 @@ public class SelectOneOrMore
                     _currentSelected = _currentSelected < rowCount ? _currentSelected + 1 : _currentSelected = 0;
                     break;
                 case ConsoleKey.Spacebar:
-                    toggleInput(_SelectedOption, _currentSelected);
+                    toggleInput(_SelectedOption, _currentSelected, maxAllowedSelected);
                     break;
                 case ConsoleKey.Enter:
                     _isSelected = true;
@@ -79,15 +81,17 @@ public class SelectOneOrMore
         return _SelectedOption.ToArray();
     }
 
-    private List<int> toggleInput(List<int> AllSelected, int selectedIndex)
+    private List<int> toggleInput(List<int> AllSelected, int selectedIndex, int maxAllowedSelected)
     {
         int index = AllSelected.FindIndex(selected => selected == selectedIndex);
+
 
         if (index != -1)
         {
             AllSelected.RemoveAt(index);
         }
-        else
+
+        if (AllSelected.Count < maxAllowedSelected && index == -1)
         {
             AllSelected.Add(selectedIndex);
         }
