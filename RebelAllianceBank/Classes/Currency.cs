@@ -26,6 +26,10 @@ namespace RebelAllianceBank.Classes
                      }
               }
 
+              public Currency()
+              {
+              }
+
               public Currency(string name, string country)
               {
                      Name = name;
