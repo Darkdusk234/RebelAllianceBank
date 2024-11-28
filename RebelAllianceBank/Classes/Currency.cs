@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System.Globalization;
 
 namespace RebelAllianceBank.Classes
@@ -6,8 +7,8 @@ namespace RebelAllianceBank.Classes
        {
               private decimal _exchangeRateToEUR;
               
+              public string Name { get; set; }
               public string Country { get; set; }
-              public string CultureCodeStrings { get; set; }
 
               public decimal ExchangeRateToEUR
               {
@@ -25,13 +26,10 @@ namespace RebelAllianceBank.Classes
                      }
               }
 
-              public Currency()
+              public Currency(string name, string country)
               {
-              }
-
-              public Currency(string country)
-              {
-                     Country = country; 
+                     Name = name;
+                     Country = country;
               }
 
        }
