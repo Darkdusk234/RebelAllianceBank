@@ -4,7 +4,7 @@ namespace RebelAllianceBank.Classes
 {
     public class Bank
     {
-        List<IUser> users = new List<IUser>() { new Admin("FullAccessLogin", "02492512") };
+        List<IUser> users = new List<IUser>();
         IUser? currentUser;
 
         public void Run()

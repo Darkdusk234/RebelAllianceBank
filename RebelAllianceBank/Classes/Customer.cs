@@ -14,9 +14,6 @@ namespace RebelAllianceBank.Classes
         
         public Customer() { }
         public Customer(string pNum, string password, string surname, string forename)
-        private List<IBankAccount> BankAccounts = []; 
-        
-        public Customer(string username, string password)
         {
             PersonalNum = pNum;
             Password = password;
