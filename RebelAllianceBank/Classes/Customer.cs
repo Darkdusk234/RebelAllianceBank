@@ -12,7 +12,7 @@ namespace RebelAllianceBank.Classes
         public string Forename { get; set; }
         public bool LoginLock { get; set; } = false;
         private List<IBankAccount> BankAccounts = [];
-        
+
         public Customer() { }
         public Customer(string pNum, string password, string surname, string forename)
         {
@@ -75,17 +75,20 @@ namespace RebelAllianceBank.Classes
                 switch (userChoice)
                 {
                     case 1:
-                        BankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
+                        // Check if it is corect
+                        BankAccounts.Add(new CardAccount("001", 1, accountName, 0, accountCurrency, 0.0m));
                         createAccount = true;
                         Console.ReadKey();
                         break;
                     case 2:
-                        BankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
+                        // Check if it is corect
+                        BankAccounts.Add(new ISK("001", 1, accountName, 0, accountCurrency, 0.0m));
                         createAccount = true;
                         Console.ReadKey();
                         break;
                     case 3:
-                        BankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
+                        // Check if it is corect
+                        BankAccounts.Add(new SavingsAccount("001", 1, accountName, 0, accountCurrency, 0.0m));
                         createAccount = true;
                         break;
                     case 4:

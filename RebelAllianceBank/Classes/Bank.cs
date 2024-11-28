@@ -10,7 +10,7 @@ namespace RebelAllianceBank.Classes
         public void Run()
         {
             // Login();
-            Customer customer = new("Josef", "1234");
+            Customer customer = new Customer("015", "1234", "Josef", "Forkm");
             customer.Transfer();
         }
 
@@ -51,7 +51,7 @@ namespace RebelAllianceBank.Classes
                 if (correctUser)
                 {
                     tries = 0;
-                    
+
                     //Loops until correct password is inputted or if wrong password is inputted 3 times.
                     while (true)
                     {
@@ -88,14 +88,14 @@ namespace RebelAllianceBank.Classes
                         }
                     }
                 }
-                else if(!userLocked)
+                else if (!userLocked)
                 {
                     Console.WriteLine("Det finns ingen användare med det användarnamnet. Tryck på valfri " +
                         "tangent för att gå tillbaka och försöka igen.");
                     Console.ReadKey();
                 }
 
-                if(correctPass)
+                if (correctPass)
                 {
                     break;
                 }
@@ -436,7 +436,7 @@ namespace RebelAllianceBank.Classes
                 bool notLockedUser = false;
 
                 //Checks if user wants to exit from function and breaks loop if exit is inputted.
-                if(usernameInput.ToUpper().Equals("EXIT"))
+                if (usernameInput.ToUpper().Equals("EXIT"))
                 {
                     break;
                 }
@@ -469,11 +469,11 @@ namespace RebelAllianceBank.Classes
                 }
 
                 //Continues the loop if a correct username was inputted but that useraccount wasn't locked.
-                if(correctInput && notLockedUser)
+                if (correctInput && notLockedUser)
                 {
                     continue;
                 }
-                else if(correctInput)
+                else if (correctInput)
                 {
                     break;
                 }

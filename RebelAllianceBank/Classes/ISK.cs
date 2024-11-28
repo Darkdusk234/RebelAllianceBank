@@ -12,8 +12,10 @@ namespace RebelAllianceBank.Classes
 
         public decimal IntrestRate { get; set; }
         public ISK () { }
-        public ISK(string accountName, decimal balance, string accountCurrency, decimal intrestRate = 0)
+        public ISK(string userId, int accountType, string accountName, decimal balance, string accountCurrency, decimal intrestRate = 0)
         {
+            UserId = userId;
+            AccountType = accountType;
             AccountName = accountName;
             Balance = balance;
             AccountCurrency = accountCurrency;
