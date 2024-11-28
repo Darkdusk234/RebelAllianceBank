@@ -5,18 +5,21 @@ namespace RebelAllianceBank.Classes
 {
     public class Customer : IUser
     {
-        public string Username { get; set; }
+        public int ID { get; set; }
+        public string PersonalNum { get; set; }
         public string Password { get; set; }
-        private List<IBankAccount> BankAccounts = [
-            new CardAccount("Card", 500, "SEK"),
-            new CardAccount("Card", 500, "SEK"),
-            new CardAccount("Card", 500, "SEK"),
-        ];
-
-        public Customer(string username, string password)
+        public string Surname { get; set; }
+        public string Forename { get; set; }
+        public bool LoginLock { get; set; } = false;
+        private List<IBankAccount> BankAccounts = [];
+        
+        public Customer() { }
+        public Customer(string pNum, string password, string surname, string forename)
         {
-            Username = username;
+            PersonalNum = pNum;
             Password = password;
+            Surname = surname;
+            Forename = forename;
         }
 
         public void ShowBankAccounts()
