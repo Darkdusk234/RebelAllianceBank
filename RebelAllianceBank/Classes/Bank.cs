@@ -309,6 +309,7 @@ namespace RebelAllianceBank.Classes
             string username = "";
             string password = "";
             string forename = "";
+            string surname = "";
             bool methodRun = true;
             while (methodRun)
             {
@@ -418,6 +419,31 @@ namespace RebelAllianceBank.Classes
                 else if(input.Length <= 1)
                 {
                     Console.WriteLine("Förnamnet måste vara minst 2 bokstäver långt. Tryck på valfri tangent för att" +
+                        " gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else
+                {
+                    forename = input;
+                    break;
+                }
+            }
+
+            while (methodRun)
+            {
+                Console.WriteLine("Skriv efternamnet för användaren som ska skapas.");
+                string input = Console.ReadLine();
+
+                if (input.ToUpper().Equals("EXIT"))
+                {
+                    methodRun = false;
+                    break;
+                }
+                else if (input.Length <= 1)
+                {
+                    Console.WriteLine("Efternamnet måste vara minst 2 bokstäver långt. Tryck på valfri tangent för att" +
                         " gå tillbaka och försök igen.");
                     Console.ReadKey();
                     Console.Clear();
