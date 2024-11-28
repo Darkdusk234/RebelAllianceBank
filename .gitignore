@@ -365,6 +365,9 @@ FodyWeavers.xsd
 # Docker Continer 
 /.devcontainer
 
+#Vs code
+.vscode
+
 # Rider
 bin/
 obj/
