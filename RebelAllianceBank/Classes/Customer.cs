@@ -74,7 +74,8 @@ namespace RebelAllianceBank.Classes
                 switch (userChoice)
                 {
                     case 1:
-                        BankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
+                        //Needs to be updated to new constructor
+                        //BankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
                         createAccount = true;
                         Console.ReadKey();
                         break;

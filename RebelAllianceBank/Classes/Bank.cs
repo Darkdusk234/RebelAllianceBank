@@ -363,204 +363,250 @@ namespace RebelAllianceBank.Classes
                 }
             }
 
-            //Needs to update to personal nummer. Not sure how to solve it. Talk with someone else about solutions
             while (methodRun)
             {
-                Console.WriteLine("Skriv in det år som användaren föddes. Skriv i formatet XXXX." +
-                    " Skriv avbryt om du vill gå tillbaka till menyn.");
-                string yearInput = Console.ReadLine();
+                //Needs to update to personal nummer. Not sure how to solve it. Talk with someone else about solutions
+                while (methodRun)
+                {
+                    Console.WriteLine("Skriv in det år som användaren föddes. Skriv i formatet XXXX." +
+                        " Skriv avbryt om du vill gå tillbaka till menyn.");
+                    string yearInput = Console.ReadLine();
 
-                if (yearInput.ToUpper().Equals("AVBRYT"))
-                {
-                    methodRun = false;
-                    break;
-                }
-                else if (!int.TryParse(yearInput, out int inputInt))
-                {
-                    Console.WriteLine("Använd enbart siffror!" +
-                        " Tryck på valfri tangent för att gå tillbaka och försök igen.");
-                    Console.ReadKey();
-                    Console.Clear();
-                    continue;
-                }
-                else if(yearInput.Length < 4 || yearInput.Length > 4)
-                {
-                    Console.WriteLine("Fel format! Skriv födelseåret i formatet XXXX. Tryck på valfri tangent för" +
-                        " att gå tillbaka och försök igen.");
-                    Console.ReadKey();
-                    Console.Clear();
-                    continue;
-                }
-                else if(inputInt > DateTime.Now.Year || inputInt < (DateTime.Now.Year - 100) || inputInt == DateTime.Now.Year)
-                {
-                    Console.WriteLine($"Orimligt födelseår! Skriv ett rimligt födelseår som är {DateTime.Now.Year - 100}" +
-                        " eller senare. Tryck på valfri tangent för att gå tillbaka och försök igen.");
-                    Console.ReadKey();
-                    Console.Clear();
-                    continue;
-                }
-                else
-                {
-                    birthYear = yearInput;
-                    break;
-                }
-            }
-
-            while (methodRun)
-            {
-                Console.WriteLine("Skriv vilken månad användaren föddes. Skriv i formatet XX." +
-                   " Skriv avbryt om du vill gå tillbaka till menyn.");
-                string monthInput = Console.ReadLine();
-
-                if (monthInput.ToUpper().Equals("AVBRYT"))
-                {
-                    methodRun = false;
-                    break;
-                }
-                else if (!int.TryParse(monthInput, out int inputInt))
-                {
-                    Console.WriteLine("Använd enbart siffror!" +
-                       " Tryck på valfri tangent för att gå tillbaka och försök igen.");
-                    Console.ReadKey();
-                    Console.Clear();
-                    continue;
-                }
-                else if(monthInput.Length < 2 || monthInput.Length > 2)
-                {
-                    Console.WriteLine("Fel format! Skriv månaden i formatet XX. Tryck på valfri tangent för" +
-                        " att gå tillbaka och försök igen.");
-                    Console.ReadKey();
-                    Console.Clear();
-                    continue;
-                }
-                else if(inputInt <= 0 || inputInt < 12)
-                {
-                    Console.WriteLine("Det finns ingen månad motsvarande den siffran!" +
-                        " Tryck på valfri tangent för att gå tillbaka och försök igen.");
-                    Console.ReadKey();
-                    Console.Clear();
-                    continue;
-                }
-                else
-                {
-                    birthMonth = monthInput;
-                    switch (inputInt)
+                    if (yearInput.ToUpper().Equals("AVBRYT"))
                     {
-                        case 1:
-                            daysInBirthMonth = 31;
-                            break;
-                        case 2:
-                            daysInBirthMonth = 29;
-                            break;
-                        case 3:
-                            daysInBirthMonth = 31;
-                            break;
-                        case 4:
-                            daysInBirthMonth = 30;
-                            break;
-                        case 5:
-                            daysInBirthMonth = 31;
-                            break;
-                        case 6:
-                            daysInBirthMonth = 30;
-                            break;
-                        case 7:
-                            daysInBirthMonth = 31;
-                            break;
-                        case 8:
-                            daysInBirthMonth = 31;
-                            break;
-                        case 9:
-                            daysInBirthMonth = 30;
-                            break;
-                        case 10:
-                            daysInBirthMonth = 31;
-                            break;
-                        case 11:
-                            daysInBirthMonth = 30;
-                            break;
-                        case 12:
-                            daysInBirthMonth = 31;
-                            break;
+                        methodRun = false;
+                        break;
                     }
+                    else if (!int.TryParse(yearInput, out int inputInt))
+                    {
+                        Console.WriteLine("Använd enbart siffror!" +
+                            " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+                    else if (yearInput.Length < 4 || yearInput.Length > 4)
+                    {
+                        Console.WriteLine("Fel format! Skriv födelseåret i formatet XXXX. Tryck på valfri tangent för" +
+                            " att gå tillbaka och försök igen.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+                    else if (inputInt > DateTime.Now.Year || inputInt < (DateTime.Now.Year - 100) || inputInt == DateTime.Now.Year)
+                    {
+                        Console.WriteLine($"Orimligt födelseår! Skriv ett rimligt födelseår som är {DateTime.Now.Year - 100}" +
+                            " eller senare. Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+                    else
+                    {
+                        birthYear = yearInput;
+                        break;
+                    }
+                }
+
+                while (methodRun)
+                {
+                    Console.WriteLine("Skriv vilken månad användaren föddes. Skriv i formatet XX." +
+                       " Skriv avbryt om du vill gå tillbaka till menyn.");
+                    string monthInput = Console.ReadLine();
+
+                    if (monthInput.ToUpper().Equals("AVBRYT"))
+                    {
+                        methodRun = false;
+                        break;
+                    }
+                    else if (!int.TryParse(monthInput, out int inputInt))
+                    {
+                        Console.WriteLine("Använd enbart siffror!" +
+                           " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+                    else if (monthInput.Length < 2 || monthInput.Length > 2)
+                    {
+                        Console.WriteLine("Fel format! Skriv månaden i formatet XX. Tryck på valfri tangent för" +
+                            " att gå tillbaka och försök igen.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+                    else if (inputInt <= 0 || inputInt < 12)
+                    {
+                        Console.WriteLine("Det finns ingen månad motsvarande den siffran!" +
+                            " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+                    else
+                    {
+                        birthMonth = monthInput;
+                        switch (inputInt)
+                        {
+                            case 1:
+                                daysInBirthMonth = 31;
+                                break;
+                            case 2:
+                                daysInBirthMonth = 29;
+                                break;
+                            case 3:
+                                daysInBirthMonth = 31;
+                                break;
+                            case 4:
+                                daysInBirthMonth = 30;
+                                break;
+                            case 5:
+                                daysInBirthMonth = 31;
+                                break;
+                            case 6:
+                                daysInBirthMonth = 30;
+                                break;
+                            case 7:
+                                daysInBirthMonth = 31;
+                                break;
+                            case 8:
+                                daysInBirthMonth = 31;
+                                break;
+                            case 9:
+                                daysInBirthMonth = 30;
+                                break;
+                            case 10:
+                                daysInBirthMonth = 31;
+                                break;
+                            case 11:
+                                daysInBirthMonth = 30;
+                                break;
+                            case 12:
+                                daysInBirthMonth = 31;
+                                break;
+                        }
+                        break;
+                    }
+                }
+
+                while (methodRun)
+                {
+                    Console.WriteLine("Skriv vilken dag användaren föddes. Skriv i formatet XX." +
+                       " Skriv avbryt om du vill gå tillbaka till menyn.");
+                    string dayInput = Console.ReadLine();
+
+                    if (dayInput.ToUpper().Equals("AVBRYT"))
+                    {
+                        methodRun = false;
+                        break;
+                    }
+                    else if (!int.TryParse(dayInput, out int inputInt))
+                    {
+                        Console.WriteLine("Använd enbart siffror!" +
+                           " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+                    else if (dayInput.Length < 2 || dayInput.Length > 2)
+                    {
+                        Console.WriteLine("Fel format! Skriv dagen i formatet XX. Tryck på valfri tangent för" +
+                            " att gå tillbaka och försök igen.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+                    else if (inputInt <= 0 || inputInt > daysInBirthMonth)
+                    {
+                        Console.WriteLine("Den dagen finns inte i födelse månaden!" +
+                           " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
+                    else
+                    {
+                        birthDay = dayInput;
+                        break;
+                    }
+                }
+
+                while (methodRun)
+                {
+                    Console.WriteLine("Skriv de 4 sista siffrorna på användarens personnummer. Skriv i formatet XXXX." +
+                       " Skriv avbryt om du vill gå tillbaka till menyn.");
+                    string lastDigitsInput = Console.ReadLine();
+
+                    if (lastDigitsInput.ToUpper().Equals("AVBRYT"))
+                    {
+                        methodRun = false;
+                        break;
+                    }
+                    else if (!int.TryParse(lastDigitsInput, out int inputInt))
+                    {
+                        Console.WriteLine("Använd enbart siffror!" +
+                           " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+                    else if (lastDigitsInput.Length < 4 || lastDigitsInput.Length > 4)
+                    {
+                        Console.WriteLine("Fel format! Skriv dagen i formatet XX. Tryck på valfri tangent för" +
+                            " att gå tillbaka och försök igen.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+                    else
+                    {
+                        lastDigits = lastDigitsInput;
+                        break;
+                    }
+                }
+
+                personalNum = personalNum.Insert(0, birthYear.Substring(2));
+                personalNum = personalNum.Insert(2, birthMonth);
+                personalNum = personalNum.Insert(4, birthDay);
+                personalNum = personalNum.Insert(6, lastDigits);
+
+                bool correctPersonalNum = false;
+
+                while (methodRun)
+                {
+                    Console.WriteLine("Personnummret är skrivit i formatet, ÅÅMMDDXXXX. Är detta personnummer korrect" +
+                        " för den användaren du vill skapa? ja/nej skriv avbryt om du vill gå tillbaka till menyn." +
+                        $"\n{personalNum}");
+                    string userInput = Console.ReadLine();
+
+                    if (userInput.ToUpper().Equals("AVBRYT"))
+                    {
+                        methodRun = false;
+                        break;
+                    }
+                    else if (userInput.ToUpper().Equals("JA") || userInput.ToUpper().Equals("J"))
+                    {
+                        correctPersonalNum = true;
+                        break;
+                    }
+                    else if (userInput.ToUpper().Equals("NEJ") || userInput.ToUpper().Equals("N"))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Skriv endast Ja, Nej eller Avbryt. Tryck på valfri tangent för att gå tillbaka.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+                }
+
+                if(correctPersonalNum)
+                {
                     break;
                 }
             }
 
-            while (methodRun)
-            {
-                Console.WriteLine("Skriv vilken dag användaren föddes. Skriv i formatet XX." +
-                   " Skriv avbryt om du vill gå tillbaka till menyn.");
-                string dayInput = Console.ReadLine();
-
-                if (dayInput.ToUpper().Equals("AVBRYT"))
-                {
-                    methodRun = false;
-                    break;
-                }
-                else if (!int.TryParse(dayInput, out int inputInt))
-                {
-                    Console.WriteLine("Använd enbart siffror!" +
-                       " Tryck på valfri tangent för att gå tillbaka och försök igen.");
-                    Console.ReadKey();
-                    Console.Clear();
-                    continue;
-                }
-                else if(dayInput.Length < 2 || dayInput.Length > 2)
-                {
-                    Console.WriteLine("Fel format! Skriv dagen i formatet XX. Tryck på valfri tangent för" +
-                        " att gå tillbaka och försök igen.");
-                    Console.ReadKey();
-                    Console.Clear();
-                    continue;
-                }
-                else if(inputInt <= 0 || inputInt > daysInBirthMonth)
-                {
-                    Console.WriteLine("Den dagen finns inte i födelse månaden!" +
-                       " Tryck på valfri tangent för att gå tillbaka och försök igen.");
-                    Console.ReadKey();
-                    Console.Clear();
-                }
-                else
-                {
-                    birthDay = dayInput;
-                    break;
-                }
-            }
-
-            while (methodRun)
-            {
-                Console.WriteLine("Skriv de 4 sista siffrorna på användarens personnummer. Skriv i formatet XXXX." +
-                   " Skriv avbryt om du vill gå tillbaka till menyn.");
-                string lastDigitsInput = Console.ReadLine();
-
-                if (lastDigitsInput.ToUpper().Equals("AVBRYT"))
-                {
-                    methodRun = false;
-                    break;
-                }
-                else if (!int.TryParse(lastDigitsInput, out int inputInt))
-                {
-                    Console.WriteLine("Använd enbart siffror!" +
-                       " Tryck på valfri tangent för att gå tillbaka och försök igen.");
-                    Console.ReadKey();
-                    Console.Clear();
-                    continue;
-                }
-                else if (lastDigitsInput.Length < 4 || lastDigitsInput.Length > 4)
-                {
-                    Console.WriteLine("Fel format! Skriv dagen i formatet XX. Tryck på valfri tangent för" +
-                        " att gå tillbaka och försök igen.");
-                    Console.ReadKey();
-                    Console.Clear();
-                    continue;
-                }
-                else
-                {
-                    lastDigits = lastDigitsInput;
-                    break;
-                }
-            }
 
             while (methodRun)
             {
