@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Threading.Channels;
 using RebelAllianceBank.Classes;
 
 namespace RebelAllianceBank;
@@ -43,8 +44,8 @@ public class ExchangeRate
         _exchangeRates.Add("TRY", tryT);
         var aud = new Currency();
         _exchangeRates.Add("AUD", aud);
-        var blr = new Currency();
-        _exchangeRates.Add("BLR", blr);
+        var brl = new Currency();
+        _exchangeRates.Add("BRL", brl);
         var cad = new Currency();
         _exchangeRates.Add("CAD", cad);
         var cny = new Currency();
@@ -87,24 +88,23 @@ public class ExchangeRate
                                            "1.4648, 7.6018, 8.1659, 16651.89, 3.8493, 88.4595, 1469.87, 21.3301, 4.6724, " +
                                            "1.7926, 61.936, 1.4128, 36.271, 18.9592, ";
         
-        _currenciesToUpdate = currenciesStringDefault.Split(new[] { ',', ' ' }, 
+        SplitStrings(currenciesStringDefault, exchangeRateStringDefault);
+
+        AddExchangeRates();
+    }
+
+    public void SplitStrings(string currenciesString, string exchangeRatesString)
+    {
+        _currenciesToUpdate = currenciesString.Split(new[] { ',', ' ' }, 
             StringSplitOptions.RemoveEmptyEntries);
         
-        _exchangeRatesToUpdate = exchangeRateStringDefault.Split(new[] { ',', ' ' }, 
+        _exchangeRatesToUpdate = exchangeRatesString.Split(new[] { ',', ' ' }, 
             StringSplitOptions.RemoveEmptyEntries);
         
-        /*För att testa under utvecklingen
-        for (int i = 1; i < _currenciesToUpdate.Length; i++)
-        {
-            Console.WriteLine(_currenciesToUpdate[i] + "   " + _exchangeRatesToUpdate[i+2]);
-        }*/
-      
         for(int i = 3; i < _exchangeRatesToUpdate.Length; i++)
         {
             _exchangeRatesToUpdate[i] = _exchangeRatesToUpdate[i].Replace(".", ",");
         }
-
-        AddExchangeRates();
     }
 
     public void UpDateCurrency()
@@ -117,6 +117,7 @@ public class ExchangeRate
 
             Console.WriteLine("UPPDATERA VÄXELKURS: \n" +
                               "[1] Instruktioner\n" +
+                              "[2] Skriv ut växelkurser\n" +
                               "[2] Ladda upp nya växelkurser\n" +
                               "[3] Avbryt och återgå till föregående meny");
 
@@ -129,7 +130,7 @@ public class ExchangeRate
                     Console.WriteLine("INSTRUKTIONER UPPDATERA VÄXELKURS\n\n" +
                                       "För att ladda upp växelkurs gör följande:\n" +
                                       "1. Gå till länk: https://www.ecb.europa.eu/stats" +
-                                      "/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html\n\n" +
+                                      "/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html\n" +
                                       "2. Ladda ner en csv-fil med de senaste växelkurserna\n" +
                                       "3. Kopiera och klistra in hela första raden med valuta-namn (inkl \"Date\")\n" +
                                       "4. Kopiera och klistra in hela andra raden med växelkurser (inklusive datum)\n" +
@@ -138,10 +139,25 @@ public class ExchangeRate
                     Console.ReadKey();
                     break;
                 case "2":
+                    PrintAllRates();
+                    Console.WriteLine("\nTryck enter när du är redo att fortsätta");
+                    Console.ReadKey();
+                    break;
+                case "3":
                     string input = PasteAndMatchExchangeRates();
-                    if (input == "quit")
+                    if (input == "correct")
                     {
-                        runLoop = false; 
+                        AddExchangeRates();
+                        bool correctUpdate = CheckAddedExchangeRates();
+                        if (correctUpdate)
+                        {
+                            runLoop = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Tryck enter för att återgå till menyn och göra ett nytt försök");
+                            Console.ReadLine();
+                        } 
                     }
                     else if (input == "incorrect")
                     {
@@ -149,22 +165,9 @@ public class ExchangeRate
                         Console.WriteLine("Något blev inte helt rätt när du klistrade in dina rader. Läs instruktionerna" +
                                           " och försök sen igen! Tryck enter för att fortsätta!");
                         Console.ReadKey(); 
-                        continue;
                     }
-                    AddExchangeRates();
-                    bool correctUpdate = CheckAddedExchangeRates();
-                    if (correctUpdate)
-                    {
-                        runLoop = false;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Trycke enter för att återgå till menyn och göra ett nytt försök");
-                        Console.ReadLine();
-                    }
-                    
                     break;
-                case "3":
+                case "4":
                     runLoop = false;
                     break;
                 default:
@@ -176,6 +179,7 @@ public class ExchangeRate
 
     public string PasteAndMatchExchangeRates()
     {
+        Console.Clear();
         Console.WriteLine("Öppna länk: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange" +
                       "_rates/html/index.en.html\n" +
                       "\n" +
@@ -196,17 +200,7 @@ public class ExchangeRate
         {
             return "quit";
         }
-        
-        _currenciesToUpdate = currenciesString.Split(new[] { ',', ' ' }, 
-            StringSplitOptions.RemoveEmptyEntries);
-        
-        _exchangeRatesToUpdate = exchangeRatesString.Split(new[] { ',', ' ' }, 
-            StringSplitOptions.RemoveEmptyEntries);
-        
-        for(int i = 3; i < _exchangeRatesToUpdate.Length; i++)
-        {
-            _exchangeRatesToUpdate[i] = _exchangeRatesToUpdate[i].Replace(".", ",");
-        }
+        SplitStrings(currenciesString, exchangeRatesString);
 
         if (_currenciesToUpdate.Length != _exchangeRatesToUpdate.Length - 2)
         {
@@ -237,7 +231,7 @@ public class ExchangeRate
         {
             Console.WriteLine("Du har lagt in följande växelkurser: ");
             PrintAllRates();
-            Console.WriteLine("\nSer detta korrekt ut? [ja/nej?]");
+            Console.WriteLine("Ser detta korrekt ut? [ja/nej?]");
             string answer = Console.ReadLine();
 
             switch (answer)
@@ -249,21 +243,21 @@ public class ExchangeRate
                     return false; 
                     break;
                 default:
-                    Console.WriteLine("Ogiltigt val! försök igen");
+                    Console.WriteLine("Ogiltigt val! Tryck enter och försök igen");
+                    Console.ReadKey();
                     break;
             }
         }
     }
     
-    
     public void PrintAllRates()
     {
+        Console.WriteLine("VÄXELKURS:");
         foreach (var currency in _exchangeRates)
         {
             Console.WriteLine(currency.Key + "   " + currency.Value.ExchangeRateToEUR);
         }
-
-        Console.WriteLine();
+        Console.WriteLine($"Senast uppdaterad den {_exchangeRatesToUpdate[0]} {_exchangeRatesToUpdate[1]} {_exchangeRatesToUpdate[2]}");
     }
     
 }

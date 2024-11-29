@@ -8,6 +8,9 @@ namespace RebelAllianceBank.Classes
 
         public void Run()
         {
+            var exchangeRate = new ExchangeRate(); 
+            exchangeRate.UpDateCurrency();
+            
             Login();
         }
 
