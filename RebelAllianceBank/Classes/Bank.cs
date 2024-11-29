@@ -315,6 +315,7 @@ namespace RebelAllianceBank.Classes
             string birthYear = "";
             string birthMonth = "";
             string birthDay = "";
+            string lastDigits = "";
 
             int daysInBirthMonth = 0;
 
@@ -523,6 +524,40 @@ namespace RebelAllianceBank.Classes
                 else
                 {
                     birthDay = dayInput;
+                    break;
+                }
+            }
+
+            while (methodRun)
+            {
+                Console.WriteLine("Skriv de 4 sista siffrorna på användarens personnummer. Skriv i formatet XXXX." +
+                   " Skriv avbryt om du vill gå tillbaka till menyn.");
+                string lastDigitsInput = Console.ReadLine();
+
+                if (lastDigitsInput.ToUpper().Equals("AVBRYT"))
+                {
+                    methodRun = false;
+                    break;
+                }
+                else if (!int.TryParse(lastDigitsInput, out int inputInt))
+                {
+                    Console.WriteLine("Använd enbart siffror!" +
+                       " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else if (lastDigitsInput.Length < 4 || lastDigitsInput.Length > 4)
+                {
+                    Console.WriteLine("Fel format! Skriv dagen i formatet XX. Tryck på valfri tangent för" +
+                        " att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else
+                {
+                    lastDigits = lastDigitsInput;
                     break;
                 }
             }
