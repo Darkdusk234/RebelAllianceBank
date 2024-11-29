@@ -10,9 +10,6 @@ namespace RebelAllianceBank.Classes
         {
             FileHandler fh = new FileHandler();
             users = new List<IUser>(fh.ReadUser());
-            Customer aas = new Customer();
-            currentUser = users[0];
-            aas.TransferUserToUser(currentUser.PersonalNum, users);
             Login();
         }
 
