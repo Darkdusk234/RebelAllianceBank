@@ -105,7 +105,7 @@ namespace RebelAllianceBank.Classes
         /// </summary>
         /// <param name="currentUser">Input personal number of logged in user</param>
         /// <param name="users">A list of all users</param>
-        public void TransferUserToUser(Customer currentUser, List<IUser> users)
+        public void TransferUserToUser(List<IUser> users)
         {
             Customer otherUser = null;
             IBankAccount otherAccount = null;
@@ -114,12 +114,12 @@ namespace RebelAllianceBank.Classes
             while (currentUserAccount == null)
             {
                 Console.WriteLine("Skriv namnet på det konto du vill föra över från:");
-                foreach (var account in currentUser.BankAccounts)
+                foreach (var account in BankAccounts)
                 {
                     Console.WriteLine($"{account.AccountName} (Saldo: {account.Balance:N2})");
                 }
                 string currentUserAccountName = Console.ReadLine();
-                currentUserAccount = currentUser.BankAccounts.FirstOrDefault(account => account.AccountName.Equals(currentUserAccountName, StringComparison.OrdinalIgnoreCase));
+                currentUserAccount = BankAccounts.FirstOrDefault(account => account.AccountName.Equals(currentUserAccountName, StringComparison.OrdinalIgnoreCase));
                 if (currentUserAccount == null)
                 {
                     Console.WriteLine("Ogiltligt kontonamn.");
