@@ -311,6 +311,7 @@ namespace RebelAllianceBank.Classes
             string forename = "";
             string surname = "";
             string birthYear = "";
+            string birthMonth = "";
             bool methodRun = true;
             while (methodRun)
             {
@@ -367,6 +368,14 @@ namespace RebelAllianceBank.Classes
                     methodRun = false;
                     break;
                 }
+                else if (!int.TryParse(yearInput, out int inputInt))
+                {
+                    Console.WriteLine("Använd enbart siffror!" +
+                        " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
                 else if(yearInput.Length < 4 || yearInput.Length > 4)
                 {
                     Console.WriteLine("Fel format! Skriv födelseåret i formatet XXXX. Tryck på valfri tangent för" +
@@ -375,15 +384,7 @@ namespace RebelAllianceBank.Classes
                     Console.Clear();
                     continue;
                 }
-                else if(!int.TryParse(yearInput, out int inputInt))
-                {
-                    Console.WriteLine("Använd enbart siffror! Skriv födelseåret i formatet XXXX." +
-                        " Tryck på valfri tangent för att gå tillbaka och försök igen.");
-                    Console.ReadKey();
-                    Console.Clear();
-                    continue;
-                }
-                else if(inputInt > DateTime.Now.Year || inputInt < (DateTime.Now.Year - 100))
+                else if(inputInt > DateTime.Now.Year || inputInt < (DateTime.Now.Year - 100) || inputInt == DateTime.Now.Year)
                 {
                     Console.WriteLine($"Orimligt födelseår! Skriv ett rimligt födelseår som är {DateTime.Now.Year - 100}" +
                         " eller senare. Tryck på valfri tangent för att gå tillbaka och försök igen.");
@@ -394,6 +395,48 @@ namespace RebelAllianceBank.Classes
                 else
                 {
                     birthYear = yearInput;
+                    break;
+                }
+            }
+
+            while (methodRun)
+            {
+                Console.WriteLine("Skriv vilken månad användaren föddes. Skriv i formatet XX." +
+                   " Skriv avbryt om du vill gå tillbaka till menyn.");
+                string monthInput = Console.ReadLine();
+
+                if (monthInput.ToUpper().Equals("AVBRYT"))
+                {
+                    methodRun = false;
+                    break;
+                }
+                else if (!int.TryParse(monthInput, out int inputInt))
+                {
+                    Console.WriteLine("Använd enbart siffror!" +
+                       " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else if(monthInput.Length < 2 || monthInput.Length > 2)
+                {
+                    Console.WriteLine("Fel format! Skriv månaden i formatet XX. Tryck på valfri tangent för" +
+                        " att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else if(inputInt <= 0 || inputInt < 12)
+                {
+                    Console.WriteLine("Det finns ingen månad motsvarande den siffran!" +
+                        " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else
+                {
+                    birthMonth = monthInput;
                     break;
                 }
             }
