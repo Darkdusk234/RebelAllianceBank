@@ -603,10 +603,11 @@ namespace RebelAllianceBank.Classes
             while (methodRun)
             {
                 Console.Clear();
-                Console.WriteLine("Skriv lösenordet för användaren som ska skapas. Lösenordet måste vara minst 5 symboler.");
+                Console.WriteLine("Skriv lösenordet för användaren som ska skapas. Lösenordet måste vara minst 5 symboler." +
+                    " Skriv avbryt om du vill gå tillbaka till menyn.");
                 string input = Console.ReadLine();
 
-                if (input.ToUpper().Equals("EXIT"))
+                if (input.ToUpper().Equals("AVBRYT"))
                 {
                     methodRun = false;
                     break;
@@ -628,10 +629,10 @@ namespace RebelAllianceBank.Classes
             while (methodRun)
             {
                 Console.Clear();
-                Console.WriteLine("Skriv Förnamnet för användaren som ska skapas.");
+                Console.WriteLine("Skriv Förnamnet för användaren som ska skapas. Skriv avbryt om du vill gå tillbaka till menyn.");
                 string input = Console.ReadLine();
 
-                if (input.ToUpper().Equals("EXIT"))
+                if (input.ToUpper().Equals("AVBRYT"))
                 {
                     methodRun = false;
                     break;
@@ -653,10 +654,10 @@ namespace RebelAllianceBank.Classes
             while (methodRun)
             {
                 Console.Clear();
-                Console.WriteLine("Skriv efternamnet för användaren som ska skapas.");
+                Console.WriteLine("Skriv efternamnet för användaren som ska skapas. Skriv avbryt om du vill gå tillbaka till menyn.");
                 string input = Console.ReadLine();
 
-                if (input.ToUpper().Equals("EXIT"))
+                if (input.ToUpper().Equals("AVBRYT"))
                 {
                     methodRun = false;
                     break;
