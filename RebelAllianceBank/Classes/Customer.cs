@@ -111,17 +111,8 @@ namespace RebelAllianceBank.Classes
                 Console.WriteLine($"{TextColor.Red}Du har inga tillräkligt många konton att överföra mellan{TextColor.NORMAL}");
                 return;
             }
-            List<string> bodyKeys = [];
-            for (int i = 0; i < BankAccounts.Count; i++)
-            {
-                var BankAccount = BankAccounts[i];
-                bodyKeys.Add((i + 1).ToString());
-                bodyKeys.Add(BankAccount.AccountName);
-                bodyKeys.Add(BankAccount.Balance.ToString("N2"));
-            }
 
             var menu = new SelectOneOrMore(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(BankAccounts));
-
 
             Console.Clear();
             Markdown.Paragrath($"Vilket konto vill du överföra {TextColor.Yellow}ifrån{TextColor.NORMAL}");
