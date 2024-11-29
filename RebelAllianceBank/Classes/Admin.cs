@@ -1,4 +1,5 @@
 ﻿using RebelAllianceBank.Interfaces;
+using System.Globalization;
 namespace RebelAllianceBank.Classes
 {
     public class Admin : IUser
@@ -35,8 +36,6 @@ namespace RebelAllianceBank.Classes
             string birthMonth = "";
             string birthDay = "";
             string lastDigits = "";
-
-            int daysInBirthMonth = 0;
 
             bool methodRun = true;
             //Takes in user input about what type of user that is to be created.
@@ -166,46 +165,6 @@ namespace RebelAllianceBank.Classes
                     else
                     {
                         birthMonth = monthInput;
-                        //Sets how many days are in birth month to daysInBirthMonth variable which is used in next while loop
-                        switch (inputInt)
-                        {
-                            case 1:
-                                daysInBirthMonth = 31;
-                                break;
-                            case 2:
-                                daysInBirthMonth = 29;
-                                break;
-                            case 3:
-                                daysInBirthMonth = 31;
-                                break;
-                            case 4:
-                                daysInBirthMonth = 30;
-                                break;
-                            case 5:
-                                daysInBirthMonth = 31;
-                                break;
-                            case 6:
-                                daysInBirthMonth = 30;
-                                break;
-                            case 7:
-                                daysInBirthMonth = 31;
-                                break;
-                            case 8:
-                                daysInBirthMonth = 31;
-                                break;
-                            case 9:
-                                daysInBirthMonth = 30;
-                                break;
-                            case 10:
-                                daysInBirthMonth = 31;
-                                break;
-                            case 11:
-                                daysInBirthMonth = 30;
-                                break;
-                            case 12:
-                                daysInBirthMonth = 31;
-                                break;
-                        }
                         break;
                     }
                 }
@@ -217,13 +176,16 @@ namespace RebelAllianceBank.Classes
                     Console.WriteLine("Skriv vilken dag användaren föddes. Skriv i formatet XX." +
                        " Skriv avbryt om du vill gå tillbaka till menyn.");
                     string dayInput = Console.ReadLine();
+                    string dateTime = birthYear;
+                    dateTime = dateTime.Insert(3, $"/{birthMonth}");
+                    dateTime = dateTime.Insert(5, $"/{dayInput}");
 
                     if (dayInput.ToUpper().Equals("AVBRYT"))
                     {
                         methodRun = false;
                         break;
                     }
-                    else if (!int.TryParse(dayInput, out int inputInt))
+                    else if (!int.TryParse(dayInput, out int unusedInt))
                     {
                         Console.WriteLine("Använd enbart siffror!" +
                            " Tryck på valfri tangent för att gå tillbaka och försök igen.");
@@ -238,7 +200,8 @@ namespace RebelAllianceBank.Classes
                         continue;
                     }
                     //Checks if inputted day is valid for birth month
-                    else if (inputInt <= 0 || inputInt > daysInBirthMonth)
+                    else if (!DateTime.TryParseExact(dateTime, "yyyy/MM/dd", CultureInfo.InvariantCulture, 
+                    DateTimeStyles.None, out DateTime unused))
                     {
                         Console.WriteLine("Den dagen finns inte i födelse månaden!" +
                            " Tryck på valfri tangent för att gå tillbaka och försök igen.");
