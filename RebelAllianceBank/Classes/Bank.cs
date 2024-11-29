@@ -306,10 +306,11 @@ namespace RebelAllianceBank.Classes
         public void CreateUser()
         {
             string userType = "";
-            string username = "";
+            string personalNum = "";
             string password = "";
             string forename = "";
             string surname = "";
+            string birthYear = "";
             bool methodRun = true;
             while (methodRun)
             {
@@ -357,26 +358,42 @@ namespace RebelAllianceBank.Classes
             //Needs to update to personal nummer. Not sure how to solve it. Talk with someone else about solutions
             while (methodRun)
             {
-                Console.WriteLine("Skriv användarnamnet på användaren som ska skapas." +
-                    " Användarnamnet måste vara minst 5 symboler. Skriv exit om du vill gå tillbaka till menyn.");
-                string input = Console.ReadLine();
+                Console.WriteLine("Skriv in det år som användaren föddes. Skriv i formatet XXXX." +
+                    " Skriv avbryt om du vill gå tillbaka till menyn.");
+                string yearInput = Console.ReadLine();
 
-                if (input.ToUpper().Equals("EXIT"))
+                if (yearInput.ToUpper().Equals("AVBRYT"))
                 {
                     methodRun = false;
                     break;
                 }
-                else if (input.Length < 5)
+                else if(yearInput.Length < 4 || yearInput.Length > 4)
                 {
-                    Console.WriteLine("Användarnamnet måste vara 5 symboler eller längre. Tryck på valfri" +
-                        " tangent för att gå tillbaka och försök igen.");
+                    Console.WriteLine("Fel format! Skriv födelseåret i formatet XXXX. Tryck på valfri tangent för" +
+                        " att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else if(!int.TryParse(yearInput, out int inputInt))
+                {
+                    Console.WriteLine("Använd enbart siffror! Skriv födelseåret i formatet XXXX." +
+                        " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    continue;
+                }
+                else if(inputInt > DateTime.Now.Year || inputInt < (DateTime.Now.Year - 100))
+                {
+                    Console.WriteLine($"Orimligt födelseår! Skriv ett rimligt födelseår som är {DateTime.Now.Year - 100}" +
+                        " eller senare. Tryck på valfri tangent för att gå tillbaka och försök igen.");
                     Console.ReadKey();
                     Console.Clear();
                     continue;
                 }
                 else
                 {
-                    username = input;
+                    birthYear = yearInput;
                     break;
                 }
             }
@@ -460,11 +477,11 @@ namespace RebelAllianceBank.Classes
             {
                 if (userType.Equals("Kund"))
                 {
-                    users.Add(new Customer(username, password, surname, forename));
+                    users.Add(new Customer(personalNum, password, surname, forename));
                 }
                 else if (userType.Equals("Admin"))
                 {
-                    users.Add(new Admin(username, password, surname, forename));
+                    users.Add(new Admin(personalNum, password, surname, forename));
                 }
 
                 Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
