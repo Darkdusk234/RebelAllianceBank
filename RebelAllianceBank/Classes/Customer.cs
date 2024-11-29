@@ -10,7 +10,7 @@ namespace RebelAllianceBank.Classes
         public string Surname { get; set; }
         public string Forename { get; set; }
         public bool LoginLock { get; set; } = false;
-        private List<IBankAccount> BankAccounts = [new CardAccount("0", 0, "kreditkort", 500m, "SEK", 13.95m),
+        private List<IBankAccount> _bankAccounts = [new CardAccount("0", 0, "kreditkort", 500m, "SEK", 13.95m),
                                            new ISK("investeringskonto", 4000m, "SEK", 2.94m),
                                new SavingsAccount("sparkonto", 10000m, "SEK", 4m)];
         
@@ -22,19 +22,18 @@ namespace RebelAllianceBank.Classes
             Surname = surname;
             Forename = forename;
         }
-        
         public void ShowBankAccounts()
         {
             Console.WriteLine("Konton");
 
-            if (BankAccounts.Count == 0)
+            if (_bankAccounts.Count == 0)
             {
                 Console.WriteLine("Du har inga konton att visa");
                 return;
             }
 
             List<string> bodyKeys = [];
-            foreach (var BankAccount in BankAccounts)
+            foreach (var BankAccount in _bankAccounts)
             {
                 bodyKeys.Add(BankAccount.AccountName);
                 bodyKeys.Add(BankAccount.Balance.ToString("N2"));
@@ -76,17 +75,17 @@ namespace RebelAllianceBank.Classes
                 switch (userChoice)
                 {
                     case 1:
-                        BankAccounts.Add(new CardAccount("0", 0, accountName, 0, accountCurrency, 0.0m));
+                        _bankAccounts.Add(new CardAccount("0", 0, accountName, 0, accountCurrency, 0.0m));
                         createAccount = true;
                         Console.ReadKey();
                         break;
                     case 2:
-                        BankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
+                        _bankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
                         createAccount = true;
                         Console.ReadKey();
                         break;
                     case 3:
-                        BankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
+                        _bankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
                         createAccount = true;
                         break;
                     case 4:
@@ -101,10 +100,6 @@ namespace RebelAllianceBank.Classes
                 }
             } while (createAccount == false);
         }
-        // TO-DO
-        // [] Kolla räntesatsen ( Ny klass? ).
-        // [] Fixa Card Fälten.
-        // [X] Gör så man kan avsluta när man vill.
         public void TakeLoan()
         {
             bool loanComplete = false;
@@ -112,7 +107,7 @@ namespace RebelAllianceBank.Classes
             while (!loanComplete)
             {   
                 // Checks if customer has an account.
-                if (BankAccounts.Count > 0)
+                if (_bankAccounts.Count > 0)
                 {
                     Console.WriteLine("Lån\n");
 
@@ -135,7 +130,7 @@ namespace RebelAllianceBank.Classes
                     {
                         Console.WriteLine("\nVilket konto skulle du vilja sätta in pengarna på.");
                         int counter = 1;
-                        foreach (var item in BankAccounts)
+                        foreach (var item in _bankAccounts)
                         {
                             Console.WriteLine($"{counter}. {item.AccountName}");
                             counter++;
@@ -143,17 +138,22 @@ namespace RebelAllianceBank.Classes
                         Console.Write("\nKontoval: ");
 
                         int choosenAccount = 0;
-                        while (!int.TryParse(Console.ReadLine(), out choosenAccount) || choosenAccount < 0 || choosenAccount > BankAccounts.Count)
+                        while (!int.TryParse(Console.ReadLine(), out choosenAccount) || choosenAccount < 0 || choosenAccount > _bankAccounts.Count)
                         {
                             Console.WriteLine("Fel inmatning, försök igen");
                         }
-
-                        Console.WriteLine($"Din lånansökan på {askedLoan} {BankAccounts[choosenAccount - 1].AccountCurrency} har accepterats.\n" +
-                            $"Räntan för detta lån ligger på {BankAccounts[choosenAccount - 1].IntrestRate:F2}%\n" +
-                            $"Månadsbeloppet blir {RentOnLoan(askedLoan, choosenAccount):F2} {BankAccounts[choosenAccount - 1].AccountCurrency}/månaden.");
+                        foreach (var item in _bankAccounts)
+                        {
+                            if (item == _bankAccounts[choosenAccount -1])
+                            {
+                                Console.WriteLine($"Din lånansökan på {askedLoan} {_bankAccounts[choosenAccount - 1].AccountCurrency} har accepterats.\n" +
+                                    $"Räntan för detta lån ligger på {_bankAccounts[choosenAccount - 1].LoanIntrestRate:F2}%\n" +
+                                    $"Månadsbeloppet blir {item.CalculateLoanInterest(askedLoan)} {_bankAccounts[choosenAccount - 1].AccountCurrency}/månaden.");
+                            }
+                        }
 
                         // Checks if user want to accept the loan with the terms (YES/NO).
-                        Console.Write("\nAccepterar du villkoren för detta lån? (J)a / (N)ej");
+                        Console.Write("\nAccepterar du villkoren för detta lån? Ja/Nej");
                         string terms;
                         bool okTerms = false;
 
@@ -161,15 +161,15 @@ namespace RebelAllianceBank.Classes
                         {
                             Console.Write("\nSvar: ");
                             terms = Console.ReadLine().ToLower();
-                            if (terms == "j")
+                            if (terms == "ja" || terms == "j")
                             {
-                                BankAccounts[choosenAccount - 1].Balance += askedLoan;
-                                Console.WriteLine($"{askedLoan} {BankAccounts[choosenAccount - 1].AccountCurrency} har satts in på följande konto: {BankAccounts[choosenAccount - 1].AccountName}");
+                                _bankAccounts[choosenAccount - 1].Balance += askedLoan;
+                                Console.WriteLine($"{askedLoan} {_bankAccounts[choosenAccount - 1].AccountCurrency} har satts in på följande konto: {_bankAccounts[choosenAccount - 1].AccountName}");
                                 Console.ReadKey();
                                 okTerms = true;
                                 loanComplete = true;
                             }
-                            else if (terms == "n")
+                            else if (terms == "nej" || terms == "n")
                             {
                                 Console.WriteLine("Lånet har avbrutits...");
                                 Thread.Sleep(1500);
@@ -198,20 +198,26 @@ namespace RebelAllianceBank.Classes
                 else
                 {
                     // Checks if customer want to quit the current method or ask for a new loan.
-                    Console.WriteLine("\nTryck \"Q\" för att lämna eller någon annan valfri tangent för att ansöka om ett nytt lån.");
-                    var key = Console.ReadKey(true); // Set ReadKey as true to remove the 'q' input.
+                    Console.WriteLine("\nVill du ansöka om nytt lån? Ja/Nej");
+                    Console.Write("svar:");
+                    string quitOrNot = Console.ReadLine().ToLower(); // Set ReadKey to true to remove the input text in the consol.
                     Console.Clear();
-                    if (key.Key == ConsoleKey.Q)
+                    if (quitOrNot == "nej" || quitOrNot == "n")
                     {
-                        Console.ReadKey();
                         Console.WriteLine("\nDu har valt att avsluta låneansökan.");
                         break;
+                    }
+                    else if (quitOrNot == "ja" || quitOrNot == "j")
+                    {
+                        Console.WriteLine("Går vidare med en ny ansökan");
+                        Thread.Sleep(1500);
+                        Console.Clear();
                     }
                 }
             }
             Console.Clear();
         }
-
+        // TO-DO [] se till att man inte kan låna över taket.
         /// <summary>
         /// return highest ammount that customer can loan. 
         /// </summary>
@@ -220,7 +226,7 @@ namespace RebelAllianceBank.Classes
         public decimal MaxLoan()
         {
             decimal maxLoan = 0;
-            foreach (var item in BankAccounts)
+            foreach (var item in _bankAccounts)
             {
                 maxLoan += item.Balance;
             }
@@ -232,16 +238,16 @@ namespace RebelAllianceBank.Classes
         /// <param name="loanAmmount"></param>
         /// <returns></returns>
         /// 
-        public decimal RentOnLoan(decimal loanAmmount, int index)
-        {
-            foreach (var item in BankAccounts)
-            {
-                if (item == BankAccounts[index-1])
-                {
-                    loanAmmount = loanAmmount / 100 * item.IntrestRate;
-                }
-            }
-            return loanAmmount;
-        }
+        //public decimal RentOnLoan(decimal loanAmmount, int index)
+        //{
+        //    foreach (var item in BankAccounts)
+        //    {
+        //        if (item == BankAccounts[index-1])
+        //        {
+        //            loanAmmount = loanAmmount / 100 * item.IntrestRate;
+        //        }
+        //    }
+        //    return loanAmmount;
+        //}
     }
 }

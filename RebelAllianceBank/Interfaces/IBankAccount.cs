@@ -8,6 +8,12 @@
         public decimal Balance { get; set; }
         public string AccountCurrency { get; set; }
         public decimal IntrestRate { get; set; }
+        public decimal LoanIntrestRate { get; }
 
+
+        public decimal CalculateLoanInterest(decimal loanAmount);
     }
+
+    
+
 }

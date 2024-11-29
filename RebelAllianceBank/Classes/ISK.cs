@@ -9,16 +9,24 @@ namespace RebelAllianceBank.Classes
         public string AccountName { get; set;  }
         public decimal Balance { get;  set;  }
         public string AccountCurrency { get;  set;  }
-        public decimal IntrestRate { get; set; } = 2.94m;
+        public decimal IntrestRate { get; set; } = 3.47m;
+        public decimal LoanIntrestRate { get; } = 0.94m;
 
         public ISK () { }
 
-        public ISK(string accountName, decimal balance, string accountCurrency, decimal intrestRate )
+        public ISK(string accountName, decimal balance, string accountCurrency, decimal intrestRate)
         {
             AccountName = accountName;
             Balance = balance;
             AccountCurrency = accountCurrency;
             IntrestRate = intrestRate;
+        }
+
+        public decimal CalculateLoanInterest(decimal loanAmount)
+        {
+            decimal sum;
+            sum = LoanIntrestRate * loanAmount;
+            return sum; 
         }
     }
 }
