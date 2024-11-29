@@ -1,14 +1,20 @@
 ﻿using RebelAllianceBank.Interfaces;
+using System.Text;
 
 namespace RebelAllianceBank.Classes
 {
     public class Bank
     {
-        List<IUser> users = new List<IUser>() { new Admin("FullAccessLogin", "02492512", "Admin", "Adminson") };
+
+        //List<IUser> users = new List<IUser>() { new Admin("FullAccessLogin", "02492512", "Admin", "Adminson") };
         IUser? currentUser;
+        List<IUser> users;
 
         public void Run()
         {
+            FileHandler fh = new FileHandler();
+            users = new List<IUser>(fh.ReadUserAndAccounts());
+            fh.WriteUsersAndAccounts(users);
             Login();
         }
 

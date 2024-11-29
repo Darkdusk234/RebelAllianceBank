@@ -1,26 +1,25 @@
 ﻿using RebelAllianceBank.Interfaces;
+using System.Text;
 
 namespace RebelAllianceBank.Classes
 {
     public class FileHandler
     {
+        private string _filePathUsers = "users.txt";
+        private string _filePathAccounts = "accounts.txt";
         /// <summary>
         /// Reads a list of users from the file.
         /// </summary>
         /// <returns>A list of <see cref="IUser"/> objects read from the file.</returns>
-        public List<IUser> ReadUser()
+        public List<IUser> ReadUserAndAccounts()
         {
-            string filePath = $"..\\..\\..\\users.txt";
-            return ReadFromFile(filePath, StoredUser);
-        }
-        /// <summary>
-        /// Reads a list of accounts from the file.
-        /// </summary>
-        /// <returns>A list of <see cref="IBankAccount"/> objects read from the file.</returns>
-        public List<IBankAccount> ReadAccount()
-        {
-            string filePath = $"..\\..\\..\\accounts.txt";
-            return ReadFromFile(filePath, StoredBankAccount);
+            var users = ReadFromFile(_filePathUsers, StoredUser);
+            var accounts = ReadFromFile(_filePathAccounts, StoredBankAccount);
+            foreach (var user in users.OfType<Customer>())
+            {
+                user.GetListBankAccount().AddRange(accounts.Where(acc => acc.UserId == user.PersonalNum));
+            }
+            return users;
         }
         /// <summary>
         /// Reads data from a specified file and converts each line into an object of type <typeparamref name="T"/>.
@@ -30,12 +29,12 @@ namespace RebelAllianceBank.Classes
         /// <param name="StoredData">A delegate method that takes a string array (representing a line split into parts)
         /// and returns an object of type <typeparamref name="T"/>.</param>
         /// <returns>A list of objects of type <typeparamref name="T"/> created from the file data.</returns>
-        public static List<T> ReadFromFile<T>(string filePath, Func<string[], T> StoredData) 
+        public static List<T> ReadFromFile<T>(string filePath, Func<string[], T> StoredData)
         {
             List<T> savedList = new List<T>();
             if (File.Exists(filePath))
             {
-                using (StreamReader sr = new StreamReader(filePath))
+                using (StreamReader sr = new StreamReader(filePath, Encoding.UTF8))
                 {
                     string read;
                     while ((read = sr.ReadLine()) != null)
@@ -58,58 +57,31 @@ namespace RebelAllianceBank.Classes
         /// <returns>An <see cref="IUser"/> object or null if the row is invalid.</returns>
         public IUser StoredUser(string[] row)
         {
-            switch (row[3])
+            switch (row[5])
             {
                 case "true":
                     return new Admin
                     {
-                        ID = Convert.ToInt16(row[0]), // unique id
+                        ID = Convert.ToInt32(row[0]), // unique id
                         PersonalNum = row[1], // 8802252525
                         Password = row[2],
                         Surname = row[3],
                         Forename = row[4],
-                        //IsAdmin = bool.Parse(row[3]),
                     };
                 case "false":
                     return new Customer
                     {
-                        ID = Convert.ToInt16(row[0]),
-                        PersonalNum = row[2],
+                        ID = Convert.ToInt32(row[0]),
+                        PersonalNum = row[1],
                         Password = row[2],
                         Surname = row[3],
                         Forename = row[4],
-                        //IsAdmin = bool.Parse(row[3]),
                     };
                 default:
                     return null;
             }
         }
-        /// <summary>
-        /// Writes a user to the file and returns the created <see cref="IUser"/> object.
-        /// </summary>
-        /// <param name="id">The ID of the user.</param>
-        /// <param name="un">The username of the user.</param>
-        /// <param name="pw">The password of the user.</param>
-        /// <param name="isAdmin">Specifies whether the user is an admin or not.</param>
-        /// <returns>The created <see cref="IUser"/> object or null if writing failed.</returns>
-        public IUser WriteUserToFile(int id, string un, string pw, bool isAdmin)
-        {
-            string filePath = "..\\..\\..\\users.txt";
-            if (File.Exists(filePath))
-            {
-                using (StreamWriter sw = new StreamWriter(filePath, append: true))
-                {
-                    string write = $"{id}-{un}-{pw}-{isAdmin}";
-                    sw.WriteLine(write, Environment.NewLine);
-                }
-            }
-            IUser user = StoredUser(new string[] { id.ToString(), un, pw, isAdmin.ToString().ToLower() });
-            if (user != null)
-            {
-                return user;
-            }
-            return null;
-        }
+
         /// <summary>
         /// Converts a string array to an <see cref="IBankAccount"/> object.
         /// </summary>
@@ -117,7 +89,7 @@ namespace RebelAllianceBank.Classes
         /// <returns>An object of <see cref="IBankAccount"/> or null if row is invalid.</returns>
         public IBankAccount StoredBankAccount(string[] row)
         {
-            switch (row[0])
+            switch (row[2])
             {
                 case "0":
                     return new CardAccount
@@ -153,32 +125,26 @@ namespace RebelAllianceBank.Classes
                     return null;
             }
         }
-        /// <summary>
-        /// Writes a bank account to the file and returns the created <see cref="IBankAccount"/> object.
-        /// </summary>
-        /// <param name="id">The ID of the account.</param>
-        /// <param name="accType">The type of the account.</param>
-        /// <param name="name">The name of the account.</param>
-        /// <param name="balance">The balance of the account.</param>
-        /// <param name="curr">The currency of the account.</param>
-        /// <returns>The created <see cref="IBankAccount"/> object or null if writing fails.</returns>
-        public IBankAccount WriteAccountToFile(int id, int accType, string name, decimal balance, string curr)
+
+        public void WriteUsersAndAccounts(List<IUser> users)
         {
-            string filePath = "..\\..\\..\\accounts.txt";
-            if (File.Exists(filePath))
+            using (StreamWriter sw = new StreamWriter(_filePathUsers, false))
             {
-                using (StreamWriter sw = new StreamWriter(filePath, append: true))
+                foreach (var user in users)
                 {
-                    string write = $"{id}-{accType}-{name}-{balance}-{curr}";
-                    sw.WriteLine(write, Environment.NewLine);
+                    sw.WriteLine($"{user.ID}-{user.PersonalNum}-{user.Password}-{user.Surname}-{user.Forename}-{(user is Admin).ToString().ToLower()}");
                 }
             }
-            IBankAccount account = StoredBankAccount(new string[] { id.ToString(), accType.ToString(), name, balance.ToString(), curr });
-            if (account != null)
+            using (StreamWriter sw = new StreamWriter(_filePathAccounts, false, Encoding.UTF8))
             {
-                return account;
+                foreach (var user in users.OfType<Customer>())
+                {
+                    foreach (var account in user.GetListBankAccount())
+                    {
+                        sw.WriteLine($"{account.ID}-{account.UserId}-{account.AccountType}-{account.AccountName}-{account.Balance}-{account.AccountCurrency}-{account.IntrestRate}");
+                    }
+                }
             }
-            return null;
         }
     }
 }
