@@ -232,7 +232,7 @@ public class ExchangeRate
         {
             Console.WriteLine("Du har lagt in följande växelkurser: ");
             PrintAllRates();
-            Console.WriteLine("Ser detta korrekt ut? [ja/nej?]");
+            Console.WriteLine("Ser detta korrekt ut? ja/nej");
             string answer = Console.ReadLine();
 
             switch (answer)
