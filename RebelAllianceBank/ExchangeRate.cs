@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Channels;
 using RebelAllianceBank.Classes;
 
@@ -257,7 +258,15 @@ public class ExchangeRate
         {
             Console.WriteLine(currency.Key + "   " + currency.Value.ExchangeRateToEUR);
         }
-        Console.WriteLine($"Senast uppdaterad den {_exchangeRatesToUpdate[0]} {_exchangeRatesToUpdate[1]} {_exchangeRatesToUpdate[2]}");
+        Console.WriteLine($"Senast uppdaterad den {_exchangeRatesToUpdate[0]} {_exchangeRatesToUpdate[1]} " +
+                          $"{_exchangeRatesToUpdate[2]}");
     }
-    
+
+    public decimal CaclulateExchangeRate(string CurrencyFrom, string CurrencyTo)
+    {
+        decimal calcExchangeRate = _exchangeRates[CurrencyFrom].ExchangeRateToEUR * 
+                               _exchangeRates[CurrencyFrom].ExchangeRateToEUR;
+        return calcExchangeRate; 
+    }
+
 }
