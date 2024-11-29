@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
+using System.Security.Cryptography;
 using System.Threading.Channels;
 using RebelAllianceBank.Classes;
 
@@ -15,65 +16,65 @@ public class ExchangeRate
         
     public ExchangeRate()
     {
-        var usd = new Currency();
+        var usd = new Currency("dollar", "USA");
         _exchangeRates.Add("USD", usd);
-        var jpy = new Currency();
+        var jpy = new Currency("yen", "Japan");
         _exchangeRates.Add("JPY", jpy);
-        var bgn = new Currency();
+        var bgn = new Currency("lev", "Bulgarien");
         _exchangeRates.Add("BGN", bgn);
-        var czk = new Currency();
+        var czk = new Currency("kronor", "Tjeckien");
         _exchangeRates.Add("CZK", czk);
-        var dkk = new Currency();
+        var dkk = new Currency("kronor", "Danmark");
         _exchangeRates.Add("DKK", dkk);
-        var gbp = new Currency();
+        var gbp = new Currency("pund", "Storbritannien");
         _exchangeRates.Add("GBP", gbp);
-        var huf = new Currency();
+        var huf = new Currency("forint", "Ungern");
         _exchangeRates.Add("HUF", huf);
-        var pln = new Currency();
+        var pln = new Currency("zloty", "Polen");
         _exchangeRates.Add("PLN", pln);
-        var ron = new Currency();
+        var ron = new Currency("leu", "Rumänien");
         _exchangeRates.Add("RON", ron);
-        var sek = new Currency();
+        var sek = new Currency("kronor", "Sverige");
         _exchangeRates.Add("SEK", sek);
-        var chf = new Currency();
+        var chf = new Currency("franc", "Schweiz");
         _exchangeRates.Add("CHF", chf);
-        var isk = new Currency();
+        var isk = new Currency("kronor","Island");
         _exchangeRates.Add("ISK", isk);
-        var nok = new Currency();
+        var nok = new Currency("kronor", "Norge");
         _exchangeRates.Add("NOK", nok);
-        var tryT = new Currency();
+        var tryT = new Currency("ny lira", "Turkiet");
         _exchangeRates.Add("TRY", tryT);
-        var aud = new Currency();
+        var aud = new Currency("dollar", "Autralien");
         _exchangeRates.Add("AUD", aud);
-        var brl = new Currency();
+        var brl = new Currency("real", "Brasilien");
         _exchangeRates.Add("BRL", brl);
-        var cad = new Currency();
+        var cad = new Currency("dollar", "Canada");
         _exchangeRates.Add("CAD", cad);
-        var cny = new Currency();
+        var cny = new Currency("yuan renminbi", "Kina");
         _exchangeRates.Add("CNY", cny);
-        var hkd = new Currency();
+        var hkd = new Currency("dollar", "Honkong");
         _exchangeRates.Add("HKD", hkd);
-        var idr = new Currency();
+        var idr = new Currency("rupee", "Indonesien");
         _exchangeRates.Add("IDR", idr);
-        var ils = new Currency();
+        var ils = new Currency("shekel", "Israel");
         _exchangeRates.Add("ILS", ils);
-        var inr = new Currency();
+        var inr = new Currency("rupee", "Indien");
         _exchangeRates.Add("INR", inr);
-        var krw = new Currency();
+        var krw = new Currency("won", "Sydkorea");
         _exchangeRates.Add("KRW", krw);
-        var mxn = new Currency();
+        var mxn = new Currency("nuevo peso", "Mexiko");
         _exchangeRates.Add("MXN", mxn);
-        var myr = new Currency();
+        var myr = new Currency("ringgit", "Malaysia");
         _exchangeRates.Add("MYR", myr);
-        var nzd = new Currency();
+        var nzd = new Currency("dollar", "Nya Zeeland");
         _exchangeRates.Add("NZD", nzd);
-        var php = new Currency();
+        var php = new Currency("peso", "Fillipinerna");
         _exchangeRates.Add("PHP", php);
-        var sgd = new Currency();
+        var sgd = new Currency("dollar", "Singapore");
         _exchangeRates.Add("SGD", sgd);
-        var thb = new Currency();
+        var thb = new Currency("baht", "Thailand");
         _exchangeRates.Add("THB", thb);
-        var zar = new Currency();
+        var zar = new Currency("rand", "Sydafrika");
         _exchangeRates.Add("ZAR", zar);
         
         AddDefaultExchangeRates();
@@ -112,10 +113,10 @@ public class ExchangeRate
     {
         Console.Clear();
         Console.WriteLine("Öppna länk: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange" +
-                      "_rates/html/index.en.html\n" +
-                      "\n" +
-                      "1. Här lägger du in rad ett med valutor (inklusive \"Date\") från din CVS-fil:\n" +
-                      "(för att läsa instruktionerna igen, ange QUIT) ");
+                          "_rates/html/index.en.html\n" +
+                          "\n" +
+                          "1. Här lägger du in rad ett med valutor (inklusive \"Date\") från din CVS-fil:\n" +
+                          "(för att läsa instruktionerna igen, ange AVBRYT) ");
         string currenciesString = Console.ReadLine();
 
         if (currenciesString.ToLower() == "quit")
@@ -124,7 +125,7 @@ public class ExchangeRate
         }
 
         Console.WriteLine("\n2. Här lägger du in rad två med växelkurser (inklusive datum-info)\n" +
-                      "(för att se instruktioner igen, ange QUIT): ");
+                          "(för att se instruktioner igen, ange AVBRYT): ");
         string exchangeRatesString = Console.ReadLine();
 
         if (exchangeRatesString.ToLower() == "quit")
@@ -157,25 +158,28 @@ public class ExchangeRate
 
     public bool CheckAddedExchangeRates()
     {
+        Console.Clear();
         
         while (true)
         {
             Console.WriteLine("Du har lagt in följande växelkurser: ");
             PrintAllRates();
-            Console.WriteLine("Ser detta korrekt ut? ja/nej");
+            Console.WriteLine("\nSer detta korrekt ut? ja/nej");
             string answer = Console.ReadLine();
 
             switch (answer)
             {
                 case "ja":
+                case "j":
                     return true; 
                     break;
                 case "nej":
+                case "n":
                     return false; 
                     break;
                 default:
                     Console.WriteLine("Ogiltigt val! Tryck enter och försök igen");
-                    Console.ReadKey();
+                    while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     break;
             }
         }
@@ -188,14 +192,101 @@ public class ExchangeRate
         {
             Console.WriteLine(currency.Key + "   " + currency.Value.ExchangeRateToEUR);
         }
-        Console.WriteLine($"Senast uppdaterad den {_exchangeRatesToUpdate[0]} {_exchangeRatesToUpdate[1]} " +
+        Console.WriteLine($"\nSenast uppdaterad den {_exchangeRatesToUpdate[0]} {_exchangeRatesToUpdate[1]} " +
                           $"{_exchangeRatesToUpdate[2]}");
+    }
+
+    public void PrintAllCurrencies()
+    {
+        Console.WriteLine("VALUTOR:");
+        foreach (var currency in _exchangeRates)
+        {
+            Console.WriteLine($"{currency.Key}   {currency.Value.Name}, {currency.Value.Country}");
+        }
+    }
+
+    public string AccountCurrency()
+    {
+        while (true)
+        {
+            Console.WriteLine("Önskar du annan valuta än SEK på ditt konto? ja/nej");
+            string answer = Console.ReadLine();
+
+            switch (answer.ToLower())
+            {
+                case "ja": 
+                case "j":
+                    string currency = ChooseAccountCurrency();
+                    if (currency != "quit")
+                    {
+                        return currency;
+                    }
+                    break; 
+                case "nej":
+                case "n":
+                    return "SEK";
+                    break;
+                default:
+                    Console.WriteLine("Ogiltig input! Tryck enter för att fortsätta");
+                    while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
+                    break; 
+            }
+        }
+    }
+
+    public string ChooseAccountCurrency()
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("VÄLJ KONTOVALUTA:\n" +
+                              "1. Lista alla valutor\n" +
+                              "2. Välja valuta\n" +
+                              "3. Avbryt");
+
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    Console.Clear();
+                    PrintAllCurrencies();
+                    Console.WriteLine("\nTryck enter för att återgå och välja valuta!");
+                    while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
+                    break; 
+                case "2":
+                    string currency = "";
+                    
+                    while ((currency.Length != 3 || _exchangeRates.ContainsKey(currency) == false) && currency != "AVBRYT")
+                    {
+                        Console.WriteLine("Ange den valuta du önskar (tre bokstäver). Skriv AVBRYT för att återgå till " +
+                                          "föregående meny");
+                        if (currency == "AVBRYT")
+                        {
+                            break;
+                        }
+                        currency = Console.ReadLine().ToUpper();
+                    }
+
+                    if (currency != "AVBRYT")
+                    {
+                        return currency;
+                    }
+                    break; 
+                case "3":
+                    return "quit";
+                default:
+                    Console.WriteLine("Ogiltig input! Tryck enter för att fortsätta");
+                    while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
+                    break; 
+            }
+        }
     }
 
     public decimal CaclulateExchangeRate(string CurrencyFrom, string CurrencyTo)
     {
         decimal calcExchangeRate = _exchangeRates[CurrencyFrom].ExchangeRateToEUR * 
-                               _exchangeRates[CurrencyFrom].ExchangeRateToEUR;
+                                   _exchangeRates[CurrencyFrom].ExchangeRateToEUR;
         return calcExchangeRate; 
     }
 

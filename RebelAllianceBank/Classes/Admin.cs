@@ -30,8 +30,8 @@ namespace RebelAllianceBank.Classes
                 Console.WriteLine("UPPDATERA VÄXELKURS: \n" +
                                   "[1] Instruktioner\n" +
                                   "[2] Skriv ut växelkurser\n" +
-                                  "[2] Ladda upp nya växelkurser\n" +
-                                  "[3] Avbryt och återgå till föregående meny");
+                                  "[3] Ladda upp nya växelkurser\n" +
+                                  "[4] Avbryt och återgå till föregående meny");
 
                 string choice = Console.ReadLine();
 
@@ -45,15 +45,16 @@ namespace RebelAllianceBank.Classes
                                           "/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html\n" +
                                           "2. Ladda ner en csv-fil med de senaste växelkurserna\n" +
                                           "3. Kopiera och klistra in hela första raden med valuta-namn (inkl \"Date\")\n" +
-                                          "4. Kopiera och klistra in hela andra raden med växelkurser (inklusive datum)\n" +
-                                          "\n" +
-                                          "Tryck enter när du är redo att fortsätta");
-                        Console.ReadKey();
+                                          "4. Kopiera och klistra in hela andra raden med växelkurser (inklusive datum)\n");
+
+                        Console.WriteLine("Tryck enter när du är redo att fortsätta");
+                        while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                         break;
                     case "2":
+                        Console.Clear();
                         exchangeRate.PrintAllRates();
                         Console.WriteLine("\nTryck enter när du är redo att fortsätta");
-                        Console.ReadKey();
+                        while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                         break;
                     case "3":
                         string input = exchangeRate.PasteAndMatchExchangeRates();
@@ -68,7 +69,7 @@ namespace RebelAllianceBank.Classes
                             else
                             {
                                 Console.WriteLine("Tryck enter för att återgå till menyn och göra ett nytt försök");
-                                Console.ReadLine();
+                                while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                             } 
                         }
                         else if (input == "incorrect")
@@ -76,7 +77,7 @@ namespace RebelAllianceBank.Classes
                             Console.Clear();
                             Console.WriteLine("Något blev inte helt rätt när du klistrade in dina rader. Läs instruktionerna" +
                                               " och försök sen igen! Tryck enter för att fortsätta!");
-                            Console.ReadKey(); 
+                            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                         }
                         break;
                     case "4":

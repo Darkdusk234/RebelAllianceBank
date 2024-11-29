@@ -9,8 +9,11 @@ namespace RebelAllianceBank.Classes
 
         public void Run()
         {
-            var exchangeRate = new ExchangeRate(); 
-            exchangeRate.UpDateCurrency();
+            var admin = new Admin(); 
+            admin.UpDateCurrency();
+            var exchangerate = new ExchangeRate();
+            Console.WriteLine(exchangerate.AccountCurrency());
+            Console.ReadKey();
             
             Login();
         }
