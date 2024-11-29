@@ -9,8 +9,11 @@ namespace RebelAllianceBank;
 
 public class ExchangeRate
 {
+    //A dictionary to gather all currency options. Key is the abbreviation of the currency and value are instances of
+    //the currency class.
     private Dictionary<string, Currency> _exchangeRates = new Dictionary<string, Currency>();
 
+    //These lists will be used when updating the exchange rates of the currencis (and when setting defautl values)
     private string[] _currenciesToUpdate; 
     private string[] _exchangeRatesToUpdate;
         
@@ -79,9 +82,12 @@ public class ExchangeRate
         
         AddDefaultExchangeRates();
     }
-    
+    /// <summary>
+    /// A method for populate the currency objects with default exchange rates when the program is started. 
+    /// </summary>
     private void AddDefaultExchangeRates()
     {
+        //default data from ECB on nov 25th 2024. 
         string currenciesStringDefault = "Date, USD, JPY, BGN, CZK, DKK, GBP, HUF, PLN, RON, SEK, CHF, ISK, NOK, " +
                                          "TRY, AUD, BRL, CAD, CNY, HKD, IDR, ILS, INR, KRW, MXN, MYR, NZD, PHP, SGD, " +
                                          "THB, ZAR";
@@ -94,7 +100,12 @@ public class ExchangeRate
 
         AddExchangeRates();
     }
-
+    /// <summary>
+    /// This method splits the strings of data and makes it to arrays of currencies and exchange rates. Used when adding
+    /// default data as well as when updating the axchangeRates (admin).
+    /// </summary>
+    /// <param name="currenciesString"></param>
+    /// <param name="exchangeRatesString"></param>
     public void SplitStrings(string currenciesString, string exchangeRatesString)
     {
         _currenciesToUpdate = currenciesString.Split(new[] { ',', ' ' }, 
@@ -108,7 +119,16 @@ public class ExchangeRate
             _exchangeRatesToUpdate[i] = _exchangeRatesToUpdate[i].Replace(".", ",");
         }
     }
-
+    /// <summary>
+    /// In this method, the usesr will paste currencies and exchangerates from ECB data according to instructions.
+    /// Strings will be made into arrays with SplitStrings(). If the correlated lengths of the arrays are correct,
+    /// the method will return "correct".
+    /// </summary>
+    /// <returns>
+    /// "quit" - the user wish to get back to the update rates menu
+    /// "correct" - the pasted string arrays of currencies and exchange rates have the correct lenght-correlations.
+    /// If not, "incorrect" is returned
+    /// </returns>
     public string PasteAndMatchExchangeRates()
     {
         Console.Clear();
@@ -133,17 +153,19 @@ public class ExchangeRate
             return "quit";
         }
         SplitStrings(currenciesString, exchangeRatesString);
-
+        
+        //Since the currency data contains "Date", while exchange rate containse e.g."25 november 2024",the legnth of 
+        //the exchangerates array needs to be decreased with 2 to match currencies. 
         if (_currenciesToUpdate.Length != _exchangeRatesToUpdate.Length - 2)
         {
             return "incorrect";
         }
-        else
-        {
-            return "correct";
-        }
+        return "correct";
     }
     
+    /// <summary>
+    /// Adds the echange rates that correlates to the currencies in the dictionary. 
+    /// </summary>
     public void AddExchangeRates()
     {
         for (int i = 1; i < _currenciesToUpdate.Length; i++)
@@ -155,7 +177,10 @@ public class ExchangeRate
             }
         }
     }
-
+    /// <summary>
+    /// A method that print the updated rates and ask the admin to see that the correct data has been added. 
+    /// </summary>
+    /// <returns></returns>
     public bool CheckAddedExchangeRates()
     {
         Console.Clear();
@@ -184,7 +209,9 @@ public class ExchangeRate
             }
         }
     }
-    
+    /// <summary>
+    /// A method for printing all rates int the exchange dictionary. 
+    /// </summary>
     public void PrintAllRates()
     {
         Console.WriteLine("VÄXELKURS:");
@@ -195,7 +222,9 @@ public class ExchangeRate
         Console.WriteLine($"\nSenast uppdaterad den {_exchangeRatesToUpdate[0]} {_exchangeRatesToUpdate[1]} " +
                           $"{_exchangeRatesToUpdate[2]}");
     }
-
+    /// <summary>
+    /// A method for printing all currencies to the console, inkluding name and country. 
+    /// </summary>
     public void PrintAllCurrencies()
     {
         Console.WriteLine("VALUTOR:");
@@ -204,7 +233,10 @@ public class ExchangeRate
             Console.WriteLine($"{currency.Key}   {currency.Value.Name}, {currency.Value.Country}");
         }
     }
-
+    /// <summary>
+    /// A method for setting account currency when creating account.
+    /// </summary>
+    /// <returns></returns>
     public string AccountCurrency()
     {
         while (true)
@@ -233,7 +265,10 @@ public class ExchangeRate
             }
         }
     }
-
+    /// <summary>
+    /// A method for manually choose account currency, Is used in AccountCurrency if the user to want to have SEK. 
+    /// </summary>
+    /// <returns></returns>
     public string ChooseAccountCurrency()
     {
         while (true)
@@ -257,6 +292,7 @@ public class ExchangeRate
                 case "2":
                     string currency = "";
                     
+                    //a loop that runs until the currency is in the coorrect format, or the user wish to abort. 
                     while ((currency.Length != 3 || _exchangeRates.ContainsKey(currency) == false) && currency != "AVBRYT")
                     {
                         Console.WriteLine("Ange den valuta du önskar (tre bokstäver). Skriv AVBRYT för att återgå till " +
@@ -282,7 +318,12 @@ public class ExchangeRate
             }
         }
     }
-
+    /// <summary>
+    /// A metod that calculates the ExchangeRates that will be used when transfering mony betyween accounts. 
+    /// </summary>
+    /// <param name="CurrencyFrom"></param>
+    /// <param name="CurrencyTo"></param>
+    /// <returns></returns>
     public decimal CaclulateExchangeRate(string CurrencyFrom, string CurrencyTo)
     {
         decimal calcExchangeRate = _exchangeRates[CurrencyFrom].ExchangeRateToEUR * 

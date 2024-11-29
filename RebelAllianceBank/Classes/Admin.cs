@@ -19,6 +19,9 @@ namespace RebelAllianceBank.Classes
             Surname = surname;
             Forename = forename;
         }
+        /// <summary>
+        /// A method used by the admin to update all currencies. 
+        /// </summary>
         public void UpDateCurrency()
         {
             bool runLoop = true;

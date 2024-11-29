@@ -5,6 +5,8 @@ namespace RebelAllianceBank.Classes
 {
        public class Currency
        {
+              //The data that will ube used to update the exchangerates come from European Central Bank. Therefore, 
+              //the rates are compared to EUR in the back-ground. 
               private decimal _exchangeRateToEUR;
               
               public string Name { get; set; }
