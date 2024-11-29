@@ -126,21 +126,17 @@ namespace RebelAllianceBank.Classes
 
             Console.Clear();
             Markdown.Paragrath($"Vilket konto vill du överföra {TextColor.Yellow}till{TextColor.NORMAL}");
-            int[] accountToIndex = [];
 
-            bool IsAcountSame = true;
-            while (IsAcountSame)
+            int[] accountToIndex = [];
+            while (true)
             {
                 accountToIndex = menu.Show();
-                if (accountToIndex.Length == 0 || accountToIndex[0].Equals(accountFromIndex[0]))
+                if (accountToIndex.Length != 0 && !accountToIndex[0].Equals(accountFromIndex[0]))
                 {
-                    Console.Clear();
-                    Markdown.Paragrath($"{TextColor.Red}Välj ett altnativ och inte samam konto som du ville överföra ifrån{TextColor.NORMAL}");
+                    break;
                 }
-                else
-                {
-                    IsAcountSame = false;
-                }
+                Console.Clear();
+                Markdown.Paragrath($"{TextColor.Red}Välj ett altnativ och inte samam konto som du ville överföra ifrån{TextColor.NORMAL}");
             }
 
             var acountFrom = BankAccounts[accountFromIndex[0]];
@@ -150,9 +146,10 @@ namespace RebelAllianceBank.Classes
                 acountTo
             ];
 
+            Console.Clear();
+            Markdown.Heder(HeaderLevel.Header2, $"Hur mycket vill du dra ifrån {acountFrom.AccountName}?");
             Markdown.Table(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(updatedAccounts));
             int manyToDrow;
-            Markdown.Heder(HeaderLevel.Header2, $"Hur mycket vill du dra ifrån {acountFrom.AccountName}?");
             while (!int.TryParse(Console.ReadLine(), out manyToDrow) || manyToDrow > acountFrom.Balance || manyToDrow < 0)
             {
                 Markdown.Paragrath($"Välj ett mindre belopp än {acountFrom.Balance}{acountFrom.AccountCurrency}");
@@ -160,7 +157,8 @@ namespace RebelAllianceBank.Classes
 
             acountFrom.Balance -= manyToDrow;
             acountTo.Balance += manyToDrow;
-
+            Console.Clear();
+            Markdown.Heder(HeaderLevel.Header2, "Summering");
             Markdown.Table(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(updatedAccounts));
         }
 
