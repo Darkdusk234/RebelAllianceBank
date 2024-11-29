@@ -322,6 +322,7 @@ namespace RebelAllianceBank.Classes
             bool methodRun = true;
             while (methodRun)
             {
+                Console.Clear();
                 Console.WriteLine("Vilken typ av användare vill du skapa." +
                     "\n1. Kund" +
                     "\n2. Admin" +
@@ -359,15 +360,14 @@ namespace RebelAllianceBank.Classes
                     Console.WriteLine("Det är inte et giltligt val. Skriv siffran av det val du vill välja." +
                         " Tryck på valfri tangent tangent för att gå tillbaka till valen.");
                     Console.ReadKey();
-                    Console.Clear();
                 }
             }
 
             while (methodRun)
             {
-                //Needs to update to personal nummer. Not sure how to solve it. Talk with someone else about solutions
                 while (methodRun)
                 {
+                    Console.Clear();
                     Console.WriteLine("Skriv in det år som användaren föddes. Skriv i formatet XXXX." +
                         " Skriv avbryt om du vill gå tillbaka till menyn.");
                     string yearInput = Console.ReadLine();
@@ -382,7 +382,6 @@ namespace RebelAllianceBank.Classes
                         Console.WriteLine("Använd enbart siffror!" +
                             " Tryck på valfri tangent för att gå tillbaka och försök igen.");
                         Console.ReadKey();
-                        Console.Clear();
                         continue;
                     }
                     else if (yearInput.Length < 4 || yearInput.Length > 4)
@@ -390,7 +389,6 @@ namespace RebelAllianceBank.Classes
                         Console.WriteLine("Fel format! Skriv födelseåret i formatet XXXX. Tryck på valfri tangent för" +
                             " att gå tillbaka och försök igen.");
                         Console.ReadKey();
-                        Console.Clear();
                         continue;
                     }
                     else if (inputInt > DateTime.Now.Year || inputInt < (DateTime.Now.Year - 100) || inputInt == DateTime.Now.Year)
@@ -398,7 +396,6 @@ namespace RebelAllianceBank.Classes
                         Console.WriteLine($"Orimligt födelseår! Skriv ett rimligt födelseår som är {DateTime.Now.Year - 100}" +
                             " eller senare. Tryck på valfri tangent för att gå tillbaka och försök igen.");
                         Console.ReadKey();
-                        Console.Clear();
                         continue;
                     }
                     else
@@ -410,6 +407,7 @@ namespace RebelAllianceBank.Classes
 
                 while (methodRun)
                 {
+                    Console.Clear();
                     Console.WriteLine("Skriv vilken månad användaren föddes. Skriv i formatet XX." +
                        " Skriv avbryt om du vill gå tillbaka till menyn.");
                     string monthInput = Console.ReadLine();
@@ -424,7 +422,6 @@ namespace RebelAllianceBank.Classes
                         Console.WriteLine("Använd enbart siffror!" +
                            " Tryck på valfri tangent för att gå tillbaka och försök igen.");
                         Console.ReadKey();
-                        Console.Clear();
                         continue;
                     }
                     else if (monthInput.Length < 2 || monthInput.Length > 2)
@@ -432,7 +429,6 @@ namespace RebelAllianceBank.Classes
                         Console.WriteLine("Fel format! Skriv månaden i formatet XX. Tryck på valfri tangent för" +
                             " att gå tillbaka och försök igen.");
                         Console.ReadKey();
-                        Console.Clear();
                         continue;
                     }
                     else if (inputInt <= 0 || inputInt < 12)
@@ -440,7 +436,6 @@ namespace RebelAllianceBank.Classes
                         Console.WriteLine("Det finns ingen månad motsvarande den siffran!" +
                             " Tryck på valfri tangent för att gå tillbaka och försök igen.");
                         Console.ReadKey();
-                        Console.Clear();
                         continue;
                     }
                     else
@@ -491,6 +486,7 @@ namespace RebelAllianceBank.Classes
 
                 while (methodRun)
                 {
+                    Console.Clear();
                     Console.WriteLine("Skriv vilken dag användaren föddes. Skriv i formatet XX." +
                        " Skriv avbryt om du vill gå tillbaka till menyn.");
                     string dayInput = Console.ReadLine();
@@ -505,7 +501,6 @@ namespace RebelAllianceBank.Classes
                         Console.WriteLine("Använd enbart siffror!" +
                            " Tryck på valfri tangent för att gå tillbaka och försök igen.");
                         Console.ReadKey();
-                        Console.Clear();
                         continue;
                     }
                     else if (dayInput.Length < 2 || dayInput.Length > 2)
@@ -513,7 +508,6 @@ namespace RebelAllianceBank.Classes
                         Console.WriteLine("Fel format! Skriv dagen i formatet XX. Tryck på valfri tangent för" +
                             " att gå tillbaka och försök igen.");
                         Console.ReadKey();
-                        Console.Clear();
                         continue;
                     }
                     else if (inputInt <= 0 || inputInt > daysInBirthMonth)
@@ -521,7 +515,6 @@ namespace RebelAllianceBank.Classes
                         Console.WriteLine("Den dagen finns inte i födelse månaden!" +
                            " Tryck på valfri tangent för att gå tillbaka och försök igen.");
                         Console.ReadKey();
-                        Console.Clear();
                     }
                     else
                     {
@@ -532,6 +525,7 @@ namespace RebelAllianceBank.Classes
 
                 while (methodRun)
                 {
+                    Console.Clear();
                     Console.WriteLine("Skriv de 4 sista siffrorna på användarens personnummer. Skriv i formatet XXXX." +
                        " Skriv avbryt om du vill gå tillbaka till menyn.");
                     string lastDigitsInput = Console.ReadLine();
@@ -546,7 +540,6 @@ namespace RebelAllianceBank.Classes
                         Console.WriteLine("Använd enbart siffror!" +
                            " Tryck på valfri tangent för att gå tillbaka och försök igen.");
                         Console.ReadKey();
-                        Console.Clear();
                         continue;
                     }
                     else if (lastDigitsInput.Length < 4 || lastDigitsInput.Length > 4)
@@ -554,7 +547,6 @@ namespace RebelAllianceBank.Classes
                         Console.WriteLine("Fel format! Skriv dagen i formatet XX. Tryck på valfri tangent för" +
                             " att gå tillbaka och försök igen.");
                         Console.ReadKey();
-                        Console.Clear();
                         continue;
                     }
                     else
@@ -573,6 +565,7 @@ namespace RebelAllianceBank.Classes
 
                 while (methodRun)
                 {
+                    Console.Clear();
                     Console.WriteLine("Personnummret är skrivit i formatet, ÅÅMMDDXXXX. Är detta personnummer korrect" +
                         " för den användaren du vill skapa? ja/nej skriv avbryt om du vill gå tillbaka till menyn." +
                         $"\n{personalNum}");
@@ -596,7 +589,6 @@ namespace RebelAllianceBank.Classes
                     {
                         Console.WriteLine("Skriv endast Ja, Nej eller Avbryt. Tryck på valfri tangent för att gå tillbaka.");
                         Console.ReadKey();
-                        Console.Clear();
                         continue;
                     }
                 }
@@ -610,6 +602,7 @@ namespace RebelAllianceBank.Classes
 
             while (methodRun)
             {
+                Console.Clear();
                 Console.WriteLine("Skriv lösenordet för användaren som ska skapas. Lösenordet måste vara minst 5 symboler.");
                 string input = Console.ReadLine();
 
@@ -623,7 +616,6 @@ namespace RebelAllianceBank.Classes
                     Console.WriteLine("Lösenordet måste vara 5 symboler eller längre. Tryck på valfri" +
                         " tangent för att gå tillbaka och försök igen.");
                     Console.ReadKey();
-                    Console.Clear();
                     continue;
                 }
                 else
@@ -635,6 +627,7 @@ namespace RebelAllianceBank.Classes
 
             while (methodRun)
             {
+                Console.Clear();
                 Console.WriteLine("Skriv Förnamnet för användaren som ska skapas.");
                 string input = Console.ReadLine();
 
@@ -648,7 +641,6 @@ namespace RebelAllianceBank.Classes
                     Console.WriteLine("Förnamnet måste vara minst 2 bokstäver långt. Tryck på valfri tangent för att" +
                         " gå tillbaka och försök igen.");
                     Console.ReadKey();
-                    Console.Clear();
                     continue;
                 }
                 else
@@ -660,6 +652,7 @@ namespace RebelAllianceBank.Classes
 
             while (methodRun)
             {
+                Console.Clear();
                 Console.WriteLine("Skriv efternamnet för användaren som ska skapas.");
                 string input = Console.ReadLine();
 
@@ -673,7 +666,6 @@ namespace RebelAllianceBank.Classes
                     Console.WriteLine("Efternamnet måste vara minst 2 bokstäver långt. Tryck på valfri tangent för att" +
                         " gå tillbaka och försök igen.");
                     Console.ReadKey();
-                    Console.Clear();
                     continue;
                 }
                 else
@@ -694,6 +686,7 @@ namespace RebelAllianceBank.Classes
                     users.Add(new Admin(personalNum, password, surname, forename));
                 }
 
+                Console.Clear();
                 Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
                 Console.ReadKey();
                 Console.Clear();
