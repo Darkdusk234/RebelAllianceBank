@@ -360,6 +360,7 @@ namespace RebelAllianceBank.Classes
                     Console.WriteLine("Det är inte et giltligt val. Skriv siffran av det val du vill välja." +
                         " Tryck på valfri tangent tangent för att gå tillbaka till valen.");
                     Console.ReadKey();
+                    continue;
                 }
             }
 
