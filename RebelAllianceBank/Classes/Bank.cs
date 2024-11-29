@@ -302,7 +302,9 @@ namespace RebelAllianceBank.Classes
             }
         }
 
-        //To Be Fixed -DO NOT USE
+        /// <summary>
+        /// Method to create new user
+        /// </summary>
         public void CreateUser()
         {
             string userType = "";
@@ -320,6 +322,7 @@ namespace RebelAllianceBank.Classes
             int daysInBirthMonth = 0;
 
             bool methodRun = true;
+            //Takes in user input about what type of user that is to be created.
             while (methodRun)
             {
                 Console.Clear();
@@ -364,8 +367,10 @@ namespace RebelAllianceBank.Classes
                 }
             }
 
+            //Takes in all required data from user input that is needed to put together the user that is to be created's personal number
             while (methodRun)
             {
+                //Takes in birth year
                 while (methodRun)
                 {
                     Console.Clear();
@@ -392,7 +397,8 @@ namespace RebelAllianceBank.Classes
                         Console.ReadKey();
                         continue;
                     }
-                    else if (inputInt > DateTime.Now.Year || inputInt < (DateTime.Now.Year - 100) || inputInt == DateTime.Now.Year)
+                    //Checks if the year inputted is bigger than or equal to current year. Also checks if birthyear is more than a 100 years ago
+                    else if (inputInt >= DateTime.Now.Year || inputInt < (DateTime.Now.Year - 100))
                     {
                         Console.WriteLine($"Orimligt födelseår! Skriv ett rimligt födelseår som är {DateTime.Now.Year - 100}" +
                             " eller senare. Tryck på valfri tangent för att gå tillbaka och försök igen.");
@@ -406,6 +412,7 @@ namespace RebelAllianceBank.Classes
                     }
                 }
 
+                //Takes in birth month
                 while (methodRun)
                 {
                     Console.Clear();
@@ -442,6 +449,7 @@ namespace RebelAllianceBank.Classes
                     else
                     {
                         birthMonth = monthInput;
+                        //Sets how many days are in birth month to daysInBirthMonth variable which is used in next while loop
                         switch (inputInt)
                         {
                             case 1:
@@ -485,6 +493,7 @@ namespace RebelAllianceBank.Classes
                     }
                 }
 
+                //Takes in birth day
                 while (methodRun)
                 {
                     Console.Clear();
@@ -511,6 +520,7 @@ namespace RebelAllianceBank.Classes
                         Console.ReadKey();
                         continue;
                     }
+                    //Checks if inputted day is valid for birth month
                     else if (inputInt <= 0 || inputInt > daysInBirthMonth)
                     {
                         Console.WriteLine("Den dagen finns inte i födelse månaden!" +
@@ -524,6 +534,7 @@ namespace RebelAllianceBank.Classes
                     }
                 }
 
+                //Takes in the last 4 digits of the personal number
                 while (methodRun)
                 {
                     Console.Clear();
@@ -557,6 +568,7 @@ namespace RebelAllianceBank.Classes
                     }
                 }
 
+                //Uses the info inputted and puts it together in the correct format for personal numbers
                 personalNum = personalNum.Insert(0, birthYear.Substring(2));
                 personalNum = personalNum.Insert(2, birthMonth);
                 personalNum = personalNum.Insert(4, birthDay);
@@ -564,6 +576,7 @@ namespace RebelAllianceBank.Classes
 
                 bool correctPersonalNum = false;
 
+                //Allows user to check if the personal number is correct
                 while (methodRun)
                 {
                     Console.Clear();
@@ -600,7 +613,7 @@ namespace RebelAllianceBank.Classes
                 }
             }
 
-
+            //Takes in the the password for the user to be created.
             while (methodRun)
             {
                 Console.Clear();
@@ -627,6 +640,7 @@ namespace RebelAllianceBank.Classes
                 }
             }
 
+            //Takes in forename of the user to be created.
             while (methodRun)
             {
                 Console.Clear();
@@ -652,6 +666,7 @@ namespace RebelAllianceBank.Classes
                 }
             }
 
+            //Takes in the surname of the user to be created.
             while (methodRun)
             {
                 Console.Clear();
@@ -677,6 +692,7 @@ namespace RebelAllianceBank.Classes
                 }
             }
 
+            //Creates the new user using the inputted data.
             if (methodRun)
             {
                 if (userType.Equals("Kund"))
