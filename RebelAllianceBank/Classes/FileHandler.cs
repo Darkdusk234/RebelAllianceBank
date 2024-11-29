@@ -67,6 +67,7 @@ namespace RebelAllianceBank.Classes
                         Password = row[2],
                         Surname = row[3],
                         Forename = row[4],
+                        LoginLock = bool.Parse(row[6])
                     };
                 case "false":
                     return new Customer
@@ -76,12 +77,12 @@ namespace RebelAllianceBank.Classes
                         Password = row[2],
                         Surname = row[3],
                         Forename = row[4],
+                        LoginLock = bool.Parse(row[6])
                     };
                 default:
                     return null;
             }
         }
-
         /// <summary>
         /// Converts a string array to an <see cref="IBankAccount"/> object.
         /// </summary>
@@ -132,7 +133,7 @@ namespace RebelAllianceBank.Classes
             {
                 foreach (var user in users)
                 {
-                    sw.WriteLine($"{user.ID}-{user.PersonalNum}-{user.Password}-{user.Surname}-{user.Forename}-{(user is Admin).ToString().ToLower()}");
+                    sw.WriteLine($"{user.ID}-{user.PersonalNum}-{user.Password}-{user.Surname}-{user.Forename}-{(user is Admin).ToString().ToLower()}-{user.LoginLock.ToString().ToLower()}");
                 }
             }
             using (StreamWriter sw = new StreamWriter(_filePathAccounts, false, Encoding.UTF8))
