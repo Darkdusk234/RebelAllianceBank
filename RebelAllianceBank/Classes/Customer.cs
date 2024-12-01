@@ -71,32 +71,32 @@ namespace RebelAllianceBank.Classes
                     accountCurrency = Console.ReadLine().ToUpper();
                 }
 
-                switch (userChoice)
-                {
-                    case 1:
-                        BankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
-                        createAccount = true;
-                        Console.ReadKey();
-                        break;
-                    case 2:
-                        BankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
-                        createAccount = true;
-                        Console.ReadKey();
-                        break;
-                    case 3:
-                        BankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
-                        createAccount = true;
-                        break;
-                    case 4:
-                        createAccount = true;
-                        break;
-                    default:
-                        Console.WriteLine("Fel inmatning, inget konto har skapats.");
-                        Console.ReadKey();
-                        Console.Clear();
-                        createAccount = false;
-                        break;
-                }
+                //switch (userChoice)
+                //{
+                //    case 1:
+                //        BankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
+                //        createAccount = true;
+                //        Console.ReadKey();
+                //        break;
+                //    case 2:
+                //        BankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
+                //        createAccount = true;
+                //        Console.ReadKey();
+                //        break;
+                //    case 3:
+                //        BankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
+                //        createAccount = true;
+                //        break;
+                //    case 4:
+                //        createAccount = true;
+                //        break;
+                //    default:
+                //        Console.WriteLine("Fel inmatning, inget konto har skapats.");
+                //        Console.ReadKey();
+                //        Console.Clear();
+                //        createAccount = false;
+                //        break;
+                //}
             } while (createAccount == false);
         }
     }
