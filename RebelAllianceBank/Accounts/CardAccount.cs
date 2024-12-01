@@ -1,5 +1,5 @@
 ﻿using RebelAllianceBank.Interfaces;
-namespace RebelAllianceBank.Classes
+namespace RebelAllianceBank.Accounts
 {
     public class CardAccount : IBankAccount
     {

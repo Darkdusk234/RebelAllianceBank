@@ -1,6 +1,8 @@
 ﻿using RebelAllianceBank.Interfaces;
+using RebelAllianceBank.Users;
+using RebelAllianceBank.Accounts;
 
-namespace RebelAllianceBank.Classes
+namespace RebelAllianceBank.utils
 {
     public class FileHandler
     {
@@ -30,7 +32,7 @@ namespace RebelAllianceBank.Classes
         /// <param name="StoredData">A delegate method that takes a string array (representing a line split into parts)
         /// and returns an object of type <typeparamref name="T"/>.</param>
         /// <returns>A list of objects of type <typeparamref name="T"/> created from the file data.</returns>
-        public static List<T> ReadFromFile<T>(string filePath, Func<string[], T> StoredData) 
+        public static List<T> ReadFromFile<T>(string filePath, Func<string[], T> StoredData)
         {
             List<T> savedList = new List<T>();
             if (File.Exists(filePath))

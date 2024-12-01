@@ -1,5 +1,5 @@
 ﻿using RebelAllianceBank.Interfaces;
-namespace RebelAllianceBank.Classes
+namespace RebelAllianceBank.Users
 {
     public class Admin : IUser
     {
@@ -9,7 +9,7 @@ namespace RebelAllianceBank.Classes
         public string Surname { get; set; }
         public string Forename { get; set; }
         public bool LoginLock { get; set; } = false;
-        
+
         public Admin() { }
         public Admin(string pNum, string password, string surname, string forename)
         {

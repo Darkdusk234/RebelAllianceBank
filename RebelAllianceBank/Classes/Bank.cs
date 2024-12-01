@@ -1,4 +1,7 @@
 ﻿using RebelAllianceBank.Interfaces;
+using RebelAllianceBank.Users;
+using RebelAllianceBank.utils;
+using RebelAllianceBank.Menu;
 
 namespace RebelAllianceBank.Classes
 {
@@ -14,11 +17,11 @@ namespace RebelAllianceBank.Classes
             Login();
             if (currentUser is Admin)
             {
-                Menu.AdminMenu(users);
+                var adminMenu = new AdminMenu(currentUser, users);
             }
             else
             {
-                Menu.CustomerMenu(currentUser);
+                var customerMenu = new CustomerMenu(currentUser);
             }
         }
 

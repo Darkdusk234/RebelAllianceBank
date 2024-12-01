@@ -1,6 +1,6 @@
 ﻿using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.utils;
-namespace RebelAllianceBank.Classes
+namespace RebelAllianceBank.Users
 {
     public class Customer : IUser
     {
@@ -11,7 +11,7 @@ namespace RebelAllianceBank.Classes
         public string Forename { get; set; }
         public bool LoginLock { get; set; } = false;
         private List<IBankAccount> BankAccounts = [];
-        
+
         public Customer() { }
         public Customer(string pNum, string password, string surname, string forename)
         {
