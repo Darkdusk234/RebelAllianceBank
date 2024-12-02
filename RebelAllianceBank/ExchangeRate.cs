@@ -129,7 +129,7 @@ public class ExchangeRate
     /// "correct" - the pasted string arrays of currencies and exchange rates have the correct lenght-correlations.
     /// If not, "incorrect" is returned
     /// </returns>
-    public string PasteAndMatchExchangeRates()
+    public EnumsExchangeRate PasteAndMatchExchangeRates()
     {
         Console.Clear();
         Console.WriteLine("Öppna länk: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange" +
@@ -141,7 +141,7 @@ public class ExchangeRate
 
         if (currenciesString.ToLower() == "quit")
         {
-            return "quit";
+            return EnumsExchangeRate.quit;
         }
 
         Console.WriteLine("\n2. Här lägger du in rad två med växelkurser (inklusive datum-info)\n" +
@@ -150,7 +150,7 @@ public class ExchangeRate
 
         if (exchangeRatesString.ToLower() == "quit")
         {
-            return "quit";
+            return EnumsExchangeRate.quit;
         }
         SplitStrings(currenciesString, exchangeRatesString);
         
@@ -158,9 +158,9 @@ public class ExchangeRate
         //the exchangerates array needs to be decreased with 2 to match currencies. 
         if (_currenciesToUpdate.Length != _exchangeRatesToUpdate.Length - 2)
         {
-            return "incorrect";
+            return EnumsExchangeRate.incorrect;
         }
-        return "correct";
+        return EnumsExchangeRate.correct;
     }
     
     /// <summary>
@@ -241,7 +241,7 @@ public class ExchangeRate
     {
         while (true)
         {
-            Console.WriteLine("Önskar du annan valuta än SEK på ditt konto? ja/nej");
+            Console.WriteLine("Önskar du annan valuta än SEK på ditt konto? ja/nej\n");
             string answer = Console.ReadLine();
 
             switch (answer.ToLower())

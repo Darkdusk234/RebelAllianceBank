@@ -60,8 +60,8 @@ namespace RebelAllianceBank.Classes
                         while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                         break;
                     case "3":
-                        string input = exchangeRate.PasteAndMatchExchangeRates();
-                        if (input == "correct")
+                        EnumsExchangeRate input = exchangeRate.PasteAndMatchExchangeRates();
+                        if (input == EnumsExchangeRate.correct)
                         {
                             exchangeRate.AddExchangeRates();
                             bool correctUpdate = exchangeRate.CheckAddedExchangeRates();
@@ -75,7 +75,7 @@ namespace RebelAllianceBank.Classes
                                 while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                             } 
                         }
-                        else if (input == "incorrect")
+                        else if (input == EnumsExchangeRate.incorrect)
                         {
                             Console.Clear();
                             Console.WriteLine("Något blev inte helt rätt när du klistrade in dina rader. Läs instruktionerna" +
