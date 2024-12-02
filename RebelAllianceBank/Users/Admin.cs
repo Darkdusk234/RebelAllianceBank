@@ -118,9 +118,9 @@ public class Admin : IUser
         {
             Console.Clear();
             Console.WriteLine("Vilken typ av användare vill du skapa." +
-                "\n1. Kund" +
-                "\n2. Admin" +
-                "\n3. Gå tillbak till menyn.");
+                              "\n1. Kund" +
+                              "\n2. Admin" +
+                              "\n3. Gå tillbak till menyn.");
             string input = Console.ReadLine();
             bool validInput = false;
 
@@ -152,7 +152,7 @@ public class Admin : IUser
             else
             {
                 Console.WriteLine("Det är inte et giltligt val. Skriv siffran av det val du vill välja." +
-                    " Tryck på valfri tangent tangent för att gå tillbaka till valen.");
+                                  " Tryck på valfri tangent tangent för att gå tillbaka till valen.");
                 Console.ReadKey();
                 continue;
             }
@@ -166,7 +166,7 @@ public class Admin : IUser
             {
                 Console.Clear();
                 Console.WriteLine("Skriv in det år som användaren föddes. Skriv i formatet XXXX." +
-                    " Skriv avbryt om du vill gå tillbaka till menyn.");
+                                  " Skriv avbryt om du vill gå tillbaka till menyn.");
                 string yearInput = Console.ReadLine();
 
                 if (yearInput.ToUpper().Equals("AVBRYT"))
@@ -177,14 +177,14 @@ public class Admin : IUser
                 else if (!int.TryParse(yearInput, out int inputInt))
                 {
                     Console.WriteLine("Använd enbart siffror!" +
-                        " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                                      " Tryck på valfri tangent för att gå tillbaka och försök igen.");
                     Console.ReadKey();
                     continue;
                 }
                 else if (yearInput.Length < 4 || yearInput.Length > 4)
                 {
                     Console.WriteLine("Fel format! Skriv födelseåret i formatet XXXX. Tryck på valfri tangent för" +
-                        " att gå tillbaka och försök igen.");
+                                      " att gå tillbaka och försök igen.");
                     Console.ReadKey();
                     continue;
                 }
@@ -192,7 +192,7 @@ public class Admin : IUser
                 else if (inputInt >= DateTime.Now.Year || inputInt < (DateTime.Now.Year - 100))
                 {
                     Console.WriteLine($"Orimligt födelseår! Skriv ett rimligt födelseår som är {DateTime.Now.Year - 100}" +
-                        " eller senare. Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                                      " eller senare. Tryck på valfri tangent för att gå tillbaka och försök igen.");
                     Console.ReadKey();
                     continue;
                 }
@@ -208,7 +208,7 @@ public class Admin : IUser
             {
                 Console.Clear();
                 Console.WriteLine("Skriv vilken månad användaren föddes. Skriv i formatet XX." +
-                   " Skriv avbryt om du vill gå tillbaka till menyn.");
+                                  " Skriv avbryt om du vill gå tillbaka till menyn.");
                 string monthInput = Console.ReadLine();
 
                 if (monthInput.ToUpper().Equals("AVBRYT"))
@@ -219,21 +219,21 @@ public class Admin : IUser
                 else if (!int.TryParse(monthInput, out int inputInt))
                 {
                     Console.WriteLine("Använd enbart siffror!" +
-                       " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                                      " Tryck på valfri tangent för att gå tillbaka och försök igen.");
                     Console.ReadKey();
                     continue;
                 }
                 else if (monthInput.Length < 2 || monthInput.Length > 2)
                 {
                     Console.WriteLine("Fel format! Skriv månaden i formatet XX. Tryck på valfri tangent för" +
-                        " att gå tillbaka och försök igen.");
+                                      " att gå tillbaka och försök igen.");
                     Console.ReadKey();
                     continue;
                 }
                 else if (inputInt <= 0 || inputInt < 12)
                 {
                     Console.WriteLine("Det finns ingen månad motsvarande den siffran!" +
-                        " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                                      " Tryck på valfri tangent för att gå tillbaka och försök igen.");
                     Console.ReadKey();
                     continue;
                 }
@@ -249,7 +249,7 @@ public class Admin : IUser
             {
                 Console.Clear();
                 Console.WriteLine("Skriv vilken dag användaren föddes. Skriv i formatet XX." +
-                   " Skriv avbryt om du vill gå tillbaka till menyn.");
+                                  " Skriv avbryt om du vill gå tillbaka till menyn.");
                 string dayInput = Console.ReadLine();
                 string dateTime = birthYear;
                 dateTime = dateTime.Insert(3, $"/{birthMonth}");
@@ -263,23 +263,23 @@ public class Admin : IUser
                 else if (!int.TryParse(dayInput, out int unusedInt))
                 {
                     Console.WriteLine("Använd enbart siffror!" +
-                       " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                                      " Tryck på valfri tangent för att gå tillbaka och försök igen.");
                     Console.ReadKey();
                     continue;
                 }
                 else if (dayInput.Length < 2 || dayInput.Length > 2)
                 {
                     Console.WriteLine("Fel format! Skriv dagen i formatet XX. Tryck på valfri tangent för" +
-                        " att gå tillbaka och försök igen.");
+                                      " att gå tillbaka och försök igen.");
                     Console.ReadKey();
                     continue;
                 }
                 //Checks if inputted day is valid for birth month
                 else if (!DateTime.TryParseExact(dateTime, "yyyy/MM/dd", CultureInfo.InvariantCulture,
-                DateTimeStyles.None, out DateTime unused))
+                             DateTimeStyles.None, out DateTime unused))
                 {
                     Console.WriteLine("Den dagen finns inte i födelse månaden!" +
-                       " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                                      " Tryck på valfri tangent för att gå tillbaka och försök igen.");
                     Console.ReadKey();
                 }
                 else
@@ -294,7 +294,7 @@ public class Admin : IUser
             {
                 Console.Clear();
                 Console.WriteLine("Skriv de 4 sista siffrorna på användarens personnummer. Skriv i formatet XXXX." +
-                   " Skriv avbryt om du vill gå tillbaka till menyn.");
+                                  " Skriv avbryt om du vill gå tillbaka till menyn.");
                 string lastDigitsInput = Console.ReadLine();
 
                 if (lastDigitsInput.ToUpper().Equals("AVBRYT"))
@@ -305,14 +305,14 @@ public class Admin : IUser
                 else if (!int.TryParse(lastDigitsInput, out int inputInt))
                 {
                     Console.WriteLine("Använd enbart siffror!" +
-                       " Tryck på valfri tangent för att gå tillbaka och försök igen.");
+                                      " Tryck på valfri tangent för att gå tillbaka och försök igen.");
                     Console.ReadKey();
                     continue;
                 }
                 else if (lastDigitsInput.Length < 4 || lastDigitsInput.Length > 4)
                 {
                     Console.WriteLine("Fel format! Skriv dagen i formatet XX. Tryck på valfri tangent för" +
-                        " att gå tillbaka och försök igen.");
+                                      " att gå tillbaka och försök igen.");
                     Console.ReadKey();
                     continue;
                 }
@@ -336,8 +336,8 @@ public class Admin : IUser
             {
                 Console.Clear();
                 Console.WriteLine("Personnummret är skrivit i formatet, ÅÅMMDDXXXX. Är detta personnummer korrect" +
-                    " för den användaren du vill skapa? ja/nej skriv avbryt om du vill gå tillbaka till menyn." +
-                    $"\n{personalNum}");
+                                  " för den användaren du vill skapa? ja/nej skriv avbryt om du vill gå tillbaka till menyn." +
+                                  $"\n{personalNum}");
                 string userInput = Console.ReadLine();
 
                 if (userInput.ToUpper().Equals("AVBRYT"))
@@ -373,7 +373,7 @@ public class Admin : IUser
         {
             Console.Clear();
             Console.WriteLine("Skriv lösenordet för användaren som ska skapas. Lösenordet måste vara minst 5 symboler." +
-                " Skriv avbryt om du vill gå tillbaka till menyn.");
+                              " Skriv avbryt om du vill gå tillbaka till menyn.");
             string input = Console.ReadLine();
 
             if (input.ToUpper().Equals("AVBRYT"))
@@ -384,7 +384,7 @@ public class Admin : IUser
             else if (input.Length < 5)
             {
                 Console.WriteLine("Lösenordet måste vara 5 symboler eller längre. Tryck på valfri" +
-                    " tangent för att gå tillbaka och försök igen.");
+                                  " tangent för att gå tillbaka och försök igen.");
                 Console.ReadKey();
                 continue;
             }
@@ -410,7 +410,7 @@ public class Admin : IUser
             else if (input.Length <= 1)
             {
                 Console.WriteLine("Förnamnet måste vara minst 2 bokstäver långt. Tryck på valfri tangent för att" +
-                    " gå tillbaka och försök igen.");
+                                  " gå tillbaka och försök igen.");
                 Console.ReadKey();
                 continue;
             }
@@ -436,7 +436,7 @@ public class Admin : IUser
             else if (input.Length <= 1)
             {
                 Console.WriteLine("Efternamnet måste vara minst 2 bokstäver långt. Tryck på valfri tangent för att" +
-                    " gå tillbaka och försök igen.");
+                                  " gå tillbaka och försök igen.");
                 Console.ReadKey();
                 continue;
             }
@@ -463,6 +463,68 @@ public class Admin : IUser
             Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
             Console.ReadKey();
             Console.Clear();
+        }
+    }
+    /// <summary>
+    /// Method that runs function to unlock a locked user.
+    /// </summary>
+    public void UnlockUser(List<IUser> users)
+    {
+        while (true)
+        {
+            Console.WriteLine("Skriv användarnamnet av den användare du vill låsa upp. Skriv exit om du vill gå" +
+                              " tillbaka till menyn");
+            string usernameInput = Console.ReadLine();
+            bool correctInput = false;
+            bool notLockedUser = false;
+
+            //Checks if user wants to exit from function and breaks loop if exit is inputted.
+            if (usernameInput.ToUpper().Equals("EXIT"))
+            {
+                break;
+            }
+
+            foreach (var user in users)
+            {
+                //Checks if users username is the inputted username and checks if that user is locked. If not tells
+                // current user that that useraccount isn't locked and waits for a key press to go back to input.
+                if (user.PersonalNum.Equals(usernameInput) && user.LoginLock == false)
+                {
+                    Console.WriteLine("Användaren är inte låst. Kolla om du skrivit rätt användarnamn. Tryck på valfri rangent" +
+                                      " för att gå vidare.");
+                    correctInput = true;
+                    notLockedUser = true;
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
+                }
+                //Checks if users username is the inputted username and unlocks that useraccount if it is and it is
+                //locked.
+                else if (user.PersonalNum.Equals(usernameInput))
+                {
+                    user.LoginLock = false;
+                    Console.WriteLine("Användaren har låsts upp. Tryck på valfri tangent för att gå vidare.");
+                    correctInput = true;
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
+                }
+            }
+
+            //Continues the loop if a correct username was inputted but that useraccount wasn't locked.
+            if (correctInput && notLockedUser)
+            {
+                continue;
+            }
+            else if (correctInput)
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Det finns ingen användare med det användarnamnet.tryck på " +
+                                  "valfri tangent för att gå tillbaka och försök igen.");
+            }
         }
     }
 }

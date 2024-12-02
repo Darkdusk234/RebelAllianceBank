@@ -237,7 +237,7 @@ public class ExchangeRate
     /// A method for setting account currency when creating account.
     /// </summary>
     /// <returns></returns>
-    public string AccountCurrency()
+    public string SetAccountCurrency()
     {
         while (true)
         {

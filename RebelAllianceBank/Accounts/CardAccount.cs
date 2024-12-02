@@ -1,4 +1,5 @@
-﻿using RebelAllianceBank.Interfaces;
+﻿using RebelAllianceBank.Classes;
+using RebelAllianceBank.Interfaces;
 namespace RebelAllianceBank.Accounts
 {
     public class CardAccount : IBankAccount
@@ -11,13 +12,12 @@ namespace RebelAllianceBank.Accounts
         public string AccountCurrency { get; set; }
         public decimal IntrestRate { get; set; }
         public CardAccount() { }
-        public CardAccount(string userId, int accountType, string accountName, decimal balance, string accountCurrency, decimal intrestRate = 0)
+        public CardAccount(string userId, string accountName, decimal balance, string accountCurrency, decimal intrestRate = 0)
         {
             UserId = userId;
-            AccountType = accountType;
             AccountName = accountName;
             Balance = balance;
-            AccountCurrency = accountCurrency;
+            AccountCurrency = Bank.exchangeRate.SetAccountCurrency();
             IntrestRate = intrestRate;
         }
     }

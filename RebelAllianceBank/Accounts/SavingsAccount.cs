@@ -1,4 +1,5 @@
-﻿using RebelAllianceBank.Interfaces;
+﻿using RebelAllianceBank.Classes;
+using RebelAllianceBank.Interfaces;
 namespace RebelAllianceBank.Accounts
 {
     public class SavingsAccount : IBankAccount
@@ -15,7 +16,7 @@ namespace RebelAllianceBank.Accounts
         {
             AccountName = accountName;
             Balance = balance;
-            AccountCurrency = accountCurrency;
+            AccountCurrency = Bank.exchangeRate.SetAccountCurrency();
             IntrestRate = intrestRate;
         }
     }

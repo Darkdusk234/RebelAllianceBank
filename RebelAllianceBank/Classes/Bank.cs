@@ -9,6 +9,8 @@ namespace RebelAllianceBank.Classes
     {
         IUser? currentUser;
         List<IUser> users;
+        public static ExchangeRate exchangeRate = new ExchangeRate(); 
+        
         public void Run()
         {
             FileHandler fh = new FileHandler();
@@ -226,72 +228,6 @@ namespace RebelAllianceBank.Classes
                         break;
                 }
             }
-        }
-
-
-
-        /// <summary>
-        /// Method that runs function to unlock a locked user.
-        /// </summary>
-        public void UnlockUser()
-        {
-            while (true)
-            {
-                Console.WriteLine("Skriv användarnamnet av den användare du vill låsa upp. Skriv exit om du vill gå" +
-                    " tillbaka till menyn");
-                string usernameInput = Console.ReadLine();
-                bool correctInput = false;
-                bool notLockedUser = false;
-
-                //Checks if user wants to exit from function and breaks loop if exit is inputted.
-                if (usernameInput.ToUpper().Equals("EXIT"))
-                {
-                    break;
-                }
-
-                foreach (var user in users)
-                {
-                    //Checks if users username is the inputted username and checks if that user is locked. If not tells
-                    // current user that that useraccount isn't locked and waits for a key press to go back to input.
-                    if (user.PersonalNum.Equals(usernameInput) && user.LoginLock == false)
-                    {
-                        Console.WriteLine("Användaren är inte låst. Kolla om du skrivit rätt användarnamn. Tryck på valfri rangent" +
-                            " för att gå vidare.");
-                        correctInput = true;
-                        notLockedUser = true;
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    }
-                    //Checks if users username is the inputted username and unlocks that useraccount if it is and it is
-                    //locked.
-                    else if (user.PersonalNum.Equals(usernameInput))
-                    {
-                        user.LoginLock = false;
-                        Console.WriteLine("Användaren har låsts upp. Tryck på valfri tangent för att gå vidare.");
-                        correctInput = true;
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    }
-                }
-
-                //Continues the loop if a correct username was inputted but that useraccount wasn't locked.
-                if (correctInput && notLockedUser)
-                {
-                    continue;
-                }
-                else if (correctInput)
-                {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Det finns ingen användare med det användarnamnet.tryck på " +
-                        "valfri tangent för att gå tillbaka och försök igen.");
-                }
-            }
-
         }
     }
 }

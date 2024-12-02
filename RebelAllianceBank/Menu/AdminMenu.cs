@@ -5,16 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RebelAllianceBank.Classes;
+using RebelAllianceBank.Users;
 
 namespace RebelAllianceBank.Menu
 {
     public class AdminMenu : Menu
     {
-        private List<IUser> users;
+        private List<IUser> _users;
+        private Admin _currentAdmin;
 
         public AdminMenu(IUser currentUser, List<IUser> users) : base(currentUser)
         {
-            this.users = users;
+            this._users = users;
+            _currentAdmin = (Admin?)currentUser; 
         }
         public override void Show()
         {
@@ -33,12 +37,15 @@ namespace RebelAllianceBank.Menu
                 {
                     case 0:
                         Console.WriteLine("Skapa användare");
+                        _currentAdmin.CreateUser(_users);
                         break;
                     case 1:
                         Console.WriteLine("Ändra växelkurs");
+                        _currentAdmin.UpDateCurrency();
                         break;
                     case 2:
                         Console.WriteLine("Lås upp användarkonto???");
+                        _currentAdmin.UnlockUser(_users);
                         break;
                     case 3:
                         runAdminMenu = false;
