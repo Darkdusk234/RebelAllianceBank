@@ -92,12 +92,12 @@ namespace RebelAllianceBank.Menu
                 switch (choice)
                 {
                     case 0:
-                        Console.WriteLine("Se över mina konton");
+                        Console.Clear();
                         _currentCustomer.ShowBankAccounts();
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 1:
-                        Console.WriteLine("Öppna nytt konto");
+                        Console.Clear();
                         _currentCustomer.CreateAccount();
                         Console.ReadKey();
                         break;

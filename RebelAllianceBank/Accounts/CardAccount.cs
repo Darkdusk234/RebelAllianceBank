@@ -8,17 +8,15 @@ namespace RebelAllianceBank.Accounts
         public string UserId { get; set; }
         public int AccountType { get; set; } = 0;
         public string AccountName { get; set; }
-        public decimal Balance { get; set; }
+        public decimal Balance { get; set; } = 0;
         public string AccountCurrency { get; set; }
-        public decimal IntrestRate { get; set; }
+        public decimal IntrestRate { get; set; } = 0; 
         public CardAccount() { }
-        public CardAccount(string userId, string accountName, decimal balance, string accountCurrency, decimal intrestRate = 0)
+        public CardAccount(string userId, string accountName)
         {
             UserId = userId;
             AccountName = accountName;
-            Balance = balance;
             AccountCurrency = Bank.exchangeRate.SetAccountCurrency();
-            IntrestRate = intrestRate;
         }
     }
 }

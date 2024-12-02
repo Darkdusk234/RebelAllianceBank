@@ -72,9 +72,6 @@ namespace RebelAllianceBank.Users
                 {
                     Console.Write("Vad vill du kalla kontot: ");
                     accountName = Console.ReadLine();
-
-                    Console.Write("Vilken valuta vill du ha på kontot: ");
-                    accountCurrency = Console.ReadLine().ToUpper();
                 }
 
                 //switch (userChoice)
