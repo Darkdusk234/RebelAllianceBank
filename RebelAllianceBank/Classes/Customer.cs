@@ -10,7 +10,7 @@ namespace RebelAllianceBank.Classes
         public string Surname { get; set; }
         public string Forename { get; set; }
         public bool LoginLock { get; set; } = false;
-        private List<IBankAccount> BankAccounts = [];
+        private List<IBankAccount> _bankAccounts = new List<IBankAccount>();
         
         public Customer() { }
         public Customer(string pNum, string password, string surname, string forename)
@@ -21,18 +21,23 @@ namespace RebelAllianceBank.Classes
             Forename = forename;
         }
 
+        public List<IBankAccount> GetListBankAccount()
+        {
+            return _bankAccounts;
+        }
+
         public void ShowBankAccounts()
         {
             Console.WriteLine("Konton");
 
-            if (BankAccounts.Count == 0)
+            if (_bankAccounts.Count == 0)
             {
                 Console.WriteLine("Du har inga konton att visa");
                 return;
             }
 
             List<string> bodyKeys = [];
-            foreach (var BankAccount in BankAccounts)
+            foreach (var BankAccount in _bankAccounts)
             {
                 bodyKeys.Add(BankAccount.AccountName);
                 bodyKeys.Add(BankAccount.Balance.ToString("N2"));
@@ -71,33 +76,32 @@ namespace RebelAllianceBank.Classes
                     accountCurrency = Console.ReadLine().ToUpper();
                 }
 
-                switch (userChoice)
-                {
-                    case 1:
-                        //Needs to be updated to new constructor
-                        //BankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
-                        createAccount = true;
-                        Console.ReadKey();
-                        break;
-                    case 2:
-                        BankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
-                        createAccount = true;
-                        Console.ReadKey();
-                        break;
-                    case 3:
-                        BankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
-                        createAccount = true;
-                        break;
-                    case 4:
-                        createAccount = true;
-                        break;
-                    default:
-                        Console.WriteLine("Fel inmatning, inget konto har skapats.");
-                        Console.ReadKey();
-                        Console.Clear();
-                        createAccount = false;
-                        break;
-                }
+                //switch (userChoice)
+                //{
+                //    case 1:
+                //        BankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
+                //        createAccount = true;
+                //        Console.ReadKey();
+                //        break;
+                //    case 2:
+                //        BankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
+                //        createAccount = true;
+                //        Console.ReadKey();
+                //        break;
+                //    case 3:
+                //        BankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
+                //        createAccount = true;
+                //        break;
+                //    case 4:
+                //        createAccount = true;
+                //        break;
+                //    default:
+                //        Console.WriteLine("Fel inmatning, inget konto har skapats.");
+                //        Console.ReadKey();
+                //        Console.Clear();
+                //        createAccount = false;
+                //        break;
+                //}
             } while (createAccount == false);
         }
     }
