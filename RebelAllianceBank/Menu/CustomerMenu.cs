@@ -33,7 +33,7 @@ namespace RebelAllianceBank.Menu
                         CustomerMenuTransaction();
                         break;
                     case 2:
-                        Loan();
+                        CustomerMenuLoan();
                         break;
                     case 3:
                         runCustomerMenu = false;
@@ -41,7 +41,7 @@ namespace RebelAllianceBank.Menu
                 }
             }
         }
-        public void Loan()
+        public void CustomerMenuLoan()
         {
             string[] options = { "Mina lån", "Ansök om nytt lån", "Återgå till huvudmenyn" };
             bool runCustomerMenuLoan = true;
