@@ -1,5 +1,7 @@
 ﻿using RebelAllianceBank.Interfaces;
-using System.Text;
+using RebelAllianceBank.Users;
+using RebelAllianceBank.utils;
+using RebelAllianceBank.Menu;
 
 namespace RebelAllianceBank.Classes
 {
@@ -10,9 +12,93 @@ namespace RebelAllianceBank.Classes
         public void Run()
         {
             FileHandler fh = new FileHandler();
-            users = new List<IUser>(fh.ReadUser());
-            Login();
+            users = new List<IUser>(fh.ReadUserAndAccounts());
+            bool run = true;
+            while (run)
+            {
+                Login();
+                if (currentUser is Admin)
+                {
+                    var adminMenu = new AdminMenu(currentUser, users);
+                    adminMenu.Show();
+                }
+                else
+                {
+                    var customerMenu = new CustomerMenu(currentUser);
+                    customerMenu.Show();
+                }
+            }
         }
+
+        //public void Login()
+        //{
+        //    while (true)
+        //    {
+        //        Console.Clear();
+        //        Console.WriteLine("Välkommen till Rebel Alliance Bank. Vänligen ange ditt personnummer.");
+        //        Console.Write("Personnummer: ");
+        //        string? usernameInput = Console.ReadLine();
+
+        //        if (string.IsNullOrWhiteSpace(usernameInput))
+        //        {
+        //            Console.WriteLine("Personnummer får inte vara tomt. Försök igen.");
+        //            Console.ReadKey();
+        //            continue;
+        //        }
+
+        //        currentUser = users.FirstOrDefault(user => user.PersonalNum == usernameInput);
+        //        if (currentUser != null)
+        //        {
+        //            if (currentUser.LoginLock)
+        //            {
+        //                Console.WriteLine("Användaren är låst. Kontakta administratör.\n" +
+        //                                  "Tryck på enter för att fortsätta");
+        //                while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+        //            }
+        //            else if (Authenticate(currentUser))
+        //            {
+        //                break;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("Användarnamnet hittades inte. Tryck på enter för att försöka igen.");
+        //            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+        //        }
+        //    }
+        //}
+        //public bool Authenticate(IUser user)
+        //{
+        //    int tries = 3;
+        //    while (tries > 0)
+        //    {
+        //        Console.Clear();
+        //        Console.WriteLine($"God dag {user.Surname}. Vänligen skriv ditt lösenord. Du har {tries} försök kvar.");
+        //        string? passwordInput = Console.ReadLine();
+
+        //        if (user.Password == passwordInput)
+        //        {
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            tries--;
+        //            Console.WriteLine($"Felaktigt lösenord. Du har {tries} försök kvar.");
+        //            if (tries == 0)
+        //            {
+        //                Console.WriteLine("Användaren är nu låst. Kontakta administratör!\n" +
+        //                    "Tryck på enter för att återgå");
+        //                while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+        //                user.LoginLock = true;
+        //                return false;
+        //            }
+        //            Console.WriteLine($"Tryck på enter för att försöka igen.");
+        //            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+        //        }
+        //    }
+        //    return false;
+        //}
+
 
         /// <summary>
         /// Method that runs the login system and loops until successful login was done.
@@ -22,14 +108,15 @@ namespace RebelAllianceBank.Classes
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Välkommen till Rebel Alliance Bank. Vänligen skriv ditt personnummer.");
+                Console.WriteLine("Välkommen till Rebel Alliance Bank. Vänligen ange ditt personnummer.");
+                Console.Write("Personnummer: ");
                 string? usernameInput = Console.ReadLine();
                 bool correctUser = false;
                 bool correctPass = false;
                 bool userLocked = false;
                 int tries = 0;
 
-                //Checks if inputted username is a valid username. Also checks if that user is locked from logging in.
+                //Checks if inputted username is a valid username.Also checks if that user is locked from logging in.
                 foreach (var user in users)
                 {
                     if (user.PersonalNum.Equals(usernameInput) && user.LoginLock == true)
@@ -102,169 +189,6 @@ namespace RebelAllianceBank.Classes
             }
         }
 
-        public static void AdminMenu()
-        {
-            bool runAdminMenu = true;
-
-            while (runAdminMenu)
-            {
-                Console.Clear();
-
-                Console.Write("ADMIN\n" +
-                              "[1] Skapa användare\n" +
-                              "[2] Ändra växelkurs\n" +
-                              "[3] Lås upp användarkonto???\n" +
-                              "[4] Logga ut\n" +
-                              "\n" +
-                              "Menyval: ");
-
-                string choice = Console.ReadLine();
-
-                switch (choice)
-                {
-                    case "1":
-                        Console.WriteLine("Skapa användare");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
-                        break;
-                    case "2":
-                        Console.WriteLine("Ändra växelkurs");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
-                        break;
-                    case "3":
-                        Console.WriteLine("Lås upp användarkonto???");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
-                        break;
-                    case "4":
-                        runAdminMenu = false;
-                        break;
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
-                        Console.ReadKey();
-                        break;
-                }
-            }
-        }
-
-        public static void CustomerMenu()
-        {
-            bool runCustomerMenu = true;
-
-            while (runCustomerMenu)
-            {
-                Console.Clear();
-                Console.Write($"Välkommen {"John Doe"}!\n" +
-                              $"\n" +
-                              $"HUVUDMENY:\n" +
-                              $"[1] Konton\n" +
-                              $"[2] Betala/Överföra\n" +
-                              $"[3] Lån\n" +
-                              $"[4] Logga ut\n" +
-                              $"\n" +
-                              $"Menyval: ");
-
-                string choice = Console.ReadLine();
-
-                switch (choice)
-                {
-                    case "1":
-                        CustomerMenuAccounts();
-                        break;
-                    case "2":
-                        CustomerMenuTransaction();
-                        break;
-                    case "3":
-                        CustomerMenuLoan();
-                        break;
-                    case "4":
-                        runCustomerMenu = false;
-                        break;
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
-                        Console.ReadKey();
-                        break;
-                }
-            }
-        }
-
-        private static void CustomerMenuAccounts()
-        {
-            bool runCustomerMenuAccounts = true;
-
-            while (runCustomerMenuAccounts)
-            {
-                Console.Clear();
-
-                Console.Write("KONTON:\n" +
-                              "[1] Se över mina konton\n" +
-                              "[2] Öppna nytt konto\n" +
-                              "[3] Återgå till huvudmenyn\n" +
-                              "\n" +
-                              "Menyval: ");
-
-                string choice = Console.ReadLine();
-
-                switch (choice)
-                {
-                    case "1":
-                        Console.WriteLine("Se över mina konton");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
-                        break;
-                    case "2":
-                        Console.WriteLine("Öppna nytt konto");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
-                        break;
-                    case "3":
-                        runCustomerMenuAccounts = false;
-                        break;
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
-                        Console.ReadKey();
-                        break;
-                }
-            }
-        }
-        private static void CustomerMenuTransaction()
-        {
-            bool runCustomerMenuTransaction = true;
-
-            while (runCustomerMenuTransaction)
-            {
-                Console.Clear();
-
-                Console.Write("BETALA/ÖVERFÖRA:\n" +
-                              "[1] Ny överföring\n" +
-                              "[2] Ny betalning\n" +
-                              "[3] Återgå till huvudmenyn\n" +
-                              "\n" +
-                              "Menyval: ");
-
-                string choice = Console.ReadLine();
-
-                switch (choice)
-                {
-                    case "1":
-                        Console.WriteLine("Ny överföring");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
-                        break;
-                    case "2":
-                        Console.WriteLine("Ny betalning");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
-                        break;
-                    case "3":
-                        runCustomerMenuTransaction = false;
-                        break;
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
-                        Console.ReadKey();
-                        break;
-                }
-            }
-        }
-
         private static void CustomerMenuLoan()
         {
             bool runCustomerMenuLoan = true;
@@ -303,6 +227,8 @@ namespace RebelAllianceBank.Classes
                 }
             }
         }
+
+
 
         /// <summary>
         /// Method that runs function to unlock a locked user.

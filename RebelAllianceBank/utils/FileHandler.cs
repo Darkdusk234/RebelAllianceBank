@@ -1,4 +1,7 @@
-﻿using RebelAllianceBank.Interfaces;
+﻿using RebelAllianceBank.Accounts;
+using RebelAllianceBank.Classes;
+using RebelAllianceBank.Interfaces;
+using RebelAllianceBank.Users;
 using System.Text;
 
 namespace RebelAllianceBank.Classes
@@ -70,7 +73,7 @@ namespace RebelAllianceBank.Classes
                         LoginLock = bool.Parse(row[6])
                     };
                 case "false":
-                    var customer = new Customer
+                    return new Customer
                     {
                         ID = Convert.ToInt32(row[0]),
                         PersonalNum = row[1],
@@ -79,9 +82,6 @@ namespace RebelAllianceBank.Classes
                         Forename = row[4],
                         LoginLock = bool.Parse(row[6])
                     };
-                    List<IBankAccount> accounts = ReadAccount();
-                    customer.BankAccounts.AddRange(accounts.Where(account => account.UserId == customer.PersonalNum));
-                    return customer;
                 default:
                     return null;
             }

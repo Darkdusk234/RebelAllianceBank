@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.utils;
-namespace RebelAllianceBank.Classes
+using RebelAllianceBank.Accounts;
+namespace RebelAllianceBank.Users
 {
     public class Customer : IUser
     {
@@ -45,7 +46,6 @@ namespace RebelAllianceBank.Classes
             }
             Markdown.Table(["Konto Namn", "Saldo"], bodyKeys);
         }
-
         public void CreateAccount()
         {
             bool createAccount = false;
@@ -80,17 +80,17 @@ namespace RebelAllianceBank.Classes
                 //switch (userChoice)
                 //{
                 //    case 1:
-                //        BankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
+                //        _bankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
                 //        createAccount = true;
                 //        Console.ReadKey();
                 //        break;
                 //    case 2:
-                //        BankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
+                //        _bankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
                 //        createAccount = true;
                 //        Console.ReadKey();
                 //        break;
                 //    case 3:
-                //        BankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
+                //        _bankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
                 //        createAccount = true;
                 //        break;
                 //    case 4:
@@ -119,12 +119,12 @@ namespace RebelAllianceBank.Classes
             while (currentUserAccount == null)
             {
                 Console.WriteLine("Skriv namnet på det konto du vill föra över från:");
-                foreach (var account in BankAccounts)
+                foreach (var account in _bankAccounts)
                 {
                     Console.WriteLine($"{account.AccountName} (Saldo: {account.Balance:N2})");
                 }
                 string currentUserAccountName = Console.ReadLine();
-                currentUserAccount = BankAccounts.FirstOrDefault(account => account.AccountName.Equals(currentUserAccountName, StringComparison.OrdinalIgnoreCase));
+                currentUserAccount = _bankAccounts.FirstOrDefault(account => account.AccountName.Equals(currentUserAccountName, StringComparison.OrdinalIgnoreCase));
                 if (currentUserAccount == null)
                 {
                     Console.WriteLine("Ogiltligt kontonamn.");
@@ -149,13 +149,13 @@ namespace RebelAllianceBank.Classes
             {
                 Console.WriteLine("Skriv in namnet på kontot du vill föra över till:");
 
-                foreach (var account in otherUser.BankAccounts)
+                foreach (var account in otherUser._bankAccounts)
                 {
                     Console.WriteLine($"{account.AccountName} (Saldo: {account.Balance:N2})");
                 }
 
                 string otherAccountName = Console.ReadLine();
-                otherAccount = otherUser.BankAccounts.FirstOrDefault(account => account.AccountName.Equals(otherAccountName, StringComparison.OrdinalIgnoreCase));
+                otherAccount = otherUser._bankAccounts.FirstOrDefault(account => account.AccountName.Equals(otherAccountName, StringComparison.OrdinalIgnoreCase));
                 if (otherAccount == null)
                 {
                     Console.WriteLine("Ogiltligt kontonamn. Försök igen.");
