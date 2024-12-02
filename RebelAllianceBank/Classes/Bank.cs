@@ -14,14 +14,20 @@ namespace RebelAllianceBank.Classes
         {
             FileHandler fh = new FileHandler();
             users = new List<IUser>(fh.ReadUser());
-            Login();
-            if (currentUser is Admin)
+            bool run = true;
+            while (run)
             {
-                var adminMenu = new AdminMenu(currentUser, users);
-            }
-            else
-            {
-                var customerMenu = new CustomerMenu(currentUser);
+                Login();
+                if (currentUser is Admin)
+                {
+                    var adminMenu = new AdminMenu(currentUser, users);
+                    adminMenu.Show();
+                }
+                else
+                {
+                    var customerMenu = new CustomerMenu(currentUser);
+                    customerMenu.Show();
+                }
             }
         }
 

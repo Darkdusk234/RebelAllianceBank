@@ -72,38 +72,29 @@ namespace RebelAllianceBank.Menu
         }
         public void CustomerMenuAccounts()
         {
+            string[] options = { "Visa konton", "Öppna nytt konto", "Återgå till huvudmenyn" };
             bool runCustomerMenuAccounts = true;
 
             while (runCustomerMenuAccounts)
             {
-                Console.Clear();
-
-                Console.Write("KONTON:\n" +
-                              "[1] Se över mina konton\n" +
-                              "[2] Öppna nytt konto\n" +
-                              "[3] Återgå till huvudmenyn\n" +
-                              "\n" +
-                              "Menyval: ");
-
-                string choice = Console.ReadLine();
+                int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
+                    cancel: false,
+                    columnHeaders: new[] { $"Lån - {CurrentUser.Surname}" },
+                    filterData: new List<string>(options),
+                    inData: option => new[] { option });
 
                 switch (choice)
                 {
-                    case "1":
+                    case 0:
                         Console.WriteLine("Se över mina konton");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
-                    case "2":
+                    case 1:
                         Console.WriteLine("Öppna nytt konto");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
-                    case "3":
+                    case 2:
                         runCustomerMenuAccounts = false;
-                        break;
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
-                        Console.ReadKey();
                         break;
                 }
             }
@@ -111,37 +102,28 @@ namespace RebelAllianceBank.Menu
         private void CustomerMenuTransaction()
         {
             bool runCustomerMenuTransaction = true;
+            string[] options = { "Ny överföring", "Ny betalning", "Återgå till huvudmenyn" };
 
             while (runCustomerMenuTransaction)
             {
-                Console.Clear();
-
-                Console.Write("BETALA/ÖVERFÖRA:\n" +
-                              "[1] Ny överföring\n" +
-                              "[2] Ny betalning\n" +
-                              "[3] Återgå till huvudmenyn\n" +
-                              "\n" +
-                              "Menyval: ");
-
-                string choice = Console.ReadLine();
+                int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
+                    cancel: false,
+                    columnHeaders: new[] { $"Lån - {CurrentUser.Surname}" },
+                    filterData: new List<string>(options),
+                    inData: option => new[] { option });
 
                 switch (choice)
                 {
-                    case "1":
+                    case 0:
                         Console.WriteLine("Ny överföring");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
-                    case "2":
+                    case 1:
                         Console.WriteLine("Ny betalning");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
-                    case "3":
+                    case 2:
                         runCustomerMenuTransaction = false;
-                        break;
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
-                        Console.ReadKey();
                         break;
                 }
             }
