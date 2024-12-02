@@ -5,7 +5,7 @@ namespace RebelAllianceBank.Accounts
     {
         public int ID { get; set; }
         public string UserId { get; set; }
-        public int AccountType { get; set; }
+        public int AccountType { get; set; } = 1;
         public string AccountName { get; set; }
         public decimal Balance { get; set; }
         public string AccountCurrency { get; set; }

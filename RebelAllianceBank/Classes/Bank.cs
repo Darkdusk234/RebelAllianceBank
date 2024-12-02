@@ -9,7 +9,7 @@ namespace RebelAllianceBank.Classes
     {
         List<IUser> users;
         IUser? currentUser;
-
+        List<IUser> users;
         public void Run()
         {
             FileHandler fh = new FileHandler();
@@ -190,123 +190,46 @@ namespace RebelAllianceBank.Classes
             }
         }
 
-        //To Be Fixed -DO NOT USE
-        //public void CreateUser()
-        //{
-        //    string userType = "";
-        //    string username = "";
-        //    string password = "";
-        //    bool methodRun = true;
-        //    while (methodRun)
-        //    {
-        //        Console.WriteLine("Vilken typ av användare vill du skapa." +
-        //            "\n1. Kund" +
-        //            "\n2. Admin" +
-        //            "\n3. Gå tillbak till menyn.");
-        //        string input = Console.ReadLine();
-        //        bool validInput = false;
+        private static void CustomerMenuLoan()
+        {
+            bool runCustomerMenuLoan = true;
 
-        //        switch (input)
-        //        {
-        //            case "1":
-        //                userType = "Kund";
-        //                validInput = true;
-        //                break;
-        //            case "2":
-        //                userType = "Admin";
-        //                validInput = true;
-        //                break;
-        //            case "3":
-        //                methodRun = false;
-        //                break;
-        //            default:
-        //                break;
-        //        }
+            while (runCustomerMenuLoan)
+            {
+                Console.Clear();
 
-        //        if (!methodRun)
-        //        {
-        //            break;
-        //        }
-        //        else if (validInput)
-        //        {
-        //            break;
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Det är inte et giltligt val. Skriv siffran av det val du vill välja." +
-        //                " Tryck på valfri tangent tangent för att gå tillbaka till valen.");
-        //            Console.ReadKey();
-        //            Console.Clear();
-        //        }
-        //    }
+                Console.Write("LÅN:\n" +
+                              "[1] Mina lån\n" +
+                              "[2] Ansök om nytt lån\n" +
+                              "[3] Återgå till huvudmenyn\n" +
+                              "\n" +
+                              "Menyval: ");
 
-        //    while (methodRun)
-        //    {
-        //        Console.WriteLine("Skriv användarnamnet på användaren som ska skapas." +
-        //            " Användarnamnet måste vara minst 5 symboler. Skriv exit om du vill gå tillbaka till menyn.");
-        //        string input = Console.ReadLine();
+                string choice = Console.ReadLine();
 
-        //        if (input.ToUpper().Equals("EXIT"))
-        //        {
-        //            methodRun = false;
-        //            break;
-        //        }
-        //        else if (input.Length < 5)
-        //        {
-        //            Console.WriteLine("Användarnamnet måste vara 5 symboler eller längre. Tryck på valfri" +
-        //                " tangent för att gå tillbaka och försök igen.");
-        //            Console.ReadKey();
-        //            Console.Clear();
-        //            continue;
-        //        }
-        //        else
-        //        {
-        //            username = input;
-        //            break;
-        //        }
-        //    }
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine("Mina lån");
+                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        break;
+                    case "2":
+                        Console.WriteLine("Ansök om nytt lån");
+                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        break;
+                    case "3":
+                        runCustomerMenuLoan = false;
+                        break;
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+        }
 
-        //    while (methodRun)
-        //    {
-        //        Console.WriteLine("Skriv lösenordet för användaren som ska skapas. Lösenordet måste vara minst 5 symboler.");
-        //        string input = Console.ReadLine();
 
-        //        if (input.ToUpper().Equals("EXIT"))
-        //        {
-        //            methodRun = false;
-        //            break;
-        //        }
-        //        else if (input.Length < 5)
-        //        {
-        //            Console.WriteLine("Lösenordet måste vara 5 symboler eller längre. Tryck på valfri" +
-        //                " tangent för att gå tillbaka och försök igen.");
-        //            Console.ReadKey();
-        //            Console.Clear();
-        //            continue;
-        //        }
-        //        else
-        //        {
-        //            password = input;
-        //            break;
-        //        }
-        //    }
-
-        //    if (methodRun)
-        //    {
-        //        if (userType.Equals("Kund"))
-        //        {
-        //            users.Add(new Customer(username, password));
-        //        }
-        //        else if (userType.Equals("Admin"))
-        //        {
-        //            users.Add(new Admin(username, password));
-        //        }
-
-        //        Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
-        //        Console.ReadKey();
-        //        Console.Clear();
-        //    }
-        //}
 
         /// <summary>
         /// Method that runs function to unlock a locked user.
