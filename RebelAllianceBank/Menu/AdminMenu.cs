@@ -36,15 +36,12 @@ namespace RebelAllianceBank.Menu
                 switch (choice)
                 {
                     case 0:
-                        Console.WriteLine("Skapa användare");
                         _currentAdmin.CreateUser(_users);
                         break;
                     case 1:
-                        Console.WriteLine("Ändra växelkurs");
                         _currentAdmin.UpDateCurrency();
                         break;
                     case 2:
-                        Console.WriteLine("Lås upp användarkonto???");
                         _currentAdmin.UnlockUser(_users);
                         break;
                     case 3:
