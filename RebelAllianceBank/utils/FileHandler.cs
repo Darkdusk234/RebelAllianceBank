@@ -60,31 +60,35 @@ namespace RebelAllianceBank.Classes
         /// <returns>An <see cref="IUser"/> object or null if the row is invalid.</returns>
         public IUser StoredUser(string[] row)
         {
-            switch (row[5])
+            if (row.Length == 7)
             {
-                case "true":
-                    return new Admin
-                    {
-                        ID = Convert.ToInt32(row[0]), // unique id
-                        PersonalNum = row[1], // 8802252525
-                        Password = row[2],
-                        Surname = row[3],
-                        Forename = row[4],
-                        LoginLock = bool.Parse(row[6])
-                    };
-                case "false":
-                    return new Customer
-                    {
-                        ID = Convert.ToInt32(row[0]),
-                        PersonalNum = row[1],
-                        Password = row[2],
-                        Surname = row[3],
-                        Forename = row[4],
-                        LoginLock = bool.Parse(row[6])
-                    };
-                default:
-                    return null;
+                switch (row[5])
+                {
+                    case "true":
+                        return new Admin
+                        {
+                            ID = Convert.ToInt32(row[0]), // unique id
+                            PersonalNum = row[1], // 8802252525
+                            Password = row[2],
+                            Surname = row[3],
+                            Forename = row[4],
+                            LoginLock = bool.Parse(row[6])
+                        };
+                    case "false":
+                        return new Customer
+                        {
+                            ID = Convert.ToInt32(row[0]),
+                            PersonalNum = row[1],
+                            Password = row[2],
+                            Surname = row[3],
+                            Forename = row[4],
+                            LoginLock = bool.Parse(row[6])
+                        };
+                    default:
+                        return null;
+                }
             }
+            return null;
         }
         /// <summary>
         /// Converts a string array to an <see cref="IBankAccount"/> object.
@@ -93,41 +97,45 @@ namespace RebelAllianceBank.Classes
         /// <returns>An object of <see cref="IBankAccount"/> or null if row is invalid.</returns>
         public IBankAccount StoredBankAccount(string[] row)
         {
-            switch (row[2])
+            if (row.Length == 6)
             {
-                case "0":
-                    return new CardAccount
-                    {
-                        ID = Convert.ToInt32(row[0]),
-                        UserId = row[1],
-                        AccountType = Convert.ToInt32(row[2]),
-                        AccountName = row[3],
-                        Balance = Convert.ToDecimal(row[4]),
-                        AccountCurrency = row[5]
-                    };
-                case "1":
-                    return new SavingsAccount
-                    {
-                        ID = Convert.ToInt32(row[0]),
-                        UserId = row[1],
-                        AccountType = Convert.ToInt32(row[2]),
-                        AccountName = row[3],
-                        Balance = Convert.ToDecimal(row[4]),
-                        AccountCurrency = row[5]
-                    };
-                case "2":
-                    return new ISK
-                    {
-                        ID = Convert.ToInt32(row[0]),
-                        UserId = row[1],
-                        AccountType = Convert.ToInt32(row[2]),
-                        AccountName = row[3],
-                        Balance = Convert.ToDecimal(row[4]),
-                        AccountCurrency = row[5]
-                    };
-                default:
-                    return null;
+                switch (row[2])
+                {
+                    case "0":
+                        return new CardAccount
+                        {
+                            ID = Convert.ToInt32(row[0]),
+                            UserId = row[1],
+                            AccountType = Convert.ToInt32(row[2]),
+                            AccountName = row[3],
+                            Balance = Convert.ToDecimal(row[4]),
+                            AccountCurrency = row[5]
+                        };
+                    case "1":
+                        return new SavingsAccount
+                        {
+                            ID = Convert.ToInt32(row[0]),
+                            UserId = row[1],
+                            AccountType = Convert.ToInt32(row[2]),
+                            AccountName = row[3],
+                            Balance = Convert.ToDecimal(row[4]),
+                            AccountCurrency = row[5]
+                        };
+                    case "2":
+                        return new ISK
+                        {
+                            ID = Convert.ToInt32(row[0]),
+                            UserId = row[1],
+                            AccountType = Convert.ToInt32(row[2]),
+                            AccountName = row[3],
+                            Balance = Convert.ToDecimal(row[4]),
+                            AccountCurrency = row[5]
+                        };
+                    default:
+                        return null;
+                }
             }
+            return null;
         }
 
         public void WriteUsersAndAccounts(List<IUser> users)
