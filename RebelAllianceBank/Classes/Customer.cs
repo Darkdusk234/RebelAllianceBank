@@ -11,8 +11,8 @@ namespace RebelAllianceBank.Classes
         public string Surname { get; set; }
         public string Forename { get; set; }
         public bool LoginLock { get; set; } = false;
-        public List<IBankAccount> BankAccounts { get; set; } = new List<IBankAccount>();
-
+        private List<IBankAccount> _bankAccounts = new List<IBankAccount>();
+        
         public Customer() { }
         public Customer(string pNum, string password, string surname, string forename)
         {
@@ -22,18 +22,23 @@ namespace RebelAllianceBank.Classes
             Forename = forename;
         }
 
+        public List<IBankAccount> GetListBankAccount()
+        {
+            return _bankAccounts;
+        }
+
         public void ShowBankAccounts()
         {
             Console.WriteLine("Konton");
 
-            if (BankAccounts.Count == 0)
+            if (_bankAccounts.Count == 0)
             {
                 Console.WriteLine("Du har inga konton att visa");
                 return;
             }
 
             List<string> bodyKeys = [];
-            foreach (var BankAccount in BankAccounts)
+            foreach (var BankAccount in _bankAccounts)
             {
                 bodyKeys.Add(BankAccount.AccountName);
                 bodyKeys.Add(BankAccount.Balance.ToString("N2"));
