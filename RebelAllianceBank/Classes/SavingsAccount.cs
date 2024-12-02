@@ -10,7 +10,6 @@ namespace RebelAllianceBank.Classes
         public decimal Balance { get; set; }
         public string AccountCurrency { get; set; }
         public decimal IntrestRate { get; set; } = 1.60m;
-        public decimal LoanIntrestRate { get; } = 0.32m;
 
         public SavingsAccount() { }
 
@@ -20,13 +19,6 @@ namespace RebelAllianceBank.Classes
             Balance = balance;
             AccountCurrency = accountCurrency;
             IntrestRate = intrestRate;
-        }
-
-        public decimal CalculateLoanInterest(decimal loanAmount)
-        {
-            decimal sum;
-            sum = LoanIntrestRate * loanAmount;
-            return sum;
         }
     }
 }

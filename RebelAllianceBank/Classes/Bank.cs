@@ -9,8 +9,6 @@ namespace RebelAllianceBank.Classes
 
         public void Run()
         {
-            Customer customer = new Customer("test","test", "Test", "123345678");
-            customer.TakeLoan();
             Login();
         }
 
