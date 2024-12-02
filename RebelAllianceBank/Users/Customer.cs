@@ -46,7 +46,6 @@ namespace RebelAllianceBank.Users
             }
             Markdown.Table(["Konto Namn", "Saldo"], bodyKeys);
         }
-
         public void CreateAccount()
         {
             bool createAccount = false;
