@@ -1,14 +1,16 @@
 ﻿using RebelAllianceBank.Interfaces;
+using System.Text;
 
 namespace RebelAllianceBank.Classes
 {
     public class Bank
     {
-        List<IUser> users = new List<IUser>() { new Admin("FullAccessLogin", "02492512", "Admin", "Adminson") };
         IUser? currentUser;
-
+        List<IUser> users;
         public void Run()
         {
+            FileHandler fh = new FileHandler();
+            users = new List<IUser>(fh.ReadUser());
             Login();
         }
 
@@ -49,7 +51,7 @@ namespace RebelAllianceBank.Classes
                 if (correctUser)
                 {
                     tries = 0;
-                    
+
                     //Loops until correct password is inputted or if wrong password is inputted 3 times.
                     while (true)
                     {
@@ -86,14 +88,14 @@ namespace RebelAllianceBank.Classes
                         }
                     }
                 }
-                else if(!userLocked)
+                else if (!userLocked)
                 {
                     Console.WriteLine("Det finns ingen användare med det användarnamnet. Tryck på valfri " +
                         "tangent för att gå tillbaka och försöka igen.");
                     Console.ReadKey();
                 }
 
-                if(correctPass)
+                if (correctPass)
                 {
                     break;
                 }
@@ -302,124 +304,6 @@ namespace RebelAllianceBank.Classes
             }
         }
 
-        //To Be Fixed -DO NOT USE
-        //public void CreateUser()
-        //{
-        //    string userType = "";
-        //    string username = "";
-        //    string password = "";
-        //    bool methodRun = true;
-        //    while (methodRun)
-        //    {
-        //        Console.WriteLine("Vilken typ av användare vill du skapa." +
-        //            "\n1. Kund" +
-        //            "\n2. Admin" +
-        //            "\n3. Gå tillbak till menyn.");
-        //        string input = Console.ReadLine();
-        //        bool validInput = false;
-
-        //        switch (input)
-        //        {
-        //            case "1":
-        //                userType = "Kund";
-        //                validInput = true;
-        //                break;
-        //            case "2":
-        //                userType = "Admin";
-        //                validInput = true;
-        //                break;
-        //            case "3":
-        //                methodRun = false;
-        //                break;
-        //            default:
-        //                break;
-        //        }
-
-        //        if (!methodRun)
-        //        {
-        //            break;
-        //        }
-        //        else if (validInput)
-        //        {
-        //            break;
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Det är inte et giltligt val. Skriv siffran av det val du vill välja." +
-        //                " Tryck på valfri tangent tangent för att gå tillbaka till valen.");
-        //            Console.ReadKey();
-        //            Console.Clear();
-        //        }
-        //    }
-
-        //    while (methodRun)
-        //    {
-        //        Console.WriteLine("Skriv användarnamnet på användaren som ska skapas." +
-        //            " Användarnamnet måste vara minst 5 symboler. Skriv exit om du vill gå tillbaka till menyn.");
-        //        string input = Console.ReadLine();
-
-        //        if (input.ToUpper().Equals("EXIT"))
-        //        {
-        //            methodRun = false;
-        //            break;
-        //        }
-        //        else if (input.Length < 5)
-        //        {
-        //            Console.WriteLine("Användarnamnet måste vara 5 symboler eller längre. Tryck på valfri" +
-        //                " tangent för att gå tillbaka och försök igen.");
-        //            Console.ReadKey();
-        //            Console.Clear();
-        //            continue;
-        //        }
-        //        else
-        //        {
-        //            username = input;
-        //            break;
-        //        }
-        //    }
-
-        //    while (methodRun)
-        //    {
-        //        Console.WriteLine("Skriv lösenordet för användaren som ska skapas. Lösenordet måste vara minst 5 symboler.");
-        //        string input = Console.ReadLine();
-
-        //        if (input.ToUpper().Equals("EXIT"))
-        //        {
-        //            methodRun = false;
-        //            break;
-        //        }
-        //        else if (input.Length < 5)
-        //        {
-        //            Console.WriteLine("Lösenordet måste vara 5 symboler eller längre. Tryck på valfri" +
-        //                " tangent för att gå tillbaka och försök igen.");
-        //            Console.ReadKey();
-        //            Console.Clear();
-        //            continue;
-        //        }
-        //        else
-        //        {
-        //            password = input;
-        //            break;
-        //        }
-        //    }
-
-        //    if (methodRun)
-        //    {
-        //        if (userType.Equals("Kund"))
-        //        {
-        //            users.Add(new Customer(username, password));
-        //        }
-        //        else if (userType.Equals("Admin"))
-        //        {
-        //            users.Add(new Admin(username, password));
-        //        }
-
-        //        Console.WriteLine("Användare skapad. Tryck på valfri tangent för att gå tillbaka till menyn.");
-        //        Console.ReadKey();
-        //        Console.Clear();
-        //    }
-        //}
-
         /// <summary>
         /// Method that runs function to unlock a locked user.
         /// </summary>
@@ -434,7 +318,7 @@ namespace RebelAllianceBank.Classes
                 bool notLockedUser = false;
 
                 //Checks if user wants to exit from function and breaks loop if exit is inputted.
-                if(usernameInput.ToUpper().Equals("EXIT"))
+                if (usernameInput.ToUpper().Equals("EXIT"))
                 {
                     break;
                 }
@@ -467,11 +351,11 @@ namespace RebelAllianceBank.Classes
                 }
 
                 //Continues the loop if a correct username was inputted but that useraccount wasn't locked.
-                if(correctInput && notLockedUser)
+                if (correctInput && notLockedUser)
                 {
                     continue;
                 }
-                else if(correctInput)
+                else if (correctInput)
                 {
                     break;
                 }
