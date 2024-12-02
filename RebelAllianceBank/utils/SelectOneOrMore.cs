@@ -5,20 +5,20 @@ namespace RebelAllianceBank.utils;
 
 public class SelectOneOrMore
 {
-    private List<string> _ColumnHeders;
+    private List<string> _ColumnHeader;
     private List<string> _Body;
 
     public SelectOneOrMore(string[] columnHeders, List<string> body)
     {
-        _ColumnHeders = columnHeders.ToList();
+        _ColumnHeader = columnHeders.ToList();
         _Body = body;
 
-        _ColumnHeders.Insert(0, "Vald");
+        _ColumnHeader.Insert(0, "Vald");
 
         List<string> tempBody = new List<string>();
         for (int i = 0; i < _Body.Count; i++)
         {
-            if ((i % (_ColumnHeders.Count - 1)) == 0)
+            if ((i % (_ColumnHeader.Count - 1)) == 0)
             {
                 tempBody.Add("[ ]");
                 tempBody.Add(_Body[i]);
@@ -41,7 +41,7 @@ public class SelectOneOrMore
         (int Left, int Top) = Console.GetCursorPosition();
 
 
-        var rows = _Body.Chunk(_ColumnHeders.Count).ToArray();
+        var rows = _Body.Chunk(_ColumnHeader.Count).ToArray();
         int rowCount = rows.GetUpperBound(0);
 
         while (!_isSelected)
@@ -54,8 +54,8 @@ public class SelectOneOrMore
 
 
             Console.SetCursorPosition(Left, Top);
-            Markdown.Heder(HeaderLevel.Header2, "Tryck på upp eller ner för att navigera. Välj med mellanslag och bekräfta med enter");
-            Markdown.Table(_ColumnHeders.ToArray(), _Body);
+            Markdown.Header(HeaderLevel.Header2, "Tryck på upp eller ner för att navigera. Välj med mellanslag och bekräfta med enter");
+            Markdown.Table(_ColumnHeader.ToArray(), _Body);
             Console.WriteLine($"\nDu är på rad {TextColor.Yellow}{_currentSelected + 1}{TextColor.NORMAL}");
 
             var Key = Console.ReadKey().Key;

@@ -83,14 +83,14 @@ public static class Markdown
     /// </summary>
     /// <param name="headerLevel"></param>
     /// <param name="message"></param>
-    public static void Heder(HeaderLevel headerLevel = HeaderLevel.Header1, string message = "")
+    public static void Header(HeaderLevel headerLevel = HeaderLevel.Header1, string message = "")
     {
-        string heder = "";
+        string header = "";
         for (int i = 0; i < ((int)headerLevel); i++)
         {
-            heder += "#";
+            header += "#";
         }
-        Paragrath($"{heder} {message}");
+        Paragrath($"{header} {message}");
     }
 
     public static void Paragrath(string message)

@@ -121,7 +121,7 @@ namespace RebelAllianceBank.Classes
             while ((accountFromIndex = menu.Show()).Length == 0)
             {
                 Console.Clear();
-                Markdown.Paragrath($"{TextColor.Red}Välj ett altnativ{TextColor.NORMAL}");
+                Markdown.Paragrath($"{TextColor.Red}Välj ett alternativ{TextColor.NORMAL}");
             }
 
             Console.Clear();
@@ -136,7 +136,7 @@ namespace RebelAllianceBank.Classes
                     break;
                 }
                 Console.Clear();
-                Markdown.Paragrath($"{TextColor.Red}Välj ett altnativ och inte samam konto som du ville överföra ifrån{TextColor.NORMAL}");
+                Markdown.Paragrath($"{TextColor.Red}Välj ett alternativ och inte samma konto som du ville överföra ifrån{TextColor.NORMAL}");
             }
 
             var acountFrom = BankAccounts[accountFromIndex[0]];
@@ -147,7 +147,9 @@ namespace RebelAllianceBank.Classes
             ];
 
             Console.Clear();
-            Markdown.Heder(HeaderLevel.Header2, $"Hur mycket vill du dra ifrån {acountFrom.AccountName}?");
+
+            // Heder
+            Markdown.Header(HeaderLevel.Header2, $"Hur mycket vill du dra ifrån {acountFrom.AccountName}?");
             Markdown.Table(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(updatedAccounts));
             int manyToDrow;
             while (!int.TryParse(Console.ReadLine(), out manyToDrow) || manyToDrow > acountFrom.Balance || manyToDrow < 0)
@@ -158,7 +160,7 @@ namespace RebelAllianceBank.Classes
             acountFrom.Balance -= manyToDrow;
             acountTo.Balance += manyToDrow;
             Console.Clear();
-            Markdown.Heder(HeaderLevel.Header2, "Summering");
+            Markdown.Header(HeaderLevel.Header2, "Summering");
             Markdown.Table(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(updatedAccounts));
         }
 
