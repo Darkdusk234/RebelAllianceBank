@@ -7,13 +7,12 @@ namespace RebelAllianceBank.Classes
 {
     public class Bank
     {
-        List<IUser> users;
         IUser? currentUser;
         List<IUser> users;
         public void Run()
         {
             FileHandler fh = new FileHandler();
-            users = new List<IUser>(fh.ReadUser());
+            users = new List<IUser>(fh.ReadUserAndAccounts());
             bool run = true;
             while (run)
             {

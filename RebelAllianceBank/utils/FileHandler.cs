@@ -1,9 +1,10 @@
-﻿using RebelAllianceBank.Interfaces;
-using System.Text;
+﻿using RebelAllianceBank.Accounts;
+using RebelAllianceBank.Classes;
+using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.Users;
-using RebelAllianceBank.Accounts;
+using System.Text;
 
-namespace RebelAllianceBank.utils
+namespace RebelAllianceBank.Classes
 {
     public class FileHandler
     {
@@ -72,7 +73,7 @@ namespace RebelAllianceBank.utils
                         LoginLock = bool.Parse(row[6])
                     };
                 case "false":
-                    var customer = new Customer
+                    return new Customer
                     {
                         ID = Convert.ToInt32(row[0]),
                         PersonalNum = row[1],
@@ -81,9 +82,6 @@ namespace RebelAllianceBank.utils
                         Forename = row[4],
                         LoginLock = bool.Parse(row[6])
                     };
-                    List<IBankAccount> accounts = ReadAccount();
-                    customer.BankAccounts.AddRange(accounts.Where(account => account.UserId == customer.PersonalNum));
-                    return customer;
                 default:
                     return null;
             }
