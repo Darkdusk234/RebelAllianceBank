@@ -70,7 +70,7 @@ namespace RebelAllianceBank.Classes
                         LoginLock = bool.Parse(row[6])
                     };
                 case "false":
-                    return new Customer
+                    var customer = new Customer
                     {
                         ID = Convert.ToInt32(row[0]),
                         PersonalNum = row[1],
@@ -79,6 +79,9 @@ namespace RebelAllianceBank.Classes
                         Forename = row[4],
                         LoginLock = bool.Parse(row[6])
                     };
+                    List<IBankAccount> accounts = ReadAccount();
+                    customer.BankAccounts.AddRange(accounts.Where(account => account.UserId == customer.PersonalNum));
+                    return customer;
                 default:
                     return null;
             }
