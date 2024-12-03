@@ -332,7 +332,7 @@ public class ExchangeRate
     public decimal CaclulateExchangeRate(string CurrencyFrom, string CurrencyTo)
     {
         decimal calcExchangeRate = _exchangeRates[CurrencyFrom].ExchangeRateToEUR * 
-                                   _exchangeRates[CurrencyFrom].ExchangeRateToEUR;
+                                   _exchangeRates[CurrencyTo].ExchangeRateToEUR;
         return calcExchangeRate; 
     }
 
