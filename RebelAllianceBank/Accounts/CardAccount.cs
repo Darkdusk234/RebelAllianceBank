@@ -10,7 +10,7 @@ namespace RebelAllianceBank.Accounts
         public string AccountName { get; set; }
         public decimal Balance { get; set; } = 0;
         public string AccountCurrency { get; set; }
-        public decimal IntrestRate { get; set; } = 0; 
+        public decimal IntrestRate { get; set; } = 0.2m; 
         public CardAccount() { }
         public CardAccount(string userId, string accountName)
         {

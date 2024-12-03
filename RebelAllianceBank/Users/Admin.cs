@@ -230,7 +230,7 @@ public class Admin : IUser
                     Console.ReadKey();
                     continue;
                 }
-                else if (inputInt <= 0 || inputInt < 12)
+                else if (inputInt <= 0 || inputInt > 12)
                 {
                     Console.WriteLine("Det finns ingen månad motsvarande den siffran!" +
                                       " Tryck på valfri tangent för att gå tillbaka och försök igen.");

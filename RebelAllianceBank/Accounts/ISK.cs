@@ -1,4 +1,5 @@
-﻿using RebelAllianceBank.Interfaces;
+﻿using RebelAllianceBank.Classes;
+using RebelAllianceBank.Interfaces;
 namespace RebelAllianceBank.Accounts
 {
     public class ISK : IBankAccount
@@ -9,7 +10,7 @@ namespace RebelAllianceBank.Accounts
         public string AccountName { get; set;  }
         public decimal Balance { get;  set;  }
         public string AccountCurrency { get;  set;  }
-        public decimal IntrestRate { get; set; } = 0;
+        public decimal IntrestRate { get; set; } = 3.47m;
         
         public ISK() { }
         public ISK(string accountName, string userId)
