@@ -10,6 +10,7 @@ namespace RebelAllianceBank.Classes
     {
         private string _filePathUsers = "users.txt";
         private string _filePathAccounts = "accounts.txt";
+        private string _filePathLoans = "loans.txt";
         /// <summary>
         /// Reads a list of users from the file.
         /// </summary>
@@ -18,9 +19,11 @@ namespace RebelAllianceBank.Classes
         {
             var users = ReadFromFile(_filePathUsers, StoredUser);
             var accounts = ReadFromFile(_filePathAccounts, StoredBankAccount);
+            var loans = ReadFromFile(_filePathLoans, StoredLoan);
             foreach (var user in users.OfType<Customer>())
             {
                 user.GetListBankAccount().AddRange(accounts.Where(acc => acc.UserId == user.PersonalNum));
+                user.GetListLoan().AddRange(loans.Where(loan => loan.UserId == user.PersonalNum));
             }
             return users;
         }
@@ -60,29 +63,27 @@ namespace RebelAllianceBank.Classes
         /// <returns>An <see cref="IUser"/> object or null if the row is invalid.</returns>
         public IUser StoredUser(string[] row)
         {
-            if (row.Length == 7)
+            if (row.Length == 6)
             {
-                switch (row[5])
+                switch (row[4])
                 {
                     case "true":
                         return new Admin
                         {
-                            ID = Convert.ToInt32(row[0]), // unique id
-                            PersonalNum = row[1], // 8802252525
-                            Password = row[2],
-                            Surname = row[3],
-                            Forename = row[4],
-                            LoginLock = bool.Parse(row[6])
+                            PersonalNum = row[0], // 8802252525
+                            Password = row[1],
+                            Surname = row[2],
+                            Forename = row[3],
+                            LoginLock = bool.Parse(row[5])
                         };
                     case "false":
                         return new Customer
                         {
-                            ID = Convert.ToInt32(row[0]),
-                            PersonalNum = row[1],
-                            Password = row[2],
-                            Surname = row[3],
-                            Forename = row[4],
-                            LoginLock = bool.Parse(row[6])
+                            PersonalNum = row[0],
+                            Password = row[1],
+                            Surname = row[2],
+                            Forename = row[3],
+                            LoginLock = bool.Parse(row[5])
                         };
                     default:
                         return null;
@@ -99,37 +100,37 @@ namespace RebelAllianceBank.Classes
         {
             if (row.Length == 6)
             {
-                switch (row[2])
+                switch (row[0])
                 {
                     case "0":
                         return new CardAccount
                         {
-                            ID = Convert.ToInt32(row[0]),
+                            AccountType = Convert.ToInt32(row[0]),
                             UserId = row[1],
-                            AccountType = Convert.ToInt32(row[2]),
-                            AccountName = row[3],
-                            Balance = Convert.ToDecimal(row[4]),
-                            AccountCurrency = row[5]
+                            AccountName = row[2],
+                            Balance = Convert.ToDecimal(row[3]),
+                            AccountCurrency = row[4],
+                            IntrestRate = Convert.ToDecimal(row[5])
                         };
                     case "1":
                         return new SavingsAccount
                         {
-                            ID = Convert.ToInt32(row[0]),
+                            AccountType = Convert.ToInt32(row[0]),
                             UserId = row[1],
-                            AccountType = Convert.ToInt32(row[2]),
-                            AccountName = row[3],
-                            Balance = Convert.ToDecimal(row[4]),
-                            AccountCurrency = row[5]
+                            AccountName = row[2],
+                            Balance = Convert.ToDecimal(row[3]),
+                            AccountCurrency = row[4],
+                            IntrestRate = Convert.ToDecimal(row[5])
                         };
                     case "2":
                         return new ISK
                         {
-                            ID = Convert.ToInt32(row[0]),
+                            AccountType = Convert.ToInt32(row[0]),
                             UserId = row[1],
-                            AccountType = Convert.ToInt32(row[2]),
-                            AccountName = row[3],
-                            Balance = Convert.ToDecimal(row[4]),
-                            AccountCurrency = row[5]
+                            AccountName = row[2],
+                            Balance = Convert.ToDecimal(row[3]),
+                            AccountCurrency = row[4],
+                            IntrestRate = Convert.ToDecimal(row[5])
                         };
                     default:
                         return null;
@@ -137,14 +138,26 @@ namespace RebelAllianceBank.Classes
             }
             return null;
         }
-
+        public Loan StoredLoan(string[] row)
+        {
+            if (row.Length == 3)
+            {
+                return new Loan
+                {
+                    UserId = row[0],
+                    loanedAmount = Convert.ToDecimal(row[1]),
+                    LoanRent = Convert.ToDecimal(row[2])
+                };
+            }
+            return null;
+        }
         public void WriteUsersAndAccounts(List<IUser> users)
         {
             using (StreamWriter sw = new StreamWriter(_filePathUsers, false))
             {
                 foreach (var user in users)
                 {
-                    sw.WriteLine($"{user.ID}-{user.PersonalNum}-{user.Password}-{user.Surname}-{user.Forename}-{(user is Admin).ToString().ToLower()}-{user.LoginLock.ToString().ToLower()}");
+                    sw.WriteLine($"{user.PersonalNum}-{user.Password}-{user.Surname}-{user.Forename}-{(user is Admin).ToString().ToLower()}-{user.LoginLock.ToString().ToLower()}");
                 }
             }
             using (StreamWriter sw = new StreamWriter(_filePathAccounts, false, Encoding.UTF8))
@@ -153,7 +166,17 @@ namespace RebelAllianceBank.Classes
                 {
                     foreach (var account in user.GetListBankAccount())
                     {
-                        sw.WriteLine($"{account.ID}-{account.UserId}-{account.AccountType}-{account.AccountName}-{account.Balance}-{account.AccountCurrency}-{account.IntrestRate}");
+                        sw.WriteLine($"{account.AccountType}-{account.UserId}-{account.AccountName}-{account.Balance}-{account.AccountCurrency}-{account.IntrestRate}");
+                    }
+                }
+            }
+            using (StreamWriter sw = new StreamWriter(_filePathLoans, false, Encoding.UTF8))
+            {
+                foreach (var user in users.OfType<Customer>())
+                {
+                    foreach (var loan in user.GetListLoan())
+                    {
+                        sw.WriteLine($"{loan.UserId}-{loan.loanedAmount}-{loan.LoanRent}");
                     }
                 }
             }
