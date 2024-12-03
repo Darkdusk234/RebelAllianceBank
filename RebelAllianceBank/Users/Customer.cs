@@ -4,6 +4,7 @@ using RebelAllianceBank.utils;
 using RebelAllianceBank.Accounts;
 using RebelAllianceBank.Enums;
 using RebelAllianceBank.Classes;
+using RebelAllianceBank.Menu;
 namespace RebelAllianceBank.Users
 {
     public class Customer : IUser
@@ -16,7 +17,7 @@ namespace RebelAllianceBank.Users
         public bool LoginLock { get; set; } = false;
         
         private List<IBankAccount> _bankAccounts = new List<IBankAccount>();
-        private List<decimal> _customerLoan = new List<decimal>();
+        private List<Loan> _customerLoan = new List<Loan>();
         public Customer() { }
         public Customer(string pNum, string password, string surname, string forename)
         {
@@ -29,6 +30,10 @@ namespace RebelAllianceBank.Users
         public List<IBankAccount> GetListBankAccount()
         {
             return _bankAccounts;
+        }
+        public List<Loan> GetListLoan()
+        {
+            return _customerLoan;
         }
 
         public void ShowBankAccounts()
@@ -326,7 +331,8 @@ namespace RebelAllianceBank.Users
                     // Checks if user want to accept the loan with the terms (YES/NO).
                     if (AcceptLoanTerms())
                     {
-                        _customerLoan.Add(askedLoan); // add the loan amount to the loanlist.
+                        newLoan.loanedAmount += askedLoan;
+                        _customerLoan.Add(newLoan); // add the loan amount to the loanlist.
                         _bankAccounts[choosenAccountIndex - 1].Balance += askedLoan; // add the loanamount to the account.
                         newLoanTaken -= askedLoan; // Removes the loanamount from the allowed loan ammount.
 
@@ -357,7 +363,7 @@ namespace RebelAllianceBank.Users
             decimal maxCurrentLoans = 0;
             foreach (var loan in _customerLoan)
             {
-                maxCurrentLoans += loan;
+                maxCurrentLoans += loan.loanedAmount;
             }
             return maxCurrentLoans;
         }

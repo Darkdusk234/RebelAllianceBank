@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RebelAllianceBank.Users;
 using RebelAllianceBank.utils;
+using RebelAllianceBank.Users;
 
 namespace RebelAllianceBank.Menu
 {
@@ -51,7 +52,6 @@ namespace RebelAllianceBank.Menu
         {
             string[] options = { "Mina lån", "Ansök om nytt lån", "Återgå till huvudmenyn" };
             bool runCustomerMenuLoan = true;
-
             while (runCustomerMenuLoan)
             {
                 int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
@@ -67,7 +67,7 @@ namespace RebelAllianceBank.Menu
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 1:
-                        Console.WriteLine("Ansök om nytt lån");
+                        
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 2:
