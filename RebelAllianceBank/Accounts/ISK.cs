@@ -1,19 +1,19 @@
 ﻿using RebelAllianceBank.Interfaces;
-namespace RebelAllianceBank.Classes
+namespace RebelAllianceBank.Accounts
 {
     public class ISK : IBankAccount
     {
         public int ID { get; set; }
         public string UserId { get; set; }
-        public int AccountType { get; set; }
+        public int AccountType { get; set; } = 2;
         public string AccountName { get; set;  }
         public decimal Balance { get;  set;  }
         public string AccountCurrency { get;  set;  }
         public decimal IntrestRate { get; set; } = 3.47m;
 
-        public ISK () { }
-
-        public ISK(string accountName, decimal balance, string accountCurrency, decimal intrestRate)
+        public decimal IntrestRate { get; set; }
+        public ISK() { }
+        public ISK(string accountName, decimal balance, string accountCurrency, decimal intrestRate = 0)
         {
             AccountName = accountName;
             Balance = balance;

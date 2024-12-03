@@ -1,4 +1,4 @@
-using RebelAllianceBank.Interfaces;
+using RebelAllianceBank.Enums;
 
 namespace RebelAllianceBank.utils;
 
@@ -76,6 +76,26 @@ public static class Markdown
                 Console.WriteLine("|");
             }
         }
+    }
+
+    /// <summary>
+    /// Writhe out a Markdown hedder.
+    /// </summary>
+    /// <param name="headerLevel"></param>
+    /// <param name="message"></param>
+    public static void Header(HeaderLevel headerLevel = HeaderLevel.Header1, string message = "")
+    {
+        string header = "";
+        for (int i = 0; i < ((int)headerLevel); i++)
+        {
+            header += "#";
+        }
+        Paragrath($"{header} {message}");
+    }
+
+    public static void Paragrath(string message)
+    {
+        Console.WriteLine(message);
     }
 
     /// <summary>
