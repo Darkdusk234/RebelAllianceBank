@@ -2,6 +2,7 @@
 using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.utils;
 using RebelAllianceBank.Accounts;
+using RebelAllianceBank.Enums;
 namespace RebelAllianceBank.Users
 {
     public class Customer : IUser
@@ -13,7 +14,7 @@ namespace RebelAllianceBank.Users
         public string Forename { get; set; }
         public bool LoginLock { get; set; } = false;
         private List<IBankAccount> _bankAccounts = new List<IBankAccount>();
-        
+
         public Customer() { }
         public Customer(string pNum, string password, string surname, string forename)
         {
@@ -189,5 +190,77 @@ namespace RebelAllianceBank.Users
             Console.ReadKey();
         }
 
+        public void Transfer()
+        {
+            if (_bankAccounts.Count < 2)
+            {
+                Console.WriteLine($"{TextColor.Red}Du har inga tillräkligt många konton att överföra mellan{TextColor.NORMAL}");
+                return;
+            }
+
+            var menu = new SelectOneOrMore(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(_bankAccounts));
+
+            Console.Clear();
+            Markdown.Paragrath($"Vilket konto vill du överföra {TextColor.Yellow}ifrån{TextColor.NORMAL}");
+            int[] accountFromIndex;
+
+            while ((accountFromIndex = menu.Show()).Length == 0)
+            {
+                Console.Clear();
+                Markdown.Paragrath($"{TextColor.Red}Välj ett alternativ{TextColor.NORMAL}");
+            }
+
+            Console.Clear();
+            Markdown.Paragrath($"Vilket konto vill du överföra {TextColor.Yellow}till{TextColor.NORMAL}");
+
+            int[] accountToIndex = [];
+            while (true)
+            {
+                accountToIndex = menu.Show();
+                if (accountToIndex.Length != 0 && !accountToIndex[0].Equals(accountFromIndex[0]))
+                {
+                    break;
+                }
+                Console.Clear();
+                Markdown.Paragrath($"{TextColor.Red}Välj ett alternativ och inte samma konto som du ville överföra ifrån{TextColor.NORMAL}");
+            }
+
+            var acountFrom = _bankAccounts[accountFromIndex[0]];
+            var acountTo = _bankAccounts[accountToIndex[0]];
+            List<IBankAccount> updatedAccounts = [
+                acountFrom,
+                acountTo
+            ];
+
+            Console.Clear();
+
+            // Heder
+            Markdown.Header(HeaderLevel.Header2, $"Hur mycket vill du dra ifrån {acountFrom.AccountName}?");
+            Markdown.Table(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(updatedAccounts));
+            int manyToDrow;
+            while (!int.TryParse(Console.ReadLine(), out manyToDrow) || manyToDrow > acountFrom.Balance || manyToDrow < 0)
+            {
+                Markdown.Paragrath($"Välj ett mindre belopp än {acountFrom.Balance}{acountFrom.AccountCurrency}");
+            }
+
+            acountFrom.Balance -= manyToDrow;
+            acountTo.Balance += manyToDrow;
+            Console.Clear();
+            Markdown.Header(HeaderLevel.Header2, "Summering");
+            Markdown.Table(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(updatedAccounts));
+        }
+        private static List<string> PopulateAccountDetails(List<IBankAccount> updatedAccounts)
+        {
+            List<string> bodyKeys = [];
+            for (int i = 0; i < updatedAccounts.Count; i++)
+            {
+                var BankAccount = updatedAccounts[i];
+                bodyKeys.Add((i + 1).ToString());
+                bodyKeys.Add(BankAccount.AccountName);
+                bodyKeys.Add(BankAccount.Balance.ToString("N2"));
+            }
+
+            return bodyKeys;
+        }
     }
 }
