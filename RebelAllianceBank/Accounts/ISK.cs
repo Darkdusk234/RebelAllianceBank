@@ -1,4 +1,5 @@
-﻿using RebelAllianceBank.Interfaces;
+﻿using RebelAllianceBank.Classes;
+using RebelAllianceBank.Interfaces;
 namespace RebelAllianceBank.Accounts
 {
     public class ISK : IBankAccount
