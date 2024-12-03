@@ -1,17 +1,17 @@
 ﻿using RebelAllianceBank.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RebelAllianceBank.utils;
 using RebelAllianceBank.Users;
+using RebelAllianceBank.utils;
 
 namespace RebelAllianceBank.Menu
 {
     public class CustomerMenu : Menu
     {
-        public CustomerMenu(IUser currentUser) : base(currentUser) { }
+        private Customer _currentCustomer;
+
+        public CustomerMenu(IUser currentUser) : base(currentUser)
+        {
+            _currentCustomer = (Customer?)CurrentUser; 
+        }
 
         public override void Show()
         {
@@ -86,12 +86,14 @@ namespace RebelAllianceBank.Menu
                 switch (choice)
                 {
                     case 0:
-                        Console.WriteLine("Se över mina konton");
+                        Console.Clear();
+                        _currentCustomer.ShowBankAccounts();
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 1:
-                        Console.WriteLine("Öppna nytt konto");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        Console.Clear();
+                        _currentCustomer.CreateAccount();
+                        Console.ReadKey();
                         break;
                     case 2:
                         runCustomerMenuAccounts = false;
@@ -102,7 +104,7 @@ namespace RebelAllianceBank.Menu
         private void CustomerMenuTransaction()
         {
             bool runCustomerMenuTransaction = true;
-            string[] options = { "Ny överföring", "Ny betalning", "Återgå till huvudmenyn" };
+            string[] options = { "Ny överföring", "Överföring till externa konton", "Återgå till huvudmenyn" };
 
             while (runCustomerMenuTransaction)
             {
@@ -119,7 +121,7 @@ namespace RebelAllianceBank.Menu
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 1:
-                        Console.WriteLine("Ny betalning");
+                        Console.WriteLine("Överföring till externa konton");
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 2:

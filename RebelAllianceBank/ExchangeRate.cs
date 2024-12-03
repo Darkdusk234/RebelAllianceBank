@@ -237,7 +237,7 @@ public class ExchangeRate
     /// A method for setting account currency when creating account.
     /// </summary>
     /// <returns></returns>
-    public string AccountCurrency()
+    public string SetAccountCurrency()
     {
         while (true)
         {
@@ -249,9 +249,15 @@ public class ExchangeRate
                 case "ja": 
                 case "j":
                     string currency = ChooseAccountCurrency();
-                    if (currency != "quit")
+                    if (currency != "AVBRYT")
                     {
-                        return currency;
+                        Console.WriteLine($"Du har angett att du vill ha valuta {currency} på ditt konto.Stämmer det? " +
+                                          $"ja/nej");
+                        string answer2 = Console.ReadLine().ToLower();
+                        if (answer2 == "ja" || answer2 == "j")
+                        {
+                            return currency;
+                        }
                     }
                     break; 
                 case "nej":
@@ -303,7 +309,6 @@ public class ExchangeRate
                         }
                         currency = Console.ReadLine().ToUpper();
                     }
-
                     if (currency != "AVBRYT")
                     {
                         return currency;
