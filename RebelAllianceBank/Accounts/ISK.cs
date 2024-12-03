@@ -9,6 +9,7 @@ namespace RebelAllianceBank.Accounts
         public string AccountName { get; set;  }
         public decimal Balance { get;  set;  }
         public string AccountCurrency { get;  set;  }
+        public decimal IntrestRate { get; set; } = 3.47m;
 
         public decimal IntrestRate { get; set; }
         public ISK() { }

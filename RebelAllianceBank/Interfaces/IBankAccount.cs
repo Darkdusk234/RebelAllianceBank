@@ -10,5 +10,7 @@
         public string AccountCurrency { get; set; }
         public decimal IntrestRate { get; set; }
 
+
+        
     }
 }
