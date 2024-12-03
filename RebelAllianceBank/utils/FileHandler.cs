@@ -4,7 +4,7 @@ using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.Users;
 using System.Text;
 
-namespace RebelAllianceBank.Classes
+namespace RebelAllianceBank.utils
 {
     public class FileHandler
     {
