@@ -12,20 +12,22 @@ namespace RebelAllianceBank.Menu
         public AdminMenu(IUser currentUser, List<IUser> users) : base(currentUser)
         {
             this._users = users;
-            _currentAdmin = (Admin?)currentUser; 
+            _currentAdmin = (Admin?)currentUser;
         }
         public override void Show()
         {
-            string[] options = { "Skapa användare", "Ändra växelkurs", "Lås upp användarkonto???", "Logga ut" };
+            List<string> options = ["Skapa användare", "Ändra växelkurs", "Lås upp användarkonto???", "Logga ut"];
             bool runAdminMenu = true;
 
             while (runAdminMenu)
             {
-                int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
-                    cancel: false,
-                    columnHeaders: new[] { "MENY - ADMIN" },
-                    filterData: new List<string>(options),
-                    inData: option => new[] { option });
+                // int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
+                //     cancel: false,
+                //     columnHeaders: new[] { "MENY - ADMIN" },
+                //     filterData: new List<string>(options),
+                //     inData: option => new[] { option });
+                int choice = new SelectOneOrMore(["MENY - ADMIN"], options).Show()[0];
+
 
                 switch (choice)
                 {

@@ -1,4 +1,5 @@
 ﻿using RebelAllianceBank.Interfaces;
+using RebelAllianceBank.utils;
 using System.Globalization;
 namespace RebelAllianceBank.Users;
 
@@ -32,17 +33,21 @@ public class Admin : IUser
         {
             Console.Clear();
 
-            Console.WriteLine("UPPDATERA VÄXELKURS: \n" +
-                              "[1] Instruktioner\n" +
-                              "[2] Skriv ut växelkurser\n" +
-                              "[3] Ladda upp nya växelkurser\n" +
-                              "[4] Avbryt och återgå till föregående meny");
+            // Console.WriteLine("UPPDATERA VÄXELKURS: \n" +
+            //                   "[1] Instruktioner\n" +
+            //                   "[2] Skriv ut växelkurser\n" +
+            //                   "[3] Ladda upp nya växelkurser\n" +
+            //                   "[4] Avbryt och återgå till föregående meny");
 
-            string choice = Console.ReadLine();
+            // string choice = Console.ReadLine();
+
+            List<string> options = ["Instruktioner", "Skriv ut växelkurse", "Ladda upp nya växelkurser", "Avbryt och återgå till föregående meny"];
+
+            int choice = new SelectOneOrMore(["Meny val"], options).Show()[0];
 
             switch (choice)
             {
-                case "1":
+                case 0:
                     Console.Clear();
                     Console.WriteLine("INSTRUKTIONER UPPDATERA VÄXELKURS\n\n" +
                                       "För att ladda upp växelkurs gör följande:\n" +
@@ -55,13 +60,13 @@ public class Admin : IUser
                     Console.WriteLine("Tryck enter när du är redo att fortsätta");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     break;
-                case "2":
+                case 1:
                     Console.Clear();
                     exchangeRate.PrintAllRates();
                     Console.WriteLine("\nTryck enter när du är redo att fortsätta");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     break;
-                case "3":
+                case 2:
                     EnumsExchangeRate input = exchangeRate.PasteAndMatchExchangeRates();
                     if (input == EnumsExchangeRate.correct)
                     {
@@ -85,7 +90,7 @@ public class Admin : IUser
                         while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     }
                     break;
-                case "4":
+                case 3:
                     runLoop = false;
                     break;
                 default:
@@ -117,24 +122,27 @@ public class Admin : IUser
         while (methodRun)
         {
             Console.Clear();
-            Console.WriteLine("Vilken typ av användare vill du skapa." +
-                              "\n1. Kund" +
-                              "\n2. Admin" +
-                              "\n3. Gå tillbak till menyn.");
-            string input = Console.ReadLine();
+            // Console.WriteLine("Vilken typ av användare vill du skapa." +
+            //                   "\n1. Kund" +
+            //                   "\n2. Admin" +
+            //                   "\n3. Gå tillbak till menyn.");
+            // string input = Console.ReadLine();
+            List<string> options = ["Kund", "Admin", "Gå tillbak till menyn."];
+
+            int choice = new SelectOneOrMore(["Meny val"], options).Show()[0];
             bool validInput = false;
 
-            switch (input)
+            switch (choice)
             {
-                case "1":
+                case 0:
                     userType = "Kund";
                     validInput = true;
                     break;
-                case "2":
+                case 1:
                     userType = "Admin";
                     validInput = true;
                     break;
-                case "3":
+                case 2:
                     methodRun = false;
                     break;
                 default:

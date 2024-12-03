@@ -15,7 +15,7 @@ namespace RebelAllianceBank.Users
         public string Surname { get; set; }
         public string Forename { get; set; }
         public bool LoginLock { get; set; } = false;
-        
+
         private List<IBankAccount> _bankAccounts = new List<IBankAccount>();
         private List<Loan> _customerLoan = new List<Loan>();
         public Customer() { }
@@ -60,29 +60,36 @@ namespace RebelAllianceBank.Users
 
             do
             {
-                Console.WriteLine("Vilket konto vill du skapa?\n");
-                Console.WriteLine("1. Kreditkort");
-                Console.WriteLine("2. ISK (investeringssparkonto");
-                Console.WriteLine("3. Sparkonto");
-                Console.WriteLine("4. Avsluta");
-                string input = Console.ReadLine();
-                int userChoice;
-                bool isInt = int.TryParse(input, out userChoice);
+                // Console.WriteLine("Vilket konto vill du skapa?\n");
+                // Console.WriteLine("1. Kreditkort");
+                // Console.WriteLine("2. ISK (investeringssparkonto)");
+                // Console.WriteLine("3. Sparkonto");
+                // Console.WriteLine("4. Avsluta");
+                // string input = Console.ReadLine();
+                // int userChoice;
+                // bool isInt = int.TryParse(input, out userChoice);
+
+                List<string> options = ["Kreditkort", "ISK (investeringssparkonto)", "Sparkonto", "Avsluta"];
+
+                Markdown.Header(HeaderLevel.Header1, "Vilket konto vill du skapa?");
+                int choice = new SelectOneOrMore(["Meny val"], options).Show()[0];
 
                 string accountName = "";
                 string accountCurrency = "";
 
-                if (isInt && userChoice == 4)
+                // if (isInt && userChoice == 4)
+                // {
+                //     break;
+                // }
+                if (choice < 4)
                 {
-                    break;
-                }
-                else if (isInt && userChoice > 0 && userChoice < 4)
-                {
-                    Console.Write("Vad vill du kalla kontot: ");
+                    // Console.Write("Vad vill du kalla kontot: ");
+                    Markdown.Paragrath("Vad vill du kalla kontot: ");
                     accountName = Console.ReadLine();
                 }
 
-                switch (userChoice)
+
+                switch (choice)
                 {
                     case 1:
                         _bankAccounts.Add(new CardAccount(accountName, PersonalNum));
@@ -117,9 +124,9 @@ namespace RebelAllianceBank.Users
         /// <param name="users">A list of all users</param>
         public void TransferUserToUser(List<IUser> users)
         {
-            Customer otherUser = null;
-            IBankAccount otherAccount = null;
-            IBankAccount currentUserAccount = null;
+            Customer? otherUser = null;
+            IBankAccount? otherAccount = null;
+            IBankAccount? currentUserAccount = null;
 
             while (currentUserAccount == null)
             {
@@ -150,7 +157,7 @@ namespace RebelAllianceBank.Users
                 }
             }
 
-            while (otherAccount == null)
+            while (otherAccount != null)
             {
                 Console.WriteLine("Skriv in namnet på kontot du vill föra över till:");
 
