@@ -22,6 +22,8 @@ namespace RebelAllianceBank.Classes
                 if (currentUser is Admin)
                 {
                     var adminMenu = new AdminMenu(currentUser, users);
+                    
+                    
                     adminMenu.Show();
                 }
                 else
