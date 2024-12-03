@@ -10,6 +10,7 @@ namespace RebelAllianceBank.Classes
     {
         private string _filePathUsers = "users.txt";
         private string _filePathAccounts = "accounts.txt";
+        private string _filePathLoans = "loans.txt";
         /// <summary>
         /// Reads a list of users from the file.
         /// </summary>
@@ -18,9 +19,11 @@ namespace RebelAllianceBank.Classes
         {
             var users = ReadFromFile(_filePathUsers, StoredUser);
             var accounts = ReadFromFile(_filePathAccounts, StoredBankAccount);
+            var loans = ReadFromFile(_filePathLoans, StoredLoan);
             foreach (var user in users.OfType<Customer>())
             {
                 user.GetListBankAccount().AddRange(accounts.Where(acc => acc.UserId == user.PersonalNum));
+                user.GetListLoan().AddRange(loans.Where(loan => loan.UserId == user.PersonalNum));
             }
             return users;
         }
@@ -135,7 +138,19 @@ namespace RebelAllianceBank.Classes
             }
             return null;
         }
-
+        public Loan StoredLoan(string[] row)
+        {
+            if (row.Length == 3)
+            {
+                return new Loan
+                {
+                    UserId = row[0],
+                    loanedAmount = Convert.ToDecimal(row[1]),
+                    LoanRent = Convert.ToDecimal(row[2])
+                };
+            }
+            return null;
+        }
         public void WriteUsersAndAccounts(List<IUser> users)
         {
             using (StreamWriter sw = new StreamWriter(_filePathUsers, false))
@@ -152,6 +167,16 @@ namespace RebelAllianceBank.Classes
                     foreach (var account in user.GetListBankAccount())
                     {
                         sw.WriteLine($"{account.AccountType}-{account.UserId}-{account.AccountName}-{account.Balance}-{account.AccountCurrency}-{account.IntrestRate}");
+                    }
+                }
+            }
+            using (StreamWriter sw = new StreamWriter(_filePathLoans, false, Encoding.UTF8))
+            {
+                foreach (var user in users.OfType<Customer>())
+                {
+                    foreach (var loan in user.GetListLoan())
+                    {
+                        sw.WriteLine($"{loan.UserId}-{loan.loanedAmount}-{loan.LoanRent}");
                     }
                 }
             }
