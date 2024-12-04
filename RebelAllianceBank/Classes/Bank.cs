@@ -7,10 +7,12 @@ namespace RebelAllianceBank.Classes
 {
     public class Bank
     {
+
         IUser? currentUser;
         List<IUser> users;
         public void Run()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             FileHandler fh = new FileHandler();
             users = new List<IUser>(fh.ReadUserAndAccounts());
             bool run = true;
@@ -108,6 +110,7 @@ namespace RebelAllianceBank.Classes
             while (true)
             {
                 Console.Clear();
+                Logo();
                 Console.WriteLine("Välkommen till Rebel Alliance Bank. Vänligen ange ditt personnummer.");
                 Console.Write("Personnummer: ");
                 string? usernameInput = Console.ReadLine();
@@ -143,6 +146,7 @@ namespace RebelAllianceBank.Classes
                     while (true)
                     {
                         Console.Clear();
+                        Logo();
                         Console.WriteLine($"God dag {currentUser.Surname}. Vänligen skriv ditt lösenord.");
                         string? passwordInput = Console.ReadLine();
 
@@ -292,6 +296,53 @@ namespace RebelAllianceBank.Classes
                 }
             }
 
+        }
+        public void Logo()
+        {
+            string[] ascii1 = {
+            " 888888ba   .d888888            888888ba                    dP       ",
+            " 88    `8b d8'    88            88    `8b                   88       ",
+            "a88aaaa8P' 88aaaaa88a          a88aaaa8P' .d8888b. 88d888b. 88  .dP  ",
+            " 88   `8b. 88     88  88888888  88   `8b. 88'  `88 88'  `88 88888\"   ",
+            " 88     88 88     88            88    .88 88.  .88 88    88 88  `8b. ",
+            " dP     dP 88     88            88888888P `88888P8 dP    dP dP   `YP ",
+            "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+        };
+
+            string[] ascii2 = {
+            "                                                                       ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "                                                                       ⠀⠀⠀⠀⡠⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⠆⠀⠀⠀⠀⠀⢄⡀⠀⠀⠀⠀⠀",
+            "                                                                       ⠀⠀⣴⡟⠀⠀⠀⠀⣰⣦⣀⢻⣿⣿⡏⣀⣴⣄⠀⠀⠀⠀⢻⣦⡀⠀⠀⠀",
+            "                                                                       ⢠⣾⡿⠀⠀⠀⠀⠈⠛⢿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀⠀⠀⢻⣿⣄⠀⠀",
+            "                                                                      ⢠⣿⣿⠇⠀⠀⠀⠀⠀⠀⠈⢿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⡆⠀",
+            "                                                                      ⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⠀",
+            "                                                                     ⢸⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣿⡇",
+            "                                                                     ⢸⣿⣿⣿⣿⣦⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⢀⣼⣿⣿⣿⣿⡇",
+            "⢸⣿⣿⣿⣿⣿⣷⣦⣀⣀⣀⣴⣿⣿⣿⣿⣿⣿⣤⣀⣀⣀⣴⣿⣿⣿⣿⣿⣿⡇",
+            "⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁",
+            "⠀⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀",
+            "⠀⠀⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀",
+            "⠀⠀⠀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠈⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠛⠿⠿⣿⣿⣿⣿⡿⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀"
+        };
+
+            int maxLines = Math.Max(ascii1.Length, ascii2.Length);
+            for (int i = 0; i < maxLines; i++)
+            {
+                if (i > 7)
+                {
+                    int j = i - 8;
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write(ascii1[j]);
+                }
+
+                // Print the second ASCII art in red
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine(ascii2[i]);
+            }
+
+            Console.ResetColor();
         }
     }
 }
