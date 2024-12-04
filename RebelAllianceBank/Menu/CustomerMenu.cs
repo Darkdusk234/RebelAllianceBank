@@ -25,7 +25,6 @@ namespace RebelAllianceBank.Menu
                     filterData: new List<string>(options),
                     inData: option => new[] { option });
 
-                // int choice = new SelectOneOrMore([$"Meny - {CurrentUser.Surname}"], options).Show()[0];
 
                 switch (choice)
                 {
@@ -50,13 +49,11 @@ namespace RebelAllianceBank.Menu
             bool runCustomerMenuLoan = true;
             while (runCustomerMenuLoan)
             {
-                // int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
-                //     cancel: false,
-                //     columnHeaders: new[] { $"Lån - {CurrentUser.Surname}" },
-                //     filterData: new List<string>(options),
-                //     inData: option => new[] { option });
-
-                int choice = new SelectOneOrMore([$"Lån - {CurrentUser.Surname}"], options).Show()[0];
+                int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
+                    cancel: false,
+                    columnHeaders: new[] { $"Lån - {CurrentUser.Surname}" },
+                    filterData: new List<string>(options),
+                    inData: option => new[] { option });
 
                 switch (choice)
                 {
@@ -81,13 +78,12 @@ namespace RebelAllianceBank.Menu
 
             while (runCustomerMenuAccounts)
             {
-                // int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
-                //     cancel: false,
-                //     columnHeaders: new[] { $"Lån - {CurrentUser.Surname}" },
-                //     filterData: new List<string>(options),
-                //     inData: option => new[] { option });
+                int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
+                    cancel: false,
+                    columnHeaders: new[] { $"Lån - {CurrentUser.Surname}" },
+                    filterData: new List<string>(options),
+                    inData: option => new[] { option });
 
-                int choice = new SelectOneOrMore([$"Lån - {CurrentUser.Surname}"], options).Show()[0];
 
                 switch (choice)
                 {
@@ -114,12 +110,11 @@ namespace RebelAllianceBank.Menu
 
             while (runCustomerMenuTransaction)
             {
-                // int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
-                //     cancel: false,
-                //     columnHeaders: new[] { $"Lån - {CurrentUser.Surname}" },
-                //     filterData: new List<string>(options),
-                //     inData: option => new[] { option });
-                int choice = new SelectOneOrMore([$"Lån - {CurrentUser.Surname}"], options).Show()[0];
+                int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
+                    cancel: false,
+                    columnHeaders: new[] { $"Lån - {CurrentUser.Surname}" },
+                    filterData: new List<string>(options),
+                    inData: option => new[] { option });
 
                 switch (choice)
                 {

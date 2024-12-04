@@ -21,12 +21,11 @@ namespace RebelAllianceBank.Menu
 
             while (runAdminMenu)
             {
-                // int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
-                //     cancel: false,
-                //     columnHeaders: new[] { "MENY - ADMIN" },
-                //     filterData: new List<string>(options),
-                //     inData: option => new[] { option });
-                int choice = new SelectOneOrMore(["MENY - ADMIN"], options).Show()[0];
+                int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
+                    cancel: false,
+                    columnHeaders: new[] { "MENY - ADMIN" },
+                    filterData: new List<string>(options),
+                    inData: option => new[] { option });
 
 
                 switch (choice)
