@@ -1,12 +1,6 @@
 ﻿using RebelAllianceBank.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RebelAllianceBank.Users;
 using RebelAllianceBank.utils;
-using RebelAllianceBank.Users;
 
 namespace RebelAllianceBank.Menu
 {
