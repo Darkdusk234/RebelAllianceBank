@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using RebelAllianceBank.Enums;
 
 namespace RebelAllianceBank.utils;
@@ -15,6 +16,7 @@ public static class Markdown
     /// <param name="body"></param>
     public static void Table(string[] columnHeaders, List<string> body)
     {
+        Regex regex = new Regex("\\x1b\\[[0-9]+\\w");
         int maxColumnWidth = columnHeaders.OrderByDescending(item => item.Length).First().Length;
         int maxRowWidth = body.OrderByDescending(item => item.Length).First().Length;
         int maxCellWidth = maxColumnWidth < maxRowWidth ? maxRowWidth : maxColumnWidth;
@@ -63,9 +65,10 @@ public static class Markdown
         {
             Console.Write("|");
             var currentBody = body[i];
+            Console.Write(currentBody);
+            currentBody = regex.Replace(currentBody, "");
             int amountToAddSpace = maxCellWidth - currentBody.Length;
 
-            Console.Write(currentBody);
 
             // Add remending space on a table cell
             Spacer(amountToAddSpace);

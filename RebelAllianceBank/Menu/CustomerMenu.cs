@@ -19,13 +19,13 @@ namespace RebelAllianceBank.Menu
             bool runCustomerMenu = true;
             while (runCustomerMenu)
             {
-                // int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
-                //     cancel: false,
-                //     columnHeaders: new[] { $"MENY - {CurrentUser.Surname}" },
-                //     filterData: new List<string>(options),
-                //     inData: option => new[] { option });
+                int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
+                    cancel: false,
+                    columnHeaders: new[] { $"MENY - {CurrentUser.Surname}" },
+                    filterData: new List<string>(options),
+                    inData: option => new[] { option });
 
-                int choice = new SelectOneOrMore([$"Meny - {CurrentUser.Surname}"], options).Show()[0];
+                // int choice = new SelectOneOrMore([$"Meny - {CurrentUser.Surname}"], options).Show()[0];
 
                 switch (choice)
                 {

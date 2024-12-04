@@ -49,7 +49,7 @@ namespace RebelAllianceBank.utils
                     string[] rowValues = inData(filterData[i]);
                     if (i == userSelect)
                     {
-                        rowValues[0] = $"> {rowValues[0]}";
+                        rowValues[0] = $"{TextColor.Yellow}> {rowValues[0]}{TextColor.NORMAL}";
                     }
                     rows.AddRange(rowValues);
                 }
