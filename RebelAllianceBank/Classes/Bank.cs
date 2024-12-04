@@ -26,7 +26,7 @@ namespace RebelAllianceBank.Classes
                 }
                 else
                 {
-                    var customerMenu = new CustomerMenu(currentUser);
+                    var customerMenu = new CustomerMenu(currentUser, users);
                     customerMenu.Show();
                 }
             }
