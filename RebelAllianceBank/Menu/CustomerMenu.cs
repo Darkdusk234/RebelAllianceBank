@@ -63,8 +63,7 @@ namespace RebelAllianceBank.Menu
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 1:
-                        
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        _currentCustomer.TakeLoan();
                         break;
                     case 2:
                         runCustomerMenuLoan = false;
