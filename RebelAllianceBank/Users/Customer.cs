@@ -80,37 +80,34 @@ namespace RebelAllianceBank.Users
                 {
                     Console.Write("Vad vill du kalla kontot: ");
                     accountName = Console.ReadLine();
-
-                    Console.Write("Vilken valuta vill du ha på kontot: ");
-                    accountCurrency = Console.ReadLine().ToUpper();
                 }
 
-                //switch (userChoice)
-                //{
-                //    case 1:
-                //        _bankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
-                //        createAccount = true;
-                //        Console.ReadKey();
-                //        break;
-                //    case 2:
-                //        _bankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
-                //        createAccount = true;
-                //        Console.ReadKey();
-                //        break;
-                //    case 3:
-                //        _bankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
-                //        createAccount = true;
-                //        break;
-                //    case 4:
-                //        createAccount = true;
-                //        break;
-                //    default:
-                //        Console.WriteLine("Fel inmatning, inget konto har skapats.");
-                //        Console.ReadKey();
-                //        Console.Clear();
-                //        createAccount = false;
-                //        break;
-                //}
+                switch (userChoice)
+                {
+                    case 1:
+                        _bankAccounts.Add(new CardAccount(accountName, PersonalNum));
+                        createAccount = true;
+                        Console.ReadKey();
+                        break;
+                    case 2:
+                        _bankAccounts.Add(new ISK(accountName, PersonalNum));
+                        createAccount = true;
+                        Console.ReadKey();
+                        break;
+                    case 3:
+                        _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum));
+                        createAccount = true;
+                        break;
+                    case 4:
+                        createAccount = true;
+                        break;
+                    default:
+                        Console.WriteLine("Fel inmatning, inget konto har skapats.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        createAccount = false;
+                        break;
+                }
             } while (createAccount == false);
         }
         /// <summary>
