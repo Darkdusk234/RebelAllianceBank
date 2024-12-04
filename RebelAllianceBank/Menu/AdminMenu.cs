@@ -42,7 +42,6 @@ namespace RebelAllianceBank.Menu
                         runAdminMenu = false;
                         break;
                 }
-                Console.ReadKey();
             }
         }
     }
