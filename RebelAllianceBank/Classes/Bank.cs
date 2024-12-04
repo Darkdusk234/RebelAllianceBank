@@ -9,10 +9,12 @@ namespace RebelAllianceBank.Classes
     {
         IUser? currentUser;
         List<IUser> users;
-        public static ExchangeRate exchangeRate = new ExchangeRate(); 
-        
+        public static ExchangeRate exchangeRate = new ExchangeRate();
+
+        TaskManager manager = new TaskManager();
         public void Run()
         {
+            Task.Run(() => manager.Start());
             FileHandler fh = new FileHandler();
             users = new List<IUser>(fh.ReadUserAndAccounts());
             bool run = true;
@@ -30,6 +32,7 @@ namespace RebelAllianceBank.Classes
                     customerMenu.Show();
                 }
             }
+            manager.Stop();
         }
 
         //public void Login()
