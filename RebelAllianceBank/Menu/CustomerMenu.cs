@@ -90,10 +90,12 @@ namespace RebelAllianceBank.Menu
                     case 0:
                         Console.Clear();
                         _currentCustomer.ShowBankAccounts();
+                        Console.ReadKey();
                         break;
                     case 1:
                         Console.Clear();
                         _currentCustomer.CreateAccount();
+                        Console.ReadKey(); //Think about moving into CreateAccount method
                         break;
                     case 2:
                         runCustomerMenuAccounts = false;

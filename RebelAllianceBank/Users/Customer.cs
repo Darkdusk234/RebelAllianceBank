@@ -87,12 +87,10 @@ namespace RebelAllianceBank.Users
                     case 1:
                         _bankAccounts.Add(new CardAccount(accountName, PersonalNum));
                         createAccount = true;
-                        Console.ReadKey();
                         break;
                     case 2:
                         _bankAccounts.Add(new ISK(accountName, PersonalNum));
                         createAccount = true;
-                        Console.ReadKey();
                         break;
                     case 3:
                         _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum));
