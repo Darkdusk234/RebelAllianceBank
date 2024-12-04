@@ -229,26 +229,27 @@ namespace RebelAllianceBank.Users
                 Markdown.Paragrath($"{TextColor.Red}Välj ett alternativ och inte samma konto som du ville överföra ifrån{TextColor.NORMAL}");
             }
 
-            var acountFrom = _bankAccounts[accountFromIndex[0]];
-            var acountTo = _bankAccounts[accountToIndex[0]];
+            var accountFrom = _bankAccounts[accountFromIndex[0]];
+            var accountTo = _bankAccounts[accountToIndex[0]];
+            
             List<IBankAccount> updatedAccounts = [
-                acountFrom,
-                acountTo
+                accountFrom,
+                accountTo
             ];
 
             Console.Clear();
 
-            // Heder
-            Markdown.Header(HeaderLevel.Header2, $"Hur mycket vill du dra ifrån {acountFrom.AccountName}?");
+            // Header
+            Markdown.Header(HeaderLevel.Header2, $"Hur mycket {} vill du dra ifrån {accountFrom.AccountName}?");
             Markdown.Table(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(updatedAccounts));
-            int manyToDrow;
-            while (!int.TryParse(Console.ReadLine(), out manyToDrow) || manyToDrow > acountFrom.Balance || manyToDrow < 0)
+            int moneyToWithdraw;
+            while (!int.TryParse(Console.ReadLine(), out moneyToWithdraw) || moneyToWithdraw > accountFrom.Balance || moneyToWithdraw < 0)
             {
-                Markdown.Paragrath($"Välj ett mindre belopp än {acountFrom.Balance}{acountFrom.AccountCurrency}");
+                Markdown.Paragrath($"Välj ett mindre belopp än {accountFrom.Balance}{accountFrom.AccountCurrency}");
             }
 
-            acountFrom.Balance -= manyToDrow;
-            acountTo.Balance += manyToDrow;
+            accountFrom.Balance -= moneyToWithdraw;
+            accountTo.Balance += moneyToWithdraw;
             Console.Clear();
             Markdown.Header(HeaderLevel.Header2, "Summering");
             Markdown.Table(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(updatedAccounts));
