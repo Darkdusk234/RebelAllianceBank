@@ -7,10 +7,12 @@ namespace RebelAllianceBank.Menu
     public class CustomerMenu : Menu
     {
         private Customer _currentCustomer;
+        private List<IUser> _listUsers;
 
-        public CustomerMenu(IUser currentUser) : base(currentUser)
+        public CustomerMenu(IUser currentUser, List<IUser> users) : base(currentUser)
         {
-            _currentCustomer = (Customer?)CurrentUser; 
+            _currentCustomer = (Customer?)CurrentUser;
+            _listUsers = users;
         }
 
         public override void Show()
@@ -121,7 +123,7 @@ namespace RebelAllianceBank.Menu
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 1:
-                        Console.WriteLine("Överföring till externa konton");
+                        _currentCustomer.TransferUserToUser(_listUsers);
                         Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 2:
