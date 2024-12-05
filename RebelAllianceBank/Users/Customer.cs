@@ -273,6 +273,7 @@ namespace RebelAllianceBank.Users
             bool loanComplete = false;
             decimal availableToLoan = (MaxAccountBalance() * 5) - MaxCurrentLoan();
             decimal newLoanTaken = availableToLoan;
+            Console.WriteLine();
             int choosenAccountIndex = 0;
 
             while (!loanComplete)
