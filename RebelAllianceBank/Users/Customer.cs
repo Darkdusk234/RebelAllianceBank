@@ -207,17 +207,17 @@ namespace RebelAllianceBank.Users
             var menu = new SelectOneOrMore(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts));
 
             Console.Clear();
-            Markdown.Paragrath($"Vilket konto vill du överföra {TextColor.Yellow}ifrån{TextColor.NORMAL}");
+            Markdown.Paragraph($"Vilket konto vill du överföra {TextColor.Yellow}ifrån{TextColor.NORMAL}");
             int[] accountFromIndex;
 
             while ((accountFromIndex = menu.Show()).Length == 0)
             {
                 Console.Clear();
-                Markdown.Paragrath($"{TextColor.Red}Välj ett alternativ{TextColor.NORMAL}");
+                Markdown.Paragraph($"{TextColor.Red}Välj ett alternativ{TextColor.NORMAL}");
             }
 
             Console.Clear();
-            Markdown.Paragrath($"Vilket konto vill du överföra {TextColor.Yellow}till{TextColor.NORMAL}");
+            Markdown.Paragraph($"Vilket konto vill du överföra {TextColor.Yellow}till{TextColor.NORMAL}");
 
             int[] accountToIndex = [];
             while (true)
@@ -228,7 +228,7 @@ namespace RebelAllianceBank.Users
                     break;
                 }
                 Console.Clear();
-                Markdown.Paragrath($"{TextColor.Red}Välj ett alternativ och inte samma konto som du ville överföra ifrån{TextColor.NORMAL}");
+                Markdown.Paragraph($"{TextColor.Red}Välj ett alternativ och inte samma konto som du ville överföra ifrån{TextColor.NORMAL}");
             }
 
             var accountFrom = _bankAccounts[accountFromIndex[0]];
@@ -248,11 +248,12 @@ namespace RebelAllianceBank.Users
             int moneyToWithdraw;
             while (!int.TryParse(Console.ReadLine(), out moneyToWithdraw) || moneyToWithdraw > accountFrom.Balance || moneyToWithdraw < 0)
             {
-                Markdown.Paragrath($"Välj ett mindre belopp än {accountFrom.Balance}{accountFrom.AccountCurrency}");
+                Markdown.Paragraph($"Välj ett mindre belopp än {accountFrom.Balance}{accountFrom.AccountCurrency}");
             }
 
             accountFrom.Balance -= moneyToWithdraw;
-            accountTo.Balance += moneyToWithdraw;
+            accountTo.Balance += moneyToWithdraw*Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency, 
+                accountTo.AccountCurrency);
             Console.Clear();
             Markdown.Header(HeaderLevel.Header2, "Summering");
             Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
