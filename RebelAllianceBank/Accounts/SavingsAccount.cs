@@ -19,5 +19,15 @@ namespace RebelAllianceBank.Accounts
             AccountName = accountName;
             AccountCurrency = Bank.exchangeRate.SetAccountCurrency();
         }
+
+        public void CardTransaction(Transaction transaction)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CardTransactionHistory()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

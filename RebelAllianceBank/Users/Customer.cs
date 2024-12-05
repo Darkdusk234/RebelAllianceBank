@@ -185,12 +185,73 @@ namespace RebelAllianceBank.Users
             // Some method to check currency, implement when currency method is viable
             //CheckMethodForCurrency(currentUserAccount, otherAccount);
 
+            foreach (var account in _bankAccounts)
+            {
+                Console.WriteLine(account.GetType().Name);
+            }
+            Console.ReadKey();
+            
+            
+            // Detta ska sparas.
             currentUserAccount.Balance -= amount;
             otherAccount.Balance += amount;
+
+
+            // Alt 1.
+            /*
+            1. Skapa objektet Transaction.
+            2. Kalla på metoden CardTransaction(IBankAccount obj).
+            */
+            Transaction transaction = new Transaction(otherAccount, amount);
+            transaction.CardTransaction(otherAccount);
+
+            // Alt 2.
+            /*
+            1. Skapa objektet Transaction.
+            2. Poppulera fälten för objektet innan kallelse på metod.
+            3. Kalla på metoden CardTransaction(IBankAccount obj).
+            */
+            Transaction transaction2 = new Transaction(otherAccount, amount);
+            transaction2.Amount = otherAccount.Balance;
+            transaction2.OtherAccount = otherAccount.AccountName;
+            transaction2.CardTransaction(otherAccount);
+
+            // Alt 3.
+            /*
+            1. Skapa objektet Transaction.
+            2. Kalla på metoden CardTransaction(Transaction obj) på något sätt ifrån IBankAccount eller något bank konto.
+            3.
+            */
+            IBankAccount transaction3 = new CardAccount();
+            transaction3.CardTransaction(transaction3);
+
+
+
+
+
+
+
+
+
+
+
+            //IBankAccount test;
+            //IBankAccount test = currentUserAccount;
+            //test.CardTransaction(currentUserAccount);
+            //transaction.CardTransaction(otherAccount, amount);
+            //transaction.Amount = currentUserAccount.Balance;
+            //transaction.OtherAccount = currentUserAccount.AccountName;
+            //CardTransaction(transaction);
+
+            //CardAccount test = new CardAccount();
+            //test.AccountName = otherAccount;
+            //test.CardTransaction((Transaction)currentUserAccount);
+            //test.CardTransaction((Transaction)otherAccount);
+
+
             Console.WriteLine($"Överföring lyckades! {amount:N2} överfördes från {currentUserAccount.AccountName} till {otherAccount.AccountName}.");
             Console.WriteLine($"Nytt saldo för {currentUserAccount.AccountName}: {currentUserAccount.Balance:N2}");
             Console.WriteLine($"Nytt saldo för {otherAccount.AccountName}: {otherAccount.Balance:N2}");
-
             Console.ReadKey();
         }
 

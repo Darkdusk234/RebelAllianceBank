@@ -11,6 +11,8 @@
         public decimal IntrestRate { get; set; }
 
 
-        
+        public void CardTransaction(Transaction transaction) { } // static?
+        //public void CardTransaction(IBankAccount transaction);
+        //public void CardTransactionHistory();
     }
 }
