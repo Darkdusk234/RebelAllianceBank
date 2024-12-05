@@ -16,6 +16,7 @@ namespace RebelAllianceBank.Accounts
         {
             UserId = userId;
             AccountName = accountName;
+            AccountCurrency = Bank.exchangeRate.SetAccountCurrency();
         }
     }
 }

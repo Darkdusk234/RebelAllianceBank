@@ -242,7 +242,8 @@ namespace RebelAllianceBank.Users
             Console.Clear();
 
             // Header
-            Markdown.Header(HeaderLevel.Header2, $"Hur mycket vill du dra ifrån {accountFrom.AccountName}?");
+            Markdown.Header(HeaderLevel.Header2, $"Hur mycket i {accountFrom.AccountCurrency} vill du dra ifrån " +
+                                                 $"{accountFrom.AccountName}?\n");
             Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
             int moneyToWithdraw;
             while (!int.TryParse(Console.ReadLine(), out moneyToWithdraw) || moneyToWithdraw > accountFrom.Balance || moneyToWithdraw < 0)

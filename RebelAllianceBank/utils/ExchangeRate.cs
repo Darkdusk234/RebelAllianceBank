@@ -328,7 +328,7 @@ public class ExchangeRate
     /// <param name="CurrencyFrom"></param>
     /// <param name="CurrencyTo"></param>
     /// <returns></returns>
-    public decimal CaclulateExchangeRate(string CurrencyFrom, string CurrencyTo)
+    public decimal CalculateExchangeRate(string CurrencyFrom, string CurrencyTo)
     {
         decimal calcExchangeRate = _exchangeRates[CurrencyFrom].ExchangeRateToEUR * 
                                    _exchangeRates[CurrencyTo].ExchangeRateToEUR;
