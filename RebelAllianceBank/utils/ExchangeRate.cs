@@ -6,8 +6,7 @@ using System.Threading.Channels;
 using RebelAllianceBank.Classes;
 using RebelAllianceBank.utils;
 
-namespace RebelAllianceBank;
-
+namespace RebelAllianceBank.utils;
 public class ExchangeRate
 {
     //A dictionary to gather all currency options. Key is the abbreviation of the currency and value are instances of
@@ -335,8 +334,7 @@ public class ExchangeRate
     public decimal CaclulateExchangeRate(string CurrencyFrom, string CurrencyTo)
     {
         decimal calcExchangeRate = _exchangeRates[CurrencyFrom].ExchangeRateToEUR * 
-                                   _exchangeRates[CurrencyFrom].ExchangeRateToEUR;
+                                   _exchangeRates[CurrencyTo].ExchangeRateToEUR;
         return calcExchangeRate; 
     }
-
 }

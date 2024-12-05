@@ -22,11 +22,13 @@ namespace RebelAllianceBank.Classes
                 if (currentUser is Admin)
                 {
                     var adminMenu = new AdminMenu(currentUser, users);
+                    
+                    
                     adminMenu.Show();
                 }
                 else
                 {
-                    var customerMenu = new CustomerMenu(currentUser);
+                    var customerMenu = new CustomerMenu(currentUser, users);
                     customerMenu.Show();
                 }
             }
