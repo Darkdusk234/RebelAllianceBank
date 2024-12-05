@@ -32,11 +32,11 @@ namespace RebelAllianceBank.utils
         // will go through the queued list of transactions that will be made.
         public async Task TransactionFromQueue()
         {
-
+            
         }
         public async Task ExampleMethod()
         {
-            Console.WriteLine("Detta är ett test.");
+            //Console.WriteLine("Detta är ett test.");
         }
         // When method is called, start these method at given time interval
         public async Task Start()
@@ -50,6 +50,7 @@ namespace RebelAllianceBank.utils
         // Method to terminate the Token, closing the thread
         public async Task Stop()
         {
+            _ctk.Dispose();
             _ctk.Cancel();
         }
     }
