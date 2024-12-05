@@ -267,7 +267,7 @@ public class ExchangeRate
                     return "SEK";
                     break;
                 default:
-                    Markdown.Paragrath("Ogiltig input! Tryck enter för att fortsätta");
+                    Markdown.Paragrath("\nOgiltig input! Tryck enter för att fortsätta");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
                     break; 
             }
@@ -303,7 +303,7 @@ public class ExchangeRate
                     //a loop that runs until the currency is in the coorrect format, or the user wish to abort. 
                     while ((currency.Length != 3 || _exchangeRates.ContainsKey(currency) == false) && currency != "AVBRYT")
                     {
-                        Console.WriteLine("Ange den valuta du önskar (tre bokstäver). Skriv AVBRYT för att återgå till " +
+                        Markdown.Header(Enums.HeaderLevel.Header2,"Ange den valuta du önskar (tre bokstäver). Skriv AVBRYT för att återgå till " +
                                           "föregående meny");
                         if (currency == "AVBRYT")
                         {
@@ -319,7 +319,7 @@ public class ExchangeRate
                 case "3":
                     return "quit";
                 default:
-                    Console.WriteLine("Ogiltig input! Tryck enter för att fortsätta");
+                    Markdown.Paragrath("\nOgiltig input! Tryck enter för att fortsätta");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
                     break; 
             }
