@@ -90,10 +90,10 @@ public static class Markdown
         {
             header += "#";
         }
-        Paragrath($"{header} {message}");
+        Paragraph($"{header} {message}");
     }
 
-    public static void Paragrath(string message)
+    public static void Paragraph(string message)
     {
         Console.WriteLine(message);
     }
