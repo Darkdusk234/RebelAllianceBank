@@ -14,7 +14,7 @@ namespace RebelAllianceBank.Classes
         public void Run()
         {
             FileHandler fh = new FileHandler();
-            users = new List<IUser>(fh.ReadUserAndAccounts());
+            users = new List<IUser>(fh.LoadUsersWithAccountAndLoans());
             bool run = true;
             while (run)
             {
