@@ -268,7 +268,7 @@ public class ExchangeRate
                             }
                             else
                             {
-                                Console.WriteLine("Ogiltigt val! Trycke Enter och försök igen!");
+                                Console.WriteLine("Ogiltigt val! Tryck Enter och försök igen!");
                                 while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
                             }
                         }
