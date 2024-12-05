@@ -240,7 +240,7 @@ public class ExchangeRate
     {
         while (true)
         {
-            Console.WriteLine("Önskar du annan valuta än SEK på ditt konto? ja/nej\n");
+            Console.WriteLine("Önskar du annan valuta än SEK på ditt konto? ja/nej");
             string answer = Console.ReadLine();
 
             switch (answer.ToLower())

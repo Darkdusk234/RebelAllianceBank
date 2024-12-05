@@ -198,11 +198,13 @@ namespace RebelAllianceBank.Users
         {
             if (_bankAccounts.Count < 2)
             {
-                Console.WriteLine($"{TextColor.Red}Du har inga tillräkligt många konton att överföra mellan{TextColor.NORMAL}");
+                Console.WriteLine($"{TextColor.Red}Du har inga tillräkligt många konton att överföra mellan{TextColor.NORMAL}. " +
+                                  $"\n\nTryck enter för att fortsätta");
+                while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
                 return;
             }
 
-            var menu = new SelectOneOrMore(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(_bankAccounts));
+            var menu = new SelectOneOrMore(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts));
 
             Console.Clear();
             Markdown.Paragrath($"Vilket konto vill du överföra {TextColor.Yellow}ifrån{TextColor.NORMAL}");
@@ -240,8 +242,8 @@ namespace RebelAllianceBank.Users
             Console.Clear();
 
             // Header
-            Markdown.Header(HeaderLevel.Header2, $"Hur mycket {} vill du dra ifrån {accountFrom.AccountName}?");
-            Markdown.Table(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(updatedAccounts));
+            Markdown.Header(HeaderLevel.Header2, $"Hur mycket vill du dra ifrån {accountFrom.AccountName}?");
+            Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
             int moneyToWithdraw;
             while (!int.TryParse(Console.ReadLine(), out moneyToWithdraw) || moneyToWithdraw > accountFrom.Balance || moneyToWithdraw < 0)
             {
@@ -252,7 +254,9 @@ namespace RebelAllianceBank.Users
             accountTo.Balance += moneyToWithdraw;
             Console.Clear();
             Markdown.Header(HeaderLevel.Header2, "Summering");
-            Markdown.Table(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(updatedAccounts));
+            Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
+            Console.WriteLine("\nTryck enter för att fortsätta");
+            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
         }
         private static List<string> PopulateAccountDetails(List<IBankAccount> updatedAccounts)
         {
@@ -263,6 +267,7 @@ namespace RebelAllianceBank.Users
                 bodyKeys.Add((i + 1).ToString());
                 bodyKeys.Add(BankAccount.AccountName);
                 bodyKeys.Add(BankAccount.Balance.ToString("N2"));
+                bodyKeys.Add(BankAccount.AccountCurrency);
             }
 
             return bodyKeys;
