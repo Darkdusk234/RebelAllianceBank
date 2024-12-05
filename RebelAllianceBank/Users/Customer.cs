@@ -51,8 +51,9 @@ namespace RebelAllianceBank.Users
             {
                 bodyKeys.Add(BankAccount.AccountName);
                 bodyKeys.Add(BankAccount.Balance.ToString("N2"));
+                bodyKeys.Add(BankAccount.AccountCurrency);
             }
-            Markdown.Table(["Konto Namn", "Saldo"], bodyKeys);
+            Markdown.Table(["Konto Namn", "Saldo", "Valuta"], bodyKeys);
         }
         public void CreateAccount()
         {
@@ -87,12 +88,10 @@ namespace RebelAllianceBank.Users
                     case 1:
                         _bankAccounts.Add(new CardAccount(accountName, PersonalNum));
                         createAccount = true;
-                        Console.ReadKey();
                         break;
                     case 2:
                         _bankAccounts.Add(new ISK(accountName, PersonalNum));
                         createAccount = true;
-                        Console.ReadKey();
                         break;
                     case 3:
                         _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum));
@@ -102,8 +101,10 @@ namespace RebelAllianceBank.Users
                         createAccount = true;
                         break;
                     default:
-                        Console.WriteLine("Fel inmatning, inget konto har skapats.");
-                        Console.ReadKey();
+                        Console.WriteLine("Fel inmatning, inget konto har skapats.\n" +
+                                          "\n" +
+                                          "Tryck enter för att fortsätta!");
+                        while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                         Console.Clear();
                         createAccount = false;
                         break;
@@ -156,7 +157,7 @@ namespace RebelAllianceBank.Users
 
                 foreach (var account in otherUser._bankAccounts)
                 {
-                    Console.WriteLine($"{account.AccountName} (Saldo: {account.Balance:N2})");
+                    Console.WriteLine($"{account.AccountName} (Saldo: {account.Balance:N2} {account.AccountCurrency})");
                 }
 
                 string otherAccountName = Console.ReadLine();
@@ -170,7 +171,7 @@ namespace RebelAllianceBank.Users
             decimal amount;
             while (true)
             {
-                Console.WriteLine("Hur mycket vill du föra över?");
+                Console.WriteLine($"Hur mycket vill du föra över i {currentUserAccount.AccountCurrency}?");
 
                 if (decimal.TryParse(Console.ReadLine(), out amount) && amount > 0 && amount <= currentUserAccount.Balance)
                 {
@@ -186,10 +187,10 @@ namespace RebelAllianceBank.Users
             //CheckMethodForCurrency(currentUserAccount, otherAccount);
 
             currentUserAccount.Balance -= amount;
-            otherAccount.Balance += amount;
+            otherAccount.Balance += amount * Bank.exchangeRate.CalculateExchangeRate(currentUserAccount.AccountCurrency, otherAccount.AccountCurrency);
             Console.WriteLine($"Överföring lyckades! {amount:N2} överfördes från {currentUserAccount.AccountName} till {otherAccount.AccountName}.");
-            Console.WriteLine($"Nytt saldo för {currentUserAccount.AccountName}: {currentUserAccount.Balance:N2}");
-            Console.WriteLine($"Nytt saldo för {otherAccount.AccountName}: {otherAccount.Balance:N2}");
+            Console.WriteLine($"Nytt saldo för {currentUserAccount.AccountName}: {currentUserAccount.Balance:N2} {currentUserAccount.AccountCurrency}");
+            Console.WriteLine($"Nytt saldo för {otherAccount.AccountName}: {otherAccount.Balance:N2} {otherAccount.AccountCurrency}");
 
             Console.ReadKey();
         }
@@ -242,9 +243,11 @@ namespace RebelAllianceBank.Users
             Console.Clear();
 
             // Header
-            Markdown.Header(HeaderLevel.Header2, $"Hur mycket i {accountFrom.AccountCurrency} vill du dra ifrån " +
-                                                 $"{accountFrom.AccountName}?\n");
+            Markdown.Header(HeaderLevel.Header2, $"Hur mycket i {accountFrom.AccountCurrency} vill du överföra från " +
+                                                 $"{accountFrom.AccountName} till {accountTo.AccountName}?\n");
             Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
+            Console.Write("\nBelopp: ");
+            
             int moneyToWithdraw;
             while (!int.TryParse(Console.ReadLine(), out moneyToWithdraw) || moneyToWithdraw > accountFrom.Balance || moneyToWithdraw < 0)
             {

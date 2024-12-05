@@ -49,7 +49,8 @@ public class Admin : IUser
                                       "För att ladda upp växelkurs gör följande:\n" +
                                       "1. Gå till länk: https://www.ecb.europa.eu/stats" +
                                       "/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html\n" +
-                                      "2. Ladda ner en csv-fil med de senaste växelkurserna\n" +
+                                      "2. Ladda ner en csv-fil med de senaste växelkurserna (Finns under \"Downloads\" " +
+                                      "och \"Last reference rates\")\n" +
                                       "3. Kopiera och klistra in hela första raden med valuta-namn (inkl \"Date\")\n" +
                                       "4. Kopiera och klistra in hela andra raden med växelkurser (inklusive datum)\n");
 

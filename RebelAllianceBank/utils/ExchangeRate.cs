@@ -132,9 +132,9 @@ public class ExchangeRate
     {
         Console.Clear();
         Console.WriteLine("Öppna länk: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange" +
-                          "_rates/html/index.en.html\n" +
+                          "_rates/html/index.en.html och ladde ner CVS-fil med \"Last reference rates\"\n" +
                           "\n" +
-                          "1. Här lägger du in rad ett med valutor (inklusive \"Date\") från din CVS-fil:\n" +
+                          "1. Här lägger du in rad ett, med valutor (inklusive \"Date\"), från din CVS-fil:\n" +
                           "(för att läsa instruktionerna igen, ange AVBRYT) ");
         string currenciesString = Console.ReadLine();
 
@@ -254,13 +254,13 @@ public class ExchangeRate
 
                         while (!getanswer)
                         {
-                            Console.WriteLine(
-                                $"Du har angett att du vill ha valuta {currency} på ditt konto.Stämmer det? " +
-                                $"ja/nej");
+                            Console.Write(
+                                $"Du har angett att du vill ha valuta {currency} på ditt konto.\n\nStämmer det? ja/nej: " );
                             string answer2 = Console.ReadLine().ToLower();
                             if (answer2 == "ja" || answer2 == "j")
                             {
                                 return currency;
+                                
                             }
                             else if (answer2 == "nej" || answer2 == "n")
                             {
@@ -277,7 +277,6 @@ public class ExchangeRate
                 case "nej":
                 case "n":
                     return "SEK";
-                    break;
                 default:
                     Console.WriteLine("Ogiltig input! Tryck enter för att fortsätta");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
@@ -345,8 +344,9 @@ public class ExchangeRate
     /// <returns></returns>
     public decimal CalculateExchangeRate(string CurrencyFrom, string CurrencyTo)
     {
-        decimal calcExchangeRate = _exchangeRates[CurrencyFrom].ExchangeRateToEUR * 
-                                   _exchangeRates[CurrencyTo].ExchangeRateToEUR;
+        decimal calcExchangeRate = _exchangeRates[CurrencyTo].ExchangeRateToEUR /
+                                   _exchangeRates[CurrencyFrom].ExchangeRateToEUR;
+        
         return calcExchangeRate; 
     }
 }
