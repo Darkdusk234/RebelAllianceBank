@@ -250,12 +250,27 @@ public class ExchangeRate
                     string currency = ChooseAccountCurrency();
                     if (currency != "AVBRYT")
                     {
-                        Console.WriteLine($"Du har angett att du vill ha valuta {currency} på ditt konto.Stämmer det? " +
-                                          $"ja/nej");
-                        string answer2 = Console.ReadLine().ToLower();
-                        if (answer2 == "ja" || answer2 == "j")
+                        bool getanswer = false;
+
+                        while (!getanswer)
                         {
-                            return currency;
+                            Console.WriteLine(
+                                $"Du har angett att du vill ha valuta {currency} på ditt konto.Stämmer det? " +
+                                $"ja/nej");
+                            string answer2 = Console.ReadLine().ToLower();
+                            if (answer2 == "ja" || answer2 == "j")
+                            {
+                                return currency;
+                            }
+                            else if (answer2 == "nej" || answer2 == "n")
+                            {
+                                getanswer = true; 
+                            }
+                            else
+                            {
+                                Console.WriteLine("Ogiltigt val! Trycke Enter och försök igen!");
+                                while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
+                            }
                         }
                     }
                     break; 
