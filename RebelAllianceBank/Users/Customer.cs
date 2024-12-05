@@ -195,7 +195,7 @@ namespace RebelAllianceBank.Users
         }
 
         public void Transfer()
-        {
+        {   
             if (_bankAccounts.Count < 2)
             {
                 Console.WriteLine($"{TextColor.Red}Du har inga tillräkligt många konton att överföra mellan{TextColor.NORMAL}");
@@ -269,7 +269,7 @@ namespace RebelAllianceBank.Users
 
         public void TakeLoan()
         {
-            Loan newLoan = new Loan();
+            //Loan newLoan = new Loan(askedLoan, _customerLoan);
             bool loanComplete = false;
             decimal availableToLoan = (MaxAccountBalance() * 5) - MaxCurrentLoan();
             decimal newLoanTaken = availableToLoan;
@@ -277,6 +277,8 @@ namespace RebelAllianceBank.Users
 
             while (!loanComplete)
             {
+                Loan newLoan = new Loan(askedLoan, _bankAccounts);
+                newLoan.DisplayAllLoans(_customerLoan);
                 if (_bankAccounts.Count <= 0)
                 {
                     Console.WriteLine("Du har inga konton. Skapa ett konto först innan du tar ett lån.");
@@ -331,7 +333,7 @@ namespace RebelAllianceBank.Users
                     // Checks if user want to accept the loan with the terms (YES/NO).
                     if (AcceptLoanTerms())
                     {
-                        newLoan.loanedAmount += askedLoan;
+                        newLoan.LoanedAmount += askedLoan;
                         _customerLoan.Add(newLoan); // add the loan amount to the loanlist.
                         _bankAccounts[choosenAccountIndex - 1].Balance += askedLoan; // add the loanamount to the account.
                         newLoanTaken -= askedLoan; // Removes the loanamount from the allowed loan ammount.
@@ -363,7 +365,7 @@ namespace RebelAllianceBank.Users
             decimal maxCurrentLoans = 0;
             foreach (var loan in _customerLoan)
             {
-                maxCurrentLoans += loan.loanedAmount;
+                maxCurrentLoans += loan.LoanedAmount;
             }
             return maxCurrentLoans;
         }
