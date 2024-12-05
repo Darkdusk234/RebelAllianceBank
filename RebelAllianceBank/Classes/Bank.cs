@@ -10,11 +10,17 @@ namespace RebelAllianceBank.Classes
 
         IUser? currentUser;
         List<IUser> users;
+        public static ExchangeRate exchangeRate = new ExchangeRate();
+
+        TaskManager manager = new TaskManager();
         public void Run()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+            Task.Run(() => manager.Start());
+
             FileHandler fh = new FileHandler();
-            users = new List<IUser>(fh.ReadUserAndAccounts());
+            users = new List<IUser>(fh.LoadUsersWithAccountAndLoans());
             bool run = true;
             while (run)
             {
@@ -30,6 +36,7 @@ namespace RebelAllianceBank.Classes
                     customerMenu.Show();
                 }
             }
+            manager.Stop();
         }
 
         //public void Login()
@@ -231,8 +238,6 @@ namespace RebelAllianceBank.Classes
                 }
             }
         }
-
-
 
         /// <summary>
         /// Method that runs function to unlock a locked user.

@@ -4,6 +4,7 @@ using RebelAllianceBank.utils;
 using RebelAllianceBank.Accounts;
 using RebelAllianceBank.Enums;
 using RebelAllianceBank.Classes;
+using RebelAllianceBank.Menu;
 namespace RebelAllianceBank.Users
 {
     public class Customer : IUser
@@ -16,7 +17,7 @@ namespace RebelAllianceBank.Users
         public bool LoginLock { get; set; } = false;
         
         private List<IBankAccount> _bankAccounts = new List<IBankAccount>();
-        private List<decimal> _customerLoan = new List<decimal>();
+        private List<Loan> _customerLoan = new List<Loan>();
         public Customer() { }
         public Customer(string pNum, string password, string surname, string forename)
         {
@@ -29,6 +30,10 @@ namespace RebelAllianceBank.Users
         public List<IBankAccount> GetListBankAccount()
         {
             return _bankAccounts;
+        }
+        public List<Loan> GetListLoan()
+        {
+            return _customerLoan;
         }
 
         public void ShowBankAccounts()
@@ -75,37 +80,34 @@ namespace RebelAllianceBank.Users
                 {
                     Console.Write("Vad vill du kalla kontot: ");
                     accountName = Console.ReadLine();
-
-                    Console.Write("Vilken valuta vill du ha på kontot: ");
-                    accountCurrency = Console.ReadLine().ToUpper();
                 }
 
-                //switch (userChoice)
-                //{
-                //    case 1:
-                //        _bankAccounts.Add(new CardAccount(accountName, 0, accountCurrency, 0.0m));
-                //        createAccount = true;
-                //        Console.ReadKey();
-                //        break;
-                //    case 2:
-                //        _bankAccounts.Add(new ISK(accountName, 0, accountCurrency, 0.0m));
-                //        createAccount = true;
-                //        Console.ReadKey();
-                //        break;
-                //    case 3:
-                //        _bankAccounts.Add(new SavingsAccount(accountName, 0, accountCurrency, 0.0m));
-                //        createAccount = true;
-                //        break;
-                //    case 4:
-                //        createAccount = true;
-                //        break;
-                //    default:
-                //        Console.WriteLine("Fel inmatning, inget konto har skapats.");
-                //        Console.ReadKey();
-                //        Console.Clear();
-                //        createAccount = false;
-                //        break;
-                //}
+                switch (userChoice)
+                {
+                    case 1:
+                        _bankAccounts.Add(new CardAccount(accountName, PersonalNum));
+                        createAccount = true;
+                        Console.ReadKey();
+                        break;
+                    case 2:
+                        _bankAccounts.Add(new ISK(accountName, PersonalNum));
+                        createAccount = true;
+                        Console.ReadKey();
+                        break;
+                    case 3:
+                        _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum));
+                        createAccount = true;
+                        break;
+                    case 4:
+                        createAccount = true;
+                        break;
+                    default:
+                        Console.WriteLine("Fel inmatning, inget konto har skapats.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        createAccount = false;
+                        break;
+                }
             } while (createAccount == false);
         }
         /// <summary>
@@ -329,7 +331,8 @@ namespace RebelAllianceBank.Users
                     // Checks if user want to accept the loan with the terms (YES/NO).
                     if (AcceptLoanTerms())
                     {
-                        _customerLoan.Add(askedLoan); // add the loan amount to the loanlist.
+                        newLoan.loanedAmount += askedLoan;
+                        _customerLoan.Add(newLoan); // add the loan amount to the loanlist.
                         _bankAccounts[choosenAccountIndex - 1].Balance += askedLoan; // add the loanamount to the account.
                         newLoanTaken -= askedLoan; // Removes the loanamount from the allowed loan ammount.
 
@@ -360,7 +363,7 @@ namespace RebelAllianceBank.Users
             decimal maxCurrentLoans = 0;
             foreach (var loan in _customerLoan)
             {
-                maxCurrentLoans += loan;
+                maxCurrentLoans += loan.loanedAmount;
             }
             return maxCurrentLoans;
         }
