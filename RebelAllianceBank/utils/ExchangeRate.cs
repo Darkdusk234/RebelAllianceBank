@@ -138,7 +138,7 @@ public class ExchangeRate
                           "(för att läsa instruktionerna igen, ange AVBRYT) ");
         string currenciesString = Console.ReadLine();
 
-        if (currenciesString.ToLower() == "quit")
+        if (currenciesString.ToLower() == "avbryt")
         {
             return EnumsExchangeRate.quit;
         }
@@ -147,7 +147,7 @@ public class ExchangeRate
                           "(för att se instruktioner igen, ange AVBRYT): ");
         string exchangeRatesString = Console.ReadLine();
 
-        if (exchangeRatesString.ToLower() == "quit")
+        if (exchangeRatesString.ToLower() == "avbryt")
         {
             return EnumsExchangeRate.quit;
         }
