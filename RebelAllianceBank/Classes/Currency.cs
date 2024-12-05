@@ -1,6 +1,3 @@
-using System.Collections.Specialized;
-using System.Globalization;
-
 namespace RebelAllianceBank.Classes
 {
        public class Currency
