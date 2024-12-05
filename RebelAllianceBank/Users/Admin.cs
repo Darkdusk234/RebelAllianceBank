@@ -43,7 +43,11 @@ public class Admin : IUser
 
             List<string> options = ["Instruktioner", "Skriv ut växelkurse", "Ladda upp nya växelkurser", "Avbryt och återgå till föregående meny"];
 
-            int choice = new SelectOneOrMore(["Meny val"], options).Show()[0];
+            int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
+                    cancel: false,
+                    columnHeaders: new[] { "Meny val" },
+                    filterData: new List<string>(options),
+                    inData: option => new[] { option });
 
             switch (choice)
             {
@@ -129,7 +133,12 @@ public class Admin : IUser
             // string input = Console.ReadLine();
             List<string> options = ["Kund", "Admin", "Gå tillbak till menyn."];
 
-            int choice = new SelectOneOrMore(["Meny val"], options).Show()[0];
+            int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
+                    cancel: false,
+                    columnHeaders: new[] { "Meny val" },
+                    filterData: new List<string>(options),
+                    inData: option => new[] { option });
+
             bool validInput = false;
 
             switch (choice)
