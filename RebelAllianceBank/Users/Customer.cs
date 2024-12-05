@@ -286,7 +286,6 @@ namespace RebelAllianceBank.Users
             bool loanComplete = false;
             decimal availableToLoan = (MaxAccountBalance() * 5) - MaxCurrentLoan();
             decimal newLoanTaken = availableToLoan;
-            int choosenAccountIndex = 0;
 
             while (!loanComplete)
             {
@@ -322,21 +321,17 @@ namespace RebelAllianceBank.Users
                     }
 
                     Console.WriteLine("\nVälj vilket konto du vill sätta in pengarna på:\n");
-                    for (int i = 0; i < _bankAccounts.Count; i++)
-                    {
-                        Console.WriteLine($"{i + 1}. {_bankAccounts[i].AccountName}");
-                    }
-                    if (!int.TryParse(Console.ReadLine(), out choosenAccountIndex) || choosenAccountIndex <= 0 || choosenAccountIndex > _bankAccounts.Count)
-                    {
-                        Console.WriteLine("Felaktigt val.");
-                        continue;
-                    }
+
+                    // int choosenAccountIndex = MarkdownUtils.HighLightChoiceWithMarkdown(false, ["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts), option => [option]);
+                    int choosenAccountIndex = new SelectOneOrMore(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts)).Show()[0];
+
+                    var chosenAccount = _bankAccounts[choosenAccountIndex];
 
                     foreach (var account in _bankAccounts)
                     {
-                        if (account == _bankAccounts[choosenAccountIndex - 1])
+                        if (account == chosenAccount)
                         {
-                            Console.WriteLine($"Din lånansökan på {askedLoan} {_bankAccounts[choosenAccountIndex - 1].AccountCurrency} har accepterats.\n" +
+                            Console.WriteLine($"Din lånansökan på {askedLoan} {chosenAccount.AccountCurrency} har accepterats.\n" +
                             $"Räntan för detta lån ligger på {newLoan.LoanRent}%");
                         }
                     }
@@ -346,11 +341,11 @@ namespace RebelAllianceBank.Users
                     {
                         newLoan.loanedAmount += askedLoan;
                         _customerLoan.Add(newLoan); // add the loan amount to the loanlist.
-                        _bankAccounts[choosenAccountIndex - 1].Balance += askedLoan; // add the loanamount to the account.
+                        chosenAccount.Balance += askedLoan; // add the loanamount to the account.
                         newLoanTaken -= askedLoan; // Removes the loanamount from the allowed loan ammount.
 
-                        Console.WriteLine($"{askedLoan} {_bankAccounts[choosenAccountIndex - 1].AccountCurrency}" +
-                                $" har satts in på följande konto: {_bankAccounts[choosenAccountIndex - 1].AccountName}");
+                        Console.WriteLine($"{askedLoan} {chosenAccount.AccountCurrency}" +
+                                $" har satts in på följande konto: {chosenAccount.AccountName}");
                     }
                     // checks if customer want to take another loan.
                     if (!ContinueLoan())
