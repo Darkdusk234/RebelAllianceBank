@@ -288,7 +288,7 @@ namespace RebelAllianceBank.Users
                 }
                 else
                 {
-                    Console.WriteLine($"Ditt lånetak är: {newLoanTaken} ");
+                    Console.WriteLine($"Ditt lånetak är: {newLoanTaken:F0} ");
                     if (newLoanTaken <= 0)
                     {
                         Console.WriteLine($"Du kan tyvärr inte låna mer än: {newLoanTaken}.");
@@ -440,7 +440,8 @@ namespace RebelAllianceBank.Users
             {
                 totalLoanAmount += loan.loanedAmount;
             }
-            Console.WriteLine($"Du har för närvarande: {totalLoanAmount} i lån.");
+            Console.WriteLine($"\nDu har för närvarande: {totalLoanAmount:F2}kr i lån.");
+            //Console.WriteLine($"\nDin beräknade månadsavgift är: {totalLoanAmount /12:F2}kr");
             Console.WriteLine("\nTryck på valfri tangent för att fortsätta.");
             Console.ReadKey();
         }
