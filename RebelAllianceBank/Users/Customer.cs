@@ -72,7 +72,11 @@ namespace RebelAllianceBank.Users
                 List<string> options = ["Kreditkort", "ISK (investeringssparkonto)", "Sparkonto", "Avsluta"];
 
                 Markdown.Header(HeaderLevel.Header1, "Vilket konto vill du skapa?");
-                int choice = new SelectOneOrMore(["Meny val"], options).Show()[0];
+                int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
+                    cancel: false,
+                    columnHeaders: new[] { "Meny val" },
+                    filterData: new List<string>(options),
+                    inData: option => new[] { option });
 
                 string accountName = "";
                 string accountCurrency = "";
@@ -131,10 +135,11 @@ namespace RebelAllianceBank.Users
             while (currentUserAccount == null)
             {
                 Console.WriteLine("Skriv namnet på det konto du vill föra över från:");
-                foreach (var account in _bankAccounts)
-                {
-                    Console.WriteLine($"{account.AccountName} (Saldo: {account.Balance:N2})");
-                }
+                // foreach (var account in _bankAccounts)
+                // {
+                //     Console.WriteLine($"{account.AccountName} (Saldo: {account.Balance:N2})");
+                // }
+                Markdown.Table(["id", "Konto Namn", "Saldo", "valuta"], PopulateAccountDetails(_bankAccounts));
                 string currentUserAccountName = Console.ReadLine();
                 currentUserAccount = _bankAccounts.FirstOrDefault(account => account.AccountName.Equals(currentUserAccountName, StringComparison.OrdinalIgnoreCase));
                 if (currentUserAccount == null)
@@ -209,7 +214,7 @@ namespace RebelAllianceBank.Users
                 return;
             }
 
-            var menu = new SelectOneOrMore(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(_bankAccounts));
+            var menu = new SelectOneOrMore(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts));
 
             Console.Clear();
             Markdown.Paragrath($"Vilket konto vill du överföra {TextColor.Yellow}ifrån{TextColor.NORMAL}");
@@ -247,7 +252,7 @@ namespace RebelAllianceBank.Users
 
             // Heder
             Markdown.Header(HeaderLevel.Header2, $"Hur mycket vill du dra ifrån {acountFrom.AccountName}?");
-            Markdown.Table(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(updatedAccounts));
+            Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
             int manyToDrow;
             while (!int.TryParse(Console.ReadLine(), out manyToDrow) || manyToDrow > acountFrom.Balance || manyToDrow < 0)
             {
@@ -258,7 +263,7 @@ namespace RebelAllianceBank.Users
             acountTo.Balance += manyToDrow;
             Console.Clear();
             Markdown.Header(HeaderLevel.Header2, "Summering");
-            Markdown.Table(["id", "Konto Namn", "Saldo"], PopulateAccountDetails(updatedAccounts));
+            Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
         }
         private static List<string> PopulateAccountDetails(List<IBankAccount> updatedAccounts)
         {
@@ -269,6 +274,7 @@ namespace RebelAllianceBank.Users
                 bodyKeys.Add((i + 1).ToString());
                 bodyKeys.Add(BankAccount.AccountName);
                 bodyKeys.Add(BankAccount.Balance.ToString("N2"));
+                bodyKeys.Add(BankAccount.AccountCurrency);
             }
 
             return bodyKeys;
