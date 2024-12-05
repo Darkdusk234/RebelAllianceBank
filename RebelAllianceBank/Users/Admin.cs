@@ -1,11 +1,12 @@
 ﻿using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.utils;
 using System.Globalization;
+using RebelAllianceBank.Classes;
+
 namespace RebelAllianceBank.Users;
 
 public class Admin : IUser
 {
-    private ExchangeRate exchangeRate = new ExchangeRate();
     public int ID { get; set; }
     public string PersonalNum { get; set; }
     public string Password { get; set; }
@@ -59,16 +60,16 @@ public class Admin : IUser
                     break;
                 case "2":
                     Console.Clear();
-                    exchangeRate.PrintAllRates();
+                    Bank.exchangeRate.PrintAllRates();
                     Console.WriteLine("\nTryck enter när du är redo att fortsätta");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     break;
                 case "3":
-                    EnumsExchangeRate input = exchangeRate.PasteAndMatchExchangeRates();
+                    EnumsExchangeRate input = Bank.exchangeRate.PasteAndMatchExchangeRates();
                     if (input == EnumsExchangeRate.correct)
                     {
-                        exchangeRate.AddExchangeRates();
-                        bool correctUpdate = exchangeRate.CheckAddedExchangeRates();
+                        Bank.exchangeRate.AddExchangeRates();
+                        bool correctUpdate = Bank.exchangeRate.CheckAddedExchangeRates();
                         if (correctUpdate)
                         {
                             runLoop = false;
