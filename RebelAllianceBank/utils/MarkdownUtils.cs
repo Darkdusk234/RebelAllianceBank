@@ -1,10 +1,5 @@
 ﻿using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RebelAllianceBank.utils
 {
@@ -30,7 +25,7 @@ namespace RebelAllianceBank.utils
             {
                 Console.Clear();
                 Console.CursorVisible = false;
-                Console.WriteLine("Använd piltangenter upp/ner. Enter för att välja. ESC för att avsluta.");
+                Console.WriteLine("Använd piltangenter upp/ner. Enter för att välja.");
                 if (typeof(T) == typeof(IUser))
                 {
                     Console.WriteLine("Välj en användare.");
@@ -47,11 +42,18 @@ namespace RebelAllianceBank.utils
                 for (int i = 0; i < filterData.Count; i++)
                 {
                     string[] rowValues = inData(filterData[i]);
+                    Console.ResetColor();
                     if (i == userSelect)
                     {
-                        rowValues[0] = $"> {rowValues[0]}";
+                        // Highlight the selected row
+                        rowValues[0] = $"{TextColor.Yellow}{rowValues[0]}{TextColor.NORMAL}";
+                    }
+                    else
+                    {
+                        rowValues[0] = $"{TextColor.Red}{rowValues[0]}{TextColor.NORMAL}";
                     }
                     rows.AddRange(rowValues);
+                    Console.ResetColor();
                 }
                 Markdown.Table(columnHeaders, rows);
                 key = Console.ReadKey(true).Key;
