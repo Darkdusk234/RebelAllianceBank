@@ -280,7 +280,8 @@ namespace RebelAllianceBank.Users
 
         public void TakeLoan()
         {
-            //Loan newLoan = new Loan(askedLoan, _customerLoan);
+            // Loan newLoan = new Loan(askedLoan, _bankAccounts);
+            // Loan newLoan = new Loan(askedLoan, _customerLoan);
             bool loanComplete = false;
             decimal availableToLoan = (MaxAccountBalance() * 5) - MaxCurrentLoan();
             decimal newLoanTaken = availableToLoan;
@@ -442,7 +443,6 @@ namespace RebelAllianceBank.Users
                 }
             }
         }
-
 
 
     }
