@@ -73,7 +73,7 @@ public class Admin : IUser
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     break;
                 case 2:
-                    EnumsExchangeRate input = exchangeRate.PasteAndMatchExchangeRates();
+                    EnumsExchangeRate input = Bank.exchangeRate.PasteAndMatchExchangeRates();
                     if (input == EnumsExchangeRate.correct)
                     {
                         Bank.exchangeRate.AddExchangeRates();
