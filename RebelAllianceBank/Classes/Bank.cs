@@ -1,6 +1,5 @@
 ﻿using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.Users;
-using RebelAllianceBank.utils;
 using RebelAllianceBank.Menu;
 
 namespace RebelAllianceBank.Classes
