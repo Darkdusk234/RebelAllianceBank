@@ -5,22 +5,28 @@ namespace RebelAllianceBank.Accounts
     public class ISK : IBankAccount
     {
         private List<Transaction> _transactionsLog = new List<Transaction>(); 
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string UserId { get; set; }
-        //public long AccountNr { get; set; } 
         public int AccountType { get; set; } = 2;
         public string AccountName { get; set;  }
         public decimal Balance { get; set; } = 0; 
         public string AccountCurrency { get;  set;  }
         public decimal IntrestRate { get; set; } = 3.47m;
         public List<Transaction> transactionsLog { get; set; }
-       
+
+        public ISK()
+        {
+            ID = Bank.accountNumberCounter;
+            Bank.accountNumberCounter ++; 
+        }
+
+
         public ISK(string accountName, string userId)
         {
             UserId = userId;
             AccountName = accountName;
             AccountCurrency = Bank.exchangeRate.SetAccountCurrency();
-            //AccountNr = Bank.accountNumberCounter;
+            ID = Bank.accountNumberCounter;
             Bank.accountNumberCounter ++; 
         }
         public void AddToTransactionLog(Transaction newTransaction)
@@ -35,13 +41,13 @@ namespace RebelAllianceBank.Accounts
             Console.WriteLine("---------------------------------------------------");
             foreach (var transaction in _transactionsLog)
             {
-                if (transaction.AccountFrom.AccountName == this.AccountName)
+                if (transaction.AccountFrom.ID == this.ID)
                 {
                     Console.WriteLine(
                         $"{transaction.AccountTo}          {-transaction.Amount} {this.AccountCurrency}\n" +
                         $"{transaction.Timestamp}");
                 }
-                else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom.AccountName != null)
+                else if (transaction.AccountTo.ID == this.ID && transaction.AccountFrom.ID != null)
                 {
                     Console.WriteLine($"Insättning          {transaction.Amount} {this.AccountCurrency}\n" +
                                       $"{transaction.Timestamp}");
@@ -55,7 +61,6 @@ namespace RebelAllianceBank.Accounts
                     }
                     Console.WriteLine("---------------------------------------------------");
                 }
-
                 _transactionsLog.Reverse();
             }
         }

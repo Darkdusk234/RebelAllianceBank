@@ -257,7 +257,6 @@ namespace RebelAllianceBank.Users
             var newTransaction = new Transaction(moneyToWithdraw, accountFrom, accountTo); 
             Bank.transactionQueue.Enqueue(newTransaction);
             
-            
 
             // accountFrom.Balance -= moneyToWithdraw;
             // accountTo.Balance += moneyToWithdraw*Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency, 
@@ -334,7 +333,7 @@ namespace RebelAllianceBank.Users
                         while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     }
                 }
-               if (answer == "ja" || answer == "j")
+                if (answer == "ja" || answer == "j")
                 {
                     runLoopSetAmount = false;
                 }
@@ -356,7 +355,6 @@ namespace RebelAllianceBank.Users
         /// </summary>
         public static void RunTransactionsInQueue()
         {
-            Console.WriteLine($"Nu tömmer vi kön med {Bank.transactionQueue.Count} st transactioner");
             foreach (var transaction in Bank.transactionQueue)
             {
                 var nextInQueue = Bank.transactionQueue.Dequeue();
@@ -369,6 +367,7 @@ namespace RebelAllianceBank.Users
                 {
                     //perform the actual transactions
                     nextInQueue.AccountFrom.Balance -= nextInQueue.Amount;
+                    //change the amount for the receiving account to the correct currency. 
                     nextInQueue.AccountTo.Balance += nextInQueue.Amount * Bank.exchangeRate.CalculateExchangeRate
                         (nextInQueue.AccountFrom.AccountCurrency, nextInQueue.AccountTo.AccountCurrency);
                 }
@@ -377,7 +376,6 @@ namespace RebelAllianceBank.Users
                 nextInQueue.AccountFrom.AddToTransactionLog(nextInQueue);
                 nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
             }
-            Console.WriteLine("Nu är kön tom igen");
         }
         private static List<string> PopulateAccountDetails(List<IBankAccount> updatedAccounts)
         {
