@@ -132,24 +132,32 @@ public class ExchangeRate
     public EnumsExchangeRate PasteAndMatchExchangeRates()
     {
         Console.Clear();
+        string currenciesString;
+        do
+        {
         Markdown.Header(Enums.HeaderLevel.Header2, "\tUppdatering av valutakurs");
-        Markdown.Paragrath("\nÖppna länk: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange" +
-                          "_rates/html/index.en.html\n" +
+        Markdown.Paragraph("\nÖppna länk: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange" +
+                          "_rates/html/index.en.html och ladde ner CVS-fil med \"Last reference rates\"\n" +
                           "\n" +
-                          "1. Här lägger du in rad ett med valutor (inklusive \"Date\") från din CVS-fil:\n" +
+                          "1. Här lägger du in rad ett, med valutor (inklusive \"Date\"), från din CVS-fil:\n" +
                           "(för att läsa instruktionerna igen, ange AVBRYT) ");
-        string currenciesString = Console.ReadLine();
+        currenciesString = Console.ReadLine();
+        } while (currenciesString == null);
 
-        if (currenciesString.ToLower() == "quit")
+        if (currenciesString.ToLower() == "avbryt")
         {
             return EnumsExchangeRate.quit;
-        }
+        } 
+        
+        string exchangeRatesString;
+        do
+        {
+            Markdown.Paragraph("\n2. Här lägger du in rad två med växelkurser (inklusive datum-info)\n" +
+                              "(för att se instruktioner igen, ange AVBRYT): ");
+            exchangeRatesString = Console.ReadLine();
+        } while (exchangeRatesString == null); 
 
-        Markdown.Paragrath("\n2. Här lägger du in rad två med växelkurser (inklusive datum-info)\n" +
-                          "(för att se instruktioner igen, ange AVBRYT): ");
-        string exchangeRatesString = Console.ReadLine();
-
-        if (exchangeRatesString.ToLower() == "quit")
+        if (exchangeRatesString.ToLower() == "avbryt")
         {
             return EnumsExchangeRate.quit;
         }
@@ -157,7 +165,9 @@ public class ExchangeRate
         
         //Since the currency data contains "Date", while exchange rate containse e.g."25 november 2024",the legnth of 
         //the exchangerates array needs to be decreased with 2 to match currencies. 
-        if (_currenciesToUpdate.Length != _exchangeRatesToUpdate.Length - 2)
+        if (_currenciesToUpdate.Length != _exchangeRatesToUpdate.Length - 2 || 
+            _currenciesToUpdate.Length -1 != Bank.exchangeRate._exchangeRates.Count ||
+            _exchangeRatesToUpdate.Length - 3 != Bank.exchangeRate._exchangeRates.Count )
         {
             return EnumsExchangeRate.incorrect;
         }
@@ -190,7 +200,7 @@ public class ExchangeRate
         {
             Markdown.Header(Enums.HeaderLevel.Header1,"Du har lagt in följande växelkurser: ");
             PrintAllRates();
-            Markdown.Paragrath("\nSer detta korrekt ut? ja/nej");
+            Markdown.Paragraph("\nSer detta korrekt ut? ja/nej");
             string answer = Console.ReadLine();
 
             switch (answer)
@@ -204,7 +214,7 @@ public class ExchangeRate
                     return false; 
                     break;
                 default:
-                    Markdown.Paragrath("Ogiltigt val! Tryck enter och försök igen");
+                    Markdown.Paragraph("Ogiltigt val! Tryck enter och försök igen");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     break;
             }
@@ -243,7 +253,7 @@ public class ExchangeRate
         while (true)
         {
             Markdown.Header(Enums.HeaderLevel.Header2, "\tBESTÄM VALUTA\n");
-            Markdown.Paragrath("Önskar du annan valuta än SEK på ditt konto? ja/nej");
+            Markdown.Paragraph("Önskar du annan valuta än SEK på ditt konto? ja/nej");
             string answer = Console.ReadLine();
 
             switch (answer.ToLower())
@@ -253,21 +263,35 @@ public class ExchangeRate
                     string currency = ChooseAccountCurrency();
                     if (currency != "AVBRYT")
                     {
-                        Markdown.Paragrath($"Du har angett att du vill ha valuta {currency} på ditt konto.Stämmer det? " +
-                                          $"ja/nej");
-                        string answer2 = Console.ReadLine().ToLower();
-                        if (answer2 == "ja" || answer2 == "j")
+                        bool getanswer = false;
+
+                        while (!getanswer)
                         {
-                            return currency;
+                            Markdown.Paragraph(
+                                $"Du har angett att du vill ha valuta {currency} på ditt konto.\n\nStämmer det? ja/nej: " );
+                            string answer2 = Console.ReadLine().ToLower();
+                            if (answer2 == "ja" || answer2 == "j")
+                            {
+                                return currency;
+                                
+                            }
+                            else if (answer2 == "nej" || answer2 == "n")
+                            {
+                                getanswer = true; 
+                            }
+                            else
+                            {
+                                Markdown.Paragraph("Ogiltigt val! Trycke Enter och försök igen!");
+                                while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
+                            }
                         }
                     }
                     break; 
                 case "nej":
                 case "n":
                     return "SEK";
-                    break;
                 default:
-                    Markdown.Paragrath("\nOgiltig input! Tryck enter för att fortsätta");
+                    Markdown.Paragraph("\nOgiltig input! Tryck enter för att fortsätta");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
                     break; 
             }
@@ -294,7 +318,7 @@ public class ExchangeRate
                 case "1":
                     Console.Clear();
                     PrintAllCurrencies();
-                    Markdown.Paragrath("\nTryck enter för att återgå och välja valuta!");
+                    Markdown.Paragraph("\nTryck enter för att återgå och välja valuta!");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
                     break; 
                 case "2":
@@ -319,7 +343,7 @@ public class ExchangeRate
                 case "3":
                     return "quit";
                 default:
-                    Markdown.Paragrath("\nOgiltig input! Tryck enter för att fortsätta");
+                    Markdown.Paragraph("\nOgiltig input! Tryck enter för att fortsätta");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
                     break; 
             }
@@ -331,10 +355,11 @@ public class ExchangeRate
     /// <param name="CurrencyFrom"></param>
     /// <param name="CurrencyTo"></param>
     /// <returns></returns>
-    public decimal CaclulateExchangeRate(string CurrencyFrom, string CurrencyTo)
+    public decimal CalculateExchangeRate(string CurrencyFrom, string CurrencyTo)
     {
-        decimal calcExchangeRate = _exchangeRates[CurrencyFrom].ExchangeRateToEUR * 
-                                   _exchangeRates[CurrencyTo].ExchangeRateToEUR;
+        decimal calcExchangeRate = _exchangeRates[CurrencyTo].ExchangeRateToEUR /
+                                   _exchangeRates[CurrencyFrom].ExchangeRateToEUR;
+        
         return calcExchangeRate; 
     }
 }
