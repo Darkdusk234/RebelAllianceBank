@@ -9,6 +9,7 @@ namespace RebelAllianceBank.Menu
     {
         private List<IUser> _users;
         private Customer _currentCustomer;
+        private List<IUser> _listUsers;
 
         public CustomerMenu(IUser currentUser, List<IUser> users) : base(currentUser)
         {
@@ -61,12 +62,10 @@ namespace RebelAllianceBank.Menu
                 switch (choice)
                 {
                     case 0:
-                        Console.WriteLine("Mina lån");
                         _currentCustomer.DisplayLoan();
                         break;
                     case 1:
                         _currentCustomer.TakeLoan();
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 2:
                         runCustomerMenuLoan = false;
@@ -93,7 +92,6 @@ namespace RebelAllianceBank.Menu
                     case 0:
                         Console.Clear();
                         _currentCustomer.ShowBankAccounts();
-                        Console.ReadKey(); //Think about moving into ShowBankAccounts method
                         break;
                     case 1:
                         Console.Clear();
@@ -122,11 +120,9 @@ namespace RebelAllianceBank.Menu
                 {
                     case 0:
                         _currentCustomer.Transfer();
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 1:
                         _currentCustomer.TransferUserToUser(_users);
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 2:
                         runCustomerMenuTransaction = false;
