@@ -359,10 +359,13 @@ namespace RebelAllianceBank.Users
             foreach (var transaction in Bank.transactionQueue)
             {
                 var nextInQueue = Bank.transactionQueue.Dequeue();
+                //Set the time of the transaction
+                nextInQueue.Timestamp = DateTime.Now; 
                 //for deposits, there are no accountFrom
                 if (nextInQueue.AccountFrom == null)
                 {
                     nextInQueue.AccountTo.Balance += nextInQueue.Amount;
+                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
                 }
                 else
                 {
@@ -371,11 +374,9 @@ namespace RebelAllianceBank.Users
                     //change the amount for the receiving account to the correct currency. 
                     nextInQueue.AccountTo.Balance += nextInQueue.Amount * Bank.exchangeRate.CalculateExchangeRate
                         (nextInQueue.AccountFrom.AccountCurrency, nextInQueue.AccountTo.AccountCurrency);
+                    nextInQueue.AccountFrom.AddToTransactionLog(nextInQueue);
+                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
                 }
-                //Set the time of the transaction
-                nextInQueue.Timestamp = DateTime.Now; 
-                nextInQueue.AccountFrom.AddToTransactionLog(nextInQueue);
-                nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
             }
         }
         private static List<string> PopulateAccountDetails(List<IBankAccount> updatedAccounts)
