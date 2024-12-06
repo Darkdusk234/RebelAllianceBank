@@ -121,6 +121,7 @@ namespace RebelAllianceBank.Users
             {
                 Console.WriteLine("Du har inga bankkonton att göra en överföring från. Tryck på 'enter' för att återgå till menyn.");
                 while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+                Console.Clear();
                 return;
             }
             Customer otherUser = null;
@@ -136,7 +137,14 @@ namespace RebelAllianceBank.Users
                 }
                 string currentUserAccountName = Console.ReadLine();
                 currentUserAccount = _bankAccounts.FirstOrDefault(account => account.AccountName.Equals(currentUserAccountName, StringComparison.OrdinalIgnoreCase));
-                if ("avsluta" == currentUserAccountName.ToLower())
+                if (currentUserAccountName == "")
+                {
+                    Console.WriteLine("Du kan inte skica ett tomt fält.\n" +
+                        "Tryck på 'enter' för att försöka igen.");
+                    while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+                    Console.Clear();
+                }
+                else if ("avsluta" == currentUserAccountName.ToLower())
                 {
                     return;
                 }
