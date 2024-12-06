@@ -91,7 +91,7 @@ namespace RebelAllianceBank.Users
                 if (choice < 4)
                 {
                     // Console.Write("Vad vill du kalla kontot: ");
-                    Markdown.Paragrath("Vad vill du kalla kontot: ");
+                    Markdown.Paragraph("Vad vill du kalla kontot: ");
                     accountName = Console.ReadLine();
                 }
 
@@ -269,7 +269,6 @@ namespace RebelAllianceBank.Users
             }
 
             var menu = new SelectOneOrMore(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts));
-            var menu = new SelectOneOrMore(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts));
 
             Console.Clear();
             Markdown.Paragraph($"Vilket konto vill du överföra {TextColor.Yellow}ifrån{TextColor.NORMAL}");
@@ -388,7 +387,7 @@ namespace RebelAllianceBank.Users
                     Console.WriteLine("\nVälj vilket konto du vill sätta in pengarna på:\n");
 
                     // int choosenAccountIndex = MarkdownUtils.HighLightChoiceWithMarkdown(false, ["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts), option => [option]);
-                    int choosenAccountIndex = new SelectOneOrMore(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts)).Show()[0];
+                    choosenAccountIndex = new SelectOneOrMore(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts)).Show()[0];
 
                     var chosenAccount = _bankAccounts[choosenAccountIndex];
 
