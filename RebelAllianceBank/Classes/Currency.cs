@@ -1,6 +1,3 @@
-using System.Collections.Specialized;
-using System.Globalization;
-
 namespace RebelAllianceBank.Classes
 {
        public class Currency
@@ -13,6 +10,21 @@ namespace RebelAllianceBank.Classes
               public string Country { get; set; }
 
               public decimal ExchangeRateToEUR
+              {
+                     get { return _exchangeRateToEUR; }
+                     set
+                     {
+                            if (value > 0)
+                            {
+                                   _exchangeRateToEUR = value; 
+                            }
+                            else
+                            {
+                                   throw new ArgumentException("Exchange Rate must be larger than 0");
+                            }
+                     }
+              }
+              public decimal ExchangeRateToSEK
               {
                      get { return _exchangeRateToEUR; }
                      set

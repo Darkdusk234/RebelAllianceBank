@@ -12,11 +12,11 @@ namespace RebelAllianceBank.Menu
         public AdminMenu(IUser currentUser, List<IUser> users) : base(currentUser)
         {
             this._users = users;
-            _currentAdmin = (Admin?)currentUser; 
+            _currentAdmin = (Admin?)currentUser;
         }
         public override void Show()
         {
-            string[] options = { "Skapa användare", "Ändra växelkurs", "Lås upp användarkonto???", "Logga ut" };
+            List<string> options = ["Skapa användare", "Ändra växelkurs", "Lås upp användarkonto", "Logga ut"];
             bool runAdminMenu = true;
 
             while (runAdminMenu)
@@ -26,6 +26,7 @@ namespace RebelAllianceBank.Menu
                     columnHeaders: new[] { "MENY - ADMIN" },
                     filterData: new List<string>(options),
                     inData: option => new[] { option });
+
 
                 switch (choice)
                 {
@@ -42,7 +43,6 @@ namespace RebelAllianceBank.Menu
                         runAdminMenu = false;
                         break;
                 }
-                Console.ReadKey();
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using RebelAllianceBank.Interfaces;
+﻿using RebelAllianceBank.Classes;
+using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.Users;
 using RebelAllianceBank.utils;
 
@@ -6,18 +7,19 @@ namespace RebelAllianceBank.Menu
 {
     public class CustomerMenu : Menu
     {
+        private List<IUser> _users;
         private Customer _currentCustomer;
         private List<IUser> _listUsers;
 
         public CustomerMenu(IUser currentUser, List<IUser> users) : base(currentUser)
         {
             _currentCustomer = (Customer?)CurrentUser;
-            _listUsers = users;
+            _users = users;
         }
 
         public override void Show()
         {
-            string[] options = { "Konton", "Betala/Överföra", "Lån", "Logga ut" };
+            List<string> options = ["Konton", "Betala/Överföra", "Lån", "Logga ut"];
             bool runCustomerMenu = true;
             while (runCustomerMenu)
             {
@@ -26,6 +28,7 @@ namespace RebelAllianceBank.Menu
                     columnHeaders: new[] { $"MENY - {CurrentUser.Surname}" },
                     filterData: new List<string>(options),
                     inData: option => new[] { option });
+
 
                 switch (choice)
                 {
@@ -46,7 +49,7 @@ namespace RebelAllianceBank.Menu
         }
         public void CustomerMenuLoan()
         {
-            string[] options = { "Mina lån", "Ansök om nytt lån", "Återgå till huvudmenyn" };
+            List<string> options = ["Mina lån", "Ansök om nytt lån", "Återgå till huvudmenyn"];
             bool runCustomerMenuLoan = true;
             while (runCustomerMenuLoan)
             {
@@ -59,10 +62,10 @@ namespace RebelAllianceBank.Menu
                 switch (choice)
                 {
                     case 0:
-                        Console.WriteLine("Mina lån");
+                        _currentCustomer.DisplayLoan();
                         break;
                     case 1:
-                        Console.WriteLine("Ansök om lån");
+                        _currentCustomer.TakeLoan();
                         break;
                     case 2:
                         runCustomerMenuLoan = false;
@@ -72,16 +75,17 @@ namespace RebelAllianceBank.Menu
         }
         public void CustomerMenuAccounts()
         {
-            string[] options = { "Visa konton", "Öppna nytt konto", "Återgå till huvudmenyn" };
+            List<string> options = ["Visa konton", "Öppna nytt konto", "Återgå till huvudmenyn"];
             bool runCustomerMenuAccounts = true;
 
             while (runCustomerMenuAccounts)
             {
                 int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
                     cancel: false,
-                    columnHeaders: new[] { $"Lån - {CurrentUser.Surname}" },
+                    columnHeaders: new[] { $"Konton meny - {CurrentUser.Surname}" },
                     filterData: new List<string>(options),
                     inData: option => new[] { option });
+
 
                 switch (choice)
                 {
@@ -102,7 +106,7 @@ namespace RebelAllianceBank.Menu
         private void CustomerMenuTransaction()
         {
             bool runCustomerMenuTransaction = true;
-            string[] options = { "Ny överföring", "Överföring till externa konton", "Återgå till huvudmenyn" };
+            List<String> options = ["Ny överföring", "Överföring till externa konton", "Återgå till huvudmenyn"];
 
             while (runCustomerMenuTransaction)
             {
@@ -115,10 +119,10 @@ namespace RebelAllianceBank.Menu
                 switch (choice)
                 {
                     case 0:
-                        Console.WriteLine("Ny överföring");
+                        _currentCustomer.Transfer();
                         break;
                     case 1:
-                        _currentCustomer.TransferUserToUser(_listUsers);
+                        _currentCustomer.TransferUserToUser(_users);
                         break;
                     case 2:
                         runCustomerMenuTransaction = false;
