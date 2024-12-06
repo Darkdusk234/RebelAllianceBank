@@ -34,17 +34,25 @@ public class Admin : IUser
         {
             Console.Clear();
 
-            Console.WriteLine("UPPDATERA VÄXELKURS: \n" +
-                              "[1] Instruktioner\n" +
-                              "[2] Skriv ut växelkurser\n" +
-                              "[3] Ladda upp nya växelkurser\n" +
-                              "[4] Avbryt och återgå till föregående meny");
+            // Console.WriteLine("UPPDATERA VÄXELKURS: \n" +
+            //                   "[1] Instruktioner\n" +
+            //                   "[2] Skriv ut växelkurser\n" +
+            //                   "[3] Ladda upp nya växelkurser\n" +
+            //                   "[4] Avbryt och återgå till föregående meny");
 
-            string choice = Console.ReadLine();
+            // string choice = Console.ReadLine();
+
+            List<string> options = ["Instruktioner", "Skriv ut växelkurse", "Ladda upp nya växelkurser", "Avbryt och återgå till föregående meny"];
+
+            int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
+                    cancel: false,
+                    columnHeaders: new[] { "Meny val" },
+                    filterData: new List<string>(options),
+                    inData: option => new[] { option });
 
             switch (choice)
             {
-                case "1":
+                case 0:
                     Console.Clear();
                     Console.WriteLine("INSTRUKTIONER UPPDATERA VÄXELKURS\n\n" +
                                       "För att ladda upp växelkurs gör följande:\n" +
@@ -58,13 +66,13 @@ public class Admin : IUser
                     Console.WriteLine("Tryck enter när du är redo att fortsätta");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     break;
-                case "2":
+                case 1:
                     Console.Clear();
                     Bank.exchangeRate.PrintAllRates();
                     Console.WriteLine("\nTryck enter när du är redo att fortsätta");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     break;
-                case "3":
+                case 2:
                     EnumsExchangeRate input = Bank.exchangeRate.PasteAndMatchExchangeRates();
                     if (input == EnumsExchangeRate.correct)
                     {
@@ -88,7 +96,7 @@ public class Admin : IUser
                         while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     }
                     break;
-                case "4":
+                case 3:
                     runLoop = false;
                     break;
                 default:
@@ -120,24 +128,32 @@ public class Admin : IUser
         while (methodRun)
         {
             Console.Clear();
-            Console.WriteLine("Vilken typ av användare vill du skapa." +
-                              "\n1. Kund" +
-                              "\n2. Admin" +
-                              "\n3. Gå tillbak till menyn.");
-            string input = Console.ReadLine();
+            // Console.WriteLine("Vilken typ av användare vill du skapa." +
+            //                   "\n1. Kund" +
+            //                   "\n2. Admin" +
+            //                   "\n3. Gå tillbak till menyn.");
+            // string input = Console.ReadLine();
+            List<string> options = ["Kund", "Admin", "Gå tillbak till menyn."];
+
+            int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
+                    cancel: false,
+                    columnHeaders: new[] { "Meny val" },
+                    filterData: new List<string>(options),
+                    inData: option => new[] { option });
+
             bool validInput = false;
 
-            switch (input)
+            switch (choice)
             {
-                case "1":
+                case 0:
                     userType = "Kund";
                     validInput = true;
                     break;
-                case "2":
+                case 1:
                     userType = "Admin";
                     validInput = true;
                     break;
-                case "3":
+                case 2:
                     methodRun = false;
                     break;
                 default:
@@ -255,8 +271,9 @@ public class Admin : IUser
                                   " Skriv avbryt om du vill gå tillbaka till menyn.");
                 string dayInput = Console.ReadLine();
                 string dateTime = birthYear;
-                dateTime = dateTime.Insert(3, $"/{birthMonth}");
-                dateTime = dateTime.Insert(5, $"/{dayInput}");
+                dateTime = dateTime.Insert(4, $"/{birthMonth}");
+                dateTime = dateTime.Insert(7, $"/{dayInput}");
+                Console.WriteLine(dateTime);
 
                 if (dayInput.ToUpper().Equals("AVBRYT"))
                 {
@@ -475,6 +492,7 @@ public class Admin : IUser
     {
         while (true)
         {
+            Console.Clear();
             Console.WriteLine("Skriv användarnamnet av den användare du vill låsa upp. Skriv exit om du vill gå" +
                               " tillbaka till menyn");
             string usernameInput = Console.ReadLine();
