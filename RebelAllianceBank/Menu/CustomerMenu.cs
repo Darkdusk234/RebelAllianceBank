@@ -106,7 +106,7 @@ namespace RebelAllianceBank.Menu
         private void CustomerMenuTransaction()
         {
             bool runCustomerMenuTransaction = true;
-            List<String> options = ["Ny överföring", "Överföring till externa konton", "Återgå till huvudmenyn"];
+            string[] options = { "Insättning", "Ny överföring", "Överföring till externa konton", "Återgå till huvudmenyn" };
 
             while (runCustomerMenuTransaction)
             {
@@ -119,12 +119,15 @@ namespace RebelAllianceBank.Menu
                 switch (choice)
                 {
                     case 0:
-                        _currentCustomer.Transfer();
+                        _currentCustomer.Deposit();
                         break;
                     case 1:
-                        _currentCustomer.TransferUserToUser(_users);
+                        _currentCustomer.Transfer();
                         break;
                     case 2:
+                        _currentCustomer.TransferUserToUser(_users);
+                        break;
+                    case 3:
                         runCustomerMenuTransaction = false;
                         break;
                 }
