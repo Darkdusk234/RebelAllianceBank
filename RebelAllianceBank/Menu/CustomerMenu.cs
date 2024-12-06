@@ -60,11 +60,9 @@ namespace RebelAllianceBank.Menu
                 {
                     case 0:
                         Console.WriteLine("Mina lån");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 1:
-                        
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        Console.WriteLine("Ansök om lån");
                         break;
                     case 2:
                         runCustomerMenuLoan = false;
@@ -90,12 +88,10 @@ namespace RebelAllianceBank.Menu
                     case 0:
                         Console.Clear();
                         _currentCustomer.ShowBankAccounts();
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 1:
                         Console.Clear();
                         _currentCustomer.CreateAccount();
-                        Console.ReadKey();
                         break;
                     case 2:
                         runCustomerMenuAccounts = false;
@@ -120,11 +116,9 @@ namespace RebelAllianceBank.Menu
                 {
                     case 0:
                         Console.WriteLine("Ny överföring");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 1:
                         _currentCustomer.TransferUserToUser(_listUsers);
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 2:
                         runCustomerMenuTransaction = false;
