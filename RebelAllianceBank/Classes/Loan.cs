@@ -11,10 +11,7 @@ namespace RebelAllianceBank.Classes
         public decimal MounthlyPayment { get; set; }
         public decimal RemainingLoan { get; set; }
         public DateTime LoanDate { get; set; } // Sätter låndatum och tid.
-        public Loan()
-        {
-
-        }
+        
         //public Loan(decimal loandAmount, IBankAccount konto)
         //{
         //    LoanedAmount = loandAmount;
@@ -22,6 +19,10 @@ namespace RebelAllianceBank.Classes
         //    LoanDate = DateTime.Now;
 
         //}
+        public Loan()
+        {
+
+        }
         public Loan(decimal loanedAmount, int mounthsToLoan, IBankAccount account)
         {
             LoanedAmount = loanedAmount;
@@ -38,7 +39,6 @@ namespace RebelAllianceBank.Classes
             {
                 foreach (var loan in loanList)
                 {
-                    //Console.WriteLine($"{count}. Konto: {account.AccountName} | Loan Amount: {loan.LoanedAmount} {account.AccountCurrency} {LoanDate}");
                     Console.WriteLine($"#{count}.");
                     Console.WriteLine($"Konto: {account.AccountName}");
                     Console.WriteLine($"Lånbelopp: {loan.LoanedAmount}{account.AccountCurrency} med räntan {loan.LoanRent}%.");
@@ -49,10 +49,6 @@ namespace RebelAllianceBank.Classes
                 }
             }
         }
-        /// <summary>
-        /// Calculate the mounthly payment.
-        /// </summary>
-        /// <returns></returns>
         public decimal CalculateMounthlyPayment()
         {
             decimal rent = LoanRent / 100; // Chance rent to better format to calculate %. 5,4 / 100 = 0,054. 
@@ -61,7 +57,11 @@ namespace RebelAllianceBank.Classes
 
             return mounthlyPayment;
         }
-        public void PayOfLoan(decimal amount)
+        /// <summary>
+        /// Method to pay off loan.
+        /// </summary>
+        /// <param name="amount"></param>
+        public void PayOffLoan(decimal amount)
         {
             if (RemainingLoan == 0)
             {
@@ -96,13 +96,8 @@ namespace RebelAllianceBank.Classes
                     {
                         Console.WriteLine($"Betalning mottagen. Återstående skuld: {RemainingLoan:C}");
                     }
-            
                 }
-
             }
-
         }
-
-
     }
 }
