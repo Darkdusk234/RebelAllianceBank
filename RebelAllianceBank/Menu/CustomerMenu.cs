@@ -1,4 +1,5 @@
-﻿using RebelAllianceBank.Interfaces;
+﻿using RebelAllianceBank.Classes;
+using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.Users;
 using RebelAllianceBank.utils;
 
@@ -8,11 +9,12 @@ namespace RebelAllianceBank.Menu
     {
         private List<IUser> _users;
         private Customer _currentCustomer;
+        private List<IUser> _users;
 
         public CustomerMenu(IUser currentUser, List<IUser> users) : base(currentUser)
         {
+            _currentCustomer = (Customer?)CurrentUser;
             _users = users;
-            _currentCustomer = (Customer?)CurrentUser; 
         }
 
         public override void Show()

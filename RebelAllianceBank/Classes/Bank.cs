@@ -7,14 +7,20 @@ namespace RebelAllianceBank.Classes
 {
     public class Bank
     {
+
         IUser? currentUser;
         List<IUser> users;
-        public static ExchangeRate exchangeRate = new ExchangeRate(); 
-        
+        public static ExchangeRate exchangeRate = new ExchangeRate();
+
+        TaskManager manager = new TaskManager();
         public void Run()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+            Task.Run(() => manager.Start());
+
             FileHandler fh = new FileHandler();
-            users = new List<IUser>(fh.ReadUserAndAccounts());
+            users = new List<IUser>(fh.LoadUsersWithAccountAndLoans());
             bool run = true;
             while (run)
             {
@@ -41,7 +47,8 @@ namespace RebelAllianceBank.Classes
                         break;
                 }
             }
-            fh.WriteUsersAndAccounts(users);
+            manager.Stop();
+            fh.WriteUsersAndAssociatedData(users);
         }
 
         //public void Login()
@@ -122,6 +129,7 @@ namespace RebelAllianceBank.Classes
             while (true)
             {
                 Console.Clear();
+                Logo();
                 Console.WriteLine("Välkommen till Rebel Alliance Bank. Vänligen ange ditt personnummer.");
                 Console.Write("Personnummer: ");
                 string? usernameInput = Console.ReadLine();
@@ -157,6 +165,7 @@ namespace RebelAllianceBank.Classes
                     while (true)
                     {
                         Console.Clear();
+                        Logo();
                         Console.WriteLine($"God dag {currentUser.Surname}. Vänligen skriv ditt lösenord.");
                         string? passwordInput = Console.ReadLine();
 
@@ -240,6 +249,117 @@ namespace RebelAllianceBank.Classes
                         break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Method that runs function to unlock a locked user.
+        /// </summary>
+        public void UnlockUser()
+        {
+            while (true)
+            {
+                Console.WriteLine("Skriv användarnamnet av den användare du vill låsa upp. Skriv exit om du vill gå" +
+                    " tillbaka till menyn");
+                string usernameInput = Console.ReadLine();
+                bool correctInput = false;
+                bool notLockedUser = false;
+
+                //Checks if user wants to exit from function and breaks loop if exit is inputted.
+                if (usernameInput.ToUpper().Equals("EXIT"))
+                {
+                    break;
+                }
+
+                foreach (var user in users)
+                {
+                    //Checks if users username is the inputted username and checks if that user is locked. If not tells
+                    // current user that that useraccount isn't locked and waits for a key press to go back to input.
+                    if (user.PersonalNum.Equals(usernameInput) && user.LoginLock == false)
+                    {
+                        Console.WriteLine("Användaren är inte låst. Kolla om du skrivit rätt användarnamn. Tryck på valfri rangent" +
+                            " för att gå vidare.");
+                        correctInput = true;
+                        notLockedUser = true;
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    }
+                    //Checks if users username is the inputted username and unlocks that useraccount if it is and it is
+                    //locked.
+                    else if (user.PersonalNum.Equals(usernameInput))
+                    {
+                        user.LoginLock = false;
+                        Console.WriteLine("Användaren har låsts upp. Tryck på valfri tangent för att gå vidare.");
+                        correctInput = true;
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    }
+                }
+
+                //Continues the loop if a correct username was inputted but that useraccount wasn't locked.
+                if (correctInput && notLockedUser)
+                {
+                    continue;
+                }
+                else if (correctInput)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Det finns ingen användare med det användarnamnet.tryck på " +
+                        "valfri tangent för att gå tillbaka och försök igen.");
+                }
+            }
+
+        }
+        public void Logo()
+        {
+            string[] ascii1 = {
+            " 888888ba   .d888888            888888ba                    dP       ",
+            " 88    `8b d8'    88            88    `8b                   88       ",
+            "a88aaaa8P' 88aaaaa88a          a88aaaa8P' .d8888b. 88d888b. 88  .dP  ",
+            " 88   `8b. 88     88  88888888  88   `8b. 88'  `88 88'  `88 88888\"   ",
+            " 88     88 88     88            88    .88 88.  .88 88    88 88  `8b. ",
+            " dP     dP 88     88            88888888P `88888P8 dP    dP dP   `YP ",
+            "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+        };
+
+            string[] ascii2 = {
+            "                                                                       ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "                                                                       ⠀⠀⠀⠀⡠⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⠆⠀⠀⠀⠀⠀⢄⡀⠀⠀⠀⠀⠀",
+            "                                                                       ⠀⠀⣴⡟⠀⠀⠀⠀⣰⣦⣀⢻⣿⣿⡏⣀⣴⣄⠀⠀⠀⠀⢻⣦⡀⠀⠀⠀",
+            "                                                                       ⢠⣾⡿⠀⠀⠀⠀⠈⠛⢿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀⠀⠀⢻⣿⣄⠀⠀",
+            "                                                                      ⢠⣿⣿⠇⠀⠀⠀⠀⠀⠀⠈⢿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⡆⠀",
+            "                                                                      ⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⠀",
+            "                                                                     ⢸⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣿⡇",
+            "                                                                     ⢸⣿⣿⣿⣿⣦⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⢀⣼⣿⣿⣿⣿⡇",
+            "⢸⣿⣿⣿⣿⣿⣷⣦⣀⣀⣀⣴⣿⣿⣿⣿⣿⣿⣤⣀⣀⣀⣴⣿⣿⣿⣿⣿⣿⡇",
+            "⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁",
+            "⠀⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀",
+            "⠀⠀⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀",
+            "⠀⠀⠀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠈⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠛⠿⠿⣿⣿⣿⣿⡿⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀"
+        };
+
+            int maxLines = Math.Max(ascii1.Length, ascii2.Length);
+            for (int i = 0; i < maxLines; i++)
+            {
+                if (i > 7)
+                {
+                    int j = i - 8;
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write(ascii1[j]);
+                }
+
+                // Print the second ASCII art in red
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine(ascii2[i]);
+            }
+
+            Console.ResetColor();
         }
     }
 }

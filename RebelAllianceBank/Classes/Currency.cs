@@ -27,6 +27,21 @@ namespace RebelAllianceBank.Classes
                             }
                      }
               }
+              public decimal ExchangeRateToSEK
+              {
+                     get { return _exchangeRateToEUR; }
+                     set
+                     {
+                            if (value > 0)
+                            {
+                                   _exchangeRateToEUR = value; 
+                            }
+                            else
+                            {
+                                   throw new ArgumentException("Exchange Rate must be larger than 0");
+                            }
+                     }
+              }
 
               public Currency()
               {
