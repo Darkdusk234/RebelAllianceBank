@@ -7,8 +7,8 @@ namespace RebelAllianceBank.Menu
 {
     public class CustomerMenu : Menu
     {
-        private Customer _currentCustomer;
         private List<IUser> _users;
+        private Customer _currentCustomer;
 
         public CustomerMenu(IUser currentUser, List<IUser> users) : base(currentUser)
         {
@@ -90,12 +90,11 @@ namespace RebelAllianceBank.Menu
                     case 0:
                         Console.Clear();
                         _currentCustomer.ShowBankAccounts();
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        Console.ReadKey(); //Think about moving into ShowBankAccounts method
                         break;
                     case 1:
                         Console.Clear();
                         _currentCustomer.CreateAccount();
-                        Console.ReadKey();
                         break;
                     case 2:
                         runCustomerMenuAccounts = false;
@@ -120,9 +119,11 @@ namespace RebelAllianceBank.Menu
                 {
                     case 0:
                         _currentCustomer.Transfer();
+                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 1:
                         _currentCustomer.TransferUserToUser(_users);
+                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 2:
                         runCustomerMenuTransaction = false;
