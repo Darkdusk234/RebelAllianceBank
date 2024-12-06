@@ -131,23 +131,32 @@ public class ExchangeRate
     public EnumsExchangeRate PasteAndMatchExchangeRates()
     {
         Console.Clear();
+        
+        string currenciesString;
+        do
+        {
         Console.WriteLine("Öppna länk: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange" +
                           "_rates/html/index.en.html och ladde ner CVS-fil med \"Last reference rates\"\n" +
                           "\n" +
                           "1. Här lägger du in rad ett, med valutor (inklusive \"Date\"), från din CVS-fil:\n" +
                           "(för att läsa instruktionerna igen, ange AVBRYT) ");
-        string currenciesString = Console.ReadLine();
+        currenciesString = Console.ReadLine();
+        } while (currenciesString == null);
 
-        if (currenciesString.ToLower() == "quit")
+        if (currenciesString.ToLower() == "avbryt")
         {
             return EnumsExchangeRate.quit;
-        }
+        } 
+        
+        string exchangeRatesString;
+        do
+        {
+            Console.WriteLine("\n2. Här lägger du in rad två med växelkurser (inklusive datum-info)\n" +
+                              "(för att se instruktioner igen, ange AVBRYT): ");
+            exchangeRatesString = Console.ReadLine();
+        } while (exchangeRatesString == null); 
 
-        Console.WriteLine("\n2. Här lägger du in rad två med växelkurser (inklusive datum-info)\n" +
-                          "(för att se instruktioner igen, ange AVBRYT): ");
-        string exchangeRatesString = Console.ReadLine();
-
-        if (exchangeRatesString.ToLower() == "quit")
+        if (exchangeRatesString.ToLower() == "avbryt")
         {
             return EnumsExchangeRate.quit;
         }
@@ -155,7 +164,9 @@ public class ExchangeRate
         
         //Since the currency data contains "Date", while exchange rate containse e.g."25 november 2024",the legnth of 
         //the exchangerates array needs to be decreased with 2 to match currencies. 
-        if (_currenciesToUpdate.Length != _exchangeRatesToUpdate.Length - 2)
+        if (_currenciesToUpdate.Length != _exchangeRatesToUpdate.Length - 2 || 
+            _currenciesToUpdate.Length -1 != Bank.exchangeRate._exchangeRates.Count ||
+            _exchangeRatesToUpdate.Length - 3 != Bank.exchangeRate._exchangeRates.Count )
         {
             return EnumsExchangeRate.incorrect;
         }
