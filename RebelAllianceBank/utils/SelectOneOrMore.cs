@@ -72,7 +72,10 @@ public class SelectOneOrMore
                     toggleInput(_SelectedOption, _currentSelected, maxAllowedSelected);
                     break;
                 case ConsoleKey.Enter:
-                    _isSelected = true;
+                    if (_SelectedOption.Count > 0)
+                    {
+                        _isSelected = true;
+                    }
                     break;
             }
         }

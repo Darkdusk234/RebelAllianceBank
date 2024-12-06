@@ -7,8 +7,9 @@ namespace RebelAllianceBank.Menu
 {
     public class CustomerMenu : Menu
     {
-        private Customer _currentCustomer;
         private List<IUser> _users;
+        private Customer _currentCustomer;
+        private List<IUser> _listUsers;
 
         public CustomerMenu(IUser currentUser, List<IUser> users) : base(currentUser)
         {
@@ -18,7 +19,7 @@ namespace RebelAllianceBank.Menu
 
         public override void Show()
         {
-            string[] options = { "Konton", "Betala/Överföra", "Lån", "Logga ut" };
+            List<string> options = ["Konton", "Betala/Överföra", "Lån", "Logga ut"];
             bool runCustomerMenu = true;
             while (runCustomerMenu)
             {
@@ -27,6 +28,7 @@ namespace RebelAllianceBank.Menu
                     columnHeaders: new[] { $"MENY - {CurrentUser.Surname}" },
                     filterData: new List<string>(options),
                     inData: option => new[] { option });
+
 
                 switch (choice)
                 {
@@ -47,7 +49,7 @@ namespace RebelAllianceBank.Menu
         }
         public void CustomerMenuLoan()
         {
-            string[] options = { "Mina lån", "Ansök om nytt lån", "Återgå till huvudmenyn" };
+            List<string> options = ["Mina lån", "Ansök om nytt lån", "Återgå till huvudmenyn"];
             bool runCustomerMenuLoan = true;
             while (runCustomerMenuLoan)
             {
@@ -60,12 +62,10 @@ namespace RebelAllianceBank.Menu
                 switch (choice)
                 {
                     case 0:
-                        Console.WriteLine("Mina lån");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        _currentCustomer.DisplayLoan();
                         break;
                     case 1:
-                        
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        _currentCustomer.TakeLoan();
                         break;
                     case 2:
                         runCustomerMenuLoan = false;
@@ -75,28 +75,27 @@ namespace RebelAllianceBank.Menu
         }
         public void CustomerMenuAccounts()
         {
-            string[] options = { "Visa konton", "Öppna nytt konto", "Återgå till huvudmenyn" };
+            List<string> options = ["Visa konton", "Öppna nytt konto", "Återgå till huvudmenyn"];
             bool runCustomerMenuAccounts = true;
 
             while (runCustomerMenuAccounts)
             {
                 int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
                     cancel: false,
-                    columnHeaders: new[] { $"Lån - {CurrentUser.Surname}" },
+                    columnHeaders: new[] { $"Konton meny - {CurrentUser.Surname}" },
                     filterData: new List<string>(options),
                     inData: option => new[] { option });
+
 
                 switch (choice)
                 {
                     case 0:
                         Console.Clear();
                         _currentCustomer.ShowBankAccounts();
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
                         break;
                     case 1:
                         Console.Clear();
                         _currentCustomer.CreateAccount();
-                        Console.ReadKey();
                         break;
                     case 2:
                         runCustomerMenuAccounts = false;
@@ -107,7 +106,7 @@ namespace RebelAllianceBank.Menu
         private void CustomerMenuTransaction()
         {
             bool runCustomerMenuTransaction = true;
-            string[] options = { "Ny överföring", "Överföring till externa konton", "Återgå till huvudmenyn" };
+            List<String> options = ["Ny överföring", "Överföring till externa konton", "Återgå till huvudmenyn"];
 
             while (runCustomerMenuTransaction)
             {

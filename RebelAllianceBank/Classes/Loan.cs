@@ -12,6 +12,8 @@ namespace RebelAllianceBank.Classes
         public decimal RemainingLoan { get; set; }
         public DateTime LoanDate { get; set; } // Sätter låndatum och tid.
         
+        public List<Loan> LoanList = new List<IBankAccount>();
+
         //public Loan(decimal loandAmount, IBankAccount konto)
         //{
         //    LoanedAmount = loandAmount;
@@ -23,13 +25,14 @@ namespace RebelAllianceBank.Classes
         {
 
         }
-        public Loan(decimal loanedAmount, int mounthsToLoan, IBankAccount account)
+        public Loan(decimal loanedAmount, int mounthsToLoan, List<Loan> account)
         {
             LoanedAmount = loanedAmount;
             MonthsToPayBack = mounthsToLoan * 12;
             LoanDate = DateTime.Now;
             RemainingLoan = LoanedAmount;
             MounthlyPayment = CalculateMounthlyPayment();
+            LoanList = account;
         }
 
         public void DisplayAllLoans(List<Loan> loanList, List<IBankAccount> accountList)
@@ -43,7 +46,7 @@ namespace RebelAllianceBank.Classes
                     Console.WriteLine($"Konto: {account.AccountName}");
                     Console.WriteLine($"Lånbelopp: {loan.LoanedAmount}{account.AccountCurrency} med räntan {loan.LoanRent}%.");
                     Console.WriteLine($"Återbetalningstid: {loan.MonthsToPayBack} månader");
-                    Console.WriteLine($"Månatlig betalning: {CalculateMounthlyPayment():C}");
+                    Console.WriteLine($"Månatlig betalning: {loan.MounthlyPayment:C}");
                     Console.WriteLine($"Återstående skuld: {loan.RemainingLoan:C}");
                     count++;
                 }
@@ -63,7 +66,7 @@ namespace RebelAllianceBank.Classes
         /// <param name="amount"></param>
         public void PayOffLoan(decimal amount)
         {
-            if (RemainingLoan == 0)
+            if (RemainingLoan = 0)
             {
                 Console.WriteLine("Du har inget lån att betala tillbaka.");
                 return;
