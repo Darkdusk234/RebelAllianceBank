@@ -324,7 +324,7 @@ namespace RebelAllianceBank.Users
                                       $"\n" +
                                       $"Stämmer detta?");
                     answer = Console.ReadLine().ToLower();
-                    if (answer != "ja" && answer != "j" && answer == "nej" && answer != "n")
+                    if (answer != "ja" && answer != "j" && answer != "nej" && answer != "n")
                     {
                         Console.WriteLine("Ogiltigt val!Tryck enter för att lägga in ett nytt belopp!");
                         while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
