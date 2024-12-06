@@ -30,7 +30,34 @@ namespace RebelAllianceBank.Accounts
 
         public void ShowTransactionLog()
         {
-            throw new NotImplementedException();
+            _transactionsLog.Reverse();
+            Console.WriteLine($"Nuvarande saldo på konto: {this.Balance}");
+            Console.WriteLine("---------------------------------------------------");
+            foreach (var transaction in _transactionsLog)
+            {
+                if (transaction.AccountFrom.AccountNr == this.AccountNr)
+                {
+                    Console.WriteLine(
+                        $"{transaction.AccountTo}          {-transaction.Amount} {this.AccountCurrency}\n" +
+                        $"{transaction.Timestamp}");
+                }
+                else if (transaction.AccountTo.AccountNr == this.AccountNr && transaction.AccountFrom.AccountNr != null)
+                {
+                    Console.WriteLine($"Insättning          {transaction.Amount} {this.AccountCurrency}\n" +
+                                      $"{transaction.Timestamp}");
+                }
+                else
+                {
+                    {
+                        Console.WriteLine(
+                            $"{transaction.AccountFrom}          {transaction.Amount} {this.AccountCurrency}\n" +
+                            $"{transaction.Timestamp}");
+                    }
+                    Console.WriteLine("---------------------------------------------------");
+                }
+
+                _transactionsLog.Reverse();
+            }
         }
     }
 }

@@ -95,7 +95,10 @@ namespace RebelAllianceBank.Menu
                         break;
                     case 1:
                         Console.Clear();
-                            //Se kontologgar
+                        foreach (var VARIABLE in _currentCustomer.)
+                        {
+                            
+                        }
                         Console.ReadKey();
                         break;
                     case 2:

@@ -394,6 +394,11 @@ namespace RebelAllianceBank.Users
             return bodyKeys;
         }
 
+        public void ShowAccountLogs()
+        {
+            
+        }
+
         public void TakeLoan()
         {
             Loan newLoan = new Loan();
@@ -555,8 +560,5 @@ namespace RebelAllianceBank.Users
                 }
             }
         }
-
-
-
     }
 }
