@@ -301,6 +301,7 @@ namespace RebelAllianceBank.Users
                     if (!decimal.TryParse(Console.ReadLine(), out askedLoan) || askedLoan <= 0)
                     {
                         Console.WriteLine("Felaktig inmatning.");
+                        Console.WriteLine("\nTryck på valfri tangent för att gå vidare");
                         Console.ReadKey();
                         Console.Clear();
                         continue;
