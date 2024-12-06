@@ -16,7 +16,7 @@ namespace RebelAllianceBank.Menu
         }
         public override void Show()
         {
-            List<string> options = ["Skapa användare", "Ändra växelkurs", "Lås upp användarkonto???", "Logga ut"];
+            List<string> options = ["Skapa användare", "Ändra växelkurs", "Lås upp användarkonto", "Logga ut"];
             bool runAdminMenu = true;
 
             while (runAdminMenu)
