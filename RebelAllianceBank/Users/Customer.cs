@@ -324,7 +324,6 @@ namespace RebelAllianceBank.Users
             Markdown.Header(HeaderLevel.Header2, "Summering");
             Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
         }
-        
         public void Deposit()
         {
             if (_bankAccounts.Count < 1)
