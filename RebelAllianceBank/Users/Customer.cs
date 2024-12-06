@@ -162,7 +162,7 @@ namespace RebelAllianceBank.Users
                 }
             }
 
-            while (otherAccount != null)
+            while (otherAccount == null)
             {
                 Console.WriteLine("Skriv in namnet på kontot du vill föra över till:");
 
