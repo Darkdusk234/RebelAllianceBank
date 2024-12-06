@@ -10,6 +10,7 @@ namespace RebelAllianceBank.Classes
 
         IUser? currentUser;
         List<IUser> users;
+        //An instance of the exchangerate class for gathering all exchangerates and methods related to them 
         public static ExchangeRate exchangeRate = new ExchangeRate();
 
         TaskManager manager = new TaskManager();
@@ -28,11 +29,13 @@ namespace RebelAllianceBank.Classes
                 if (currentUser is Admin)
                 {
                     var adminMenu = new AdminMenu(currentUser, users);
+                    
+                    
                     adminMenu.Show();
                 }
                 else
                 {
-                    var customerMenu = new CustomerMenu(currentUser);
+                    var customerMenu = new CustomerMenu(currentUser, users);
                     customerMenu.Show();
                 }
             }

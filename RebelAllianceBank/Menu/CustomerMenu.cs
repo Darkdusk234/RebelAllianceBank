@@ -1,4 +1,5 @@
-﻿using RebelAllianceBank.Interfaces;
+﻿using RebelAllianceBank.Classes;
+using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.Users;
 using RebelAllianceBank.utils;
 
@@ -7,10 +8,12 @@ namespace RebelAllianceBank.Menu
     public class CustomerMenu : Menu
     {
         private Customer _currentCustomer;
+        private List<IUser> _users;
 
-        public CustomerMenu(IUser currentUser) : base(currentUser)
+        public CustomerMenu(IUser currentUser, List<IUser> users) : base(currentUser)
         {
-            _currentCustomer = (Customer?)CurrentUser; 
+            _currentCustomer = (Customer?)CurrentUser;
+            _users = users;
         }
 
         public override void Show()
@@ -117,12 +120,10 @@ namespace RebelAllianceBank.Menu
                 switch (choice)
                 {
                     case 0:
-                        Console.WriteLine("Ny överföring");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        _currentCustomer.Transfer();
                         break;
                     case 1:
-                        Console.WriteLine("Överföring till externa konton");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        _currentCustomer.TransferUserToUser(_users);
                         break;
                     case 2:
                         runCustomerMenuTransaction = false;
