@@ -80,7 +80,7 @@ namespace RebelAllianceBank.Menu
             {
                 int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
                     cancel: false,
-                    columnHeaders: new[] { $"Lån - {CurrentUser.Surname}" },
+                    columnHeaders: new[] { $"Konton meny - {CurrentUser.Surname}" },
                     filterData: new List<string>(options),
                     inData: option => new[] { option });
 
