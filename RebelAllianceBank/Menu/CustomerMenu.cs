@@ -61,11 +61,10 @@ namespace RebelAllianceBank.Menu
                 {
                     case 0:
                         Console.WriteLine("Mina lån");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        _currentCustomer.DisplayLoan();
                         break;
                     case 1:
-                        
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
+                        _currentCustomer.TakeLoan();
                         break;
                     case 2:
                         runCustomerMenuLoan = false;

@@ -10,6 +10,7 @@ namespace RebelAllianceBank.Classes
 
         IUser? currentUser;
         List<IUser> users;
+        //An instance of the exchangerate class for gathering all exchangerates and methods related to them 
         public static ExchangeRate exchangeRate = new ExchangeRate();
 
         TaskManager manager = new TaskManager();
