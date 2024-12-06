@@ -16,7 +16,7 @@ namespace RebelAllianceBank.Menu
         }
         public override void Show()
         {
-            string[] options = { "Skapa användare", "Ändra växelkurs", "Lås upp användarkonto???", "Logga ut" };
+            string[] options = { "Skapa användare", "Ändra växelkurs", "Lås upp användarkonto", "Logga ut" };
             bool runAdminMenu = true;
 
             while (runAdminMenu)
@@ -42,7 +42,6 @@ namespace RebelAllianceBank.Menu
                         runAdminMenu = false;
                         break;
                 }
-                Console.ReadKey();
             }
         }
     }

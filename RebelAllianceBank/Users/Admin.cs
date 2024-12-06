@@ -1,10 +1,12 @@
 ﻿using RebelAllianceBank.Interfaces;
+using RebelAllianceBank.utils;
 using System.Globalization;
+using RebelAllianceBank.Classes;
+
 namespace RebelAllianceBank.Users;
 
 public class Admin : IUser
 {
-    private ExchangeRate exchangeRate = new ExchangeRate();
     public int ID { get; set; }
     public string PersonalNum { get; set; }
     public string Password { get; set; }
@@ -48,7 +50,8 @@ public class Admin : IUser
                                       "För att ladda upp växelkurs gör följande:\n" +
                                       "1. Gå till länk: https://www.ecb.europa.eu/stats" +
                                       "/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html\n" +
-                                      "2. Ladda ner en csv-fil med de senaste växelkurserna\n" +
+                                      "2. Ladda ner en csv-fil med de senaste växelkurserna (Finns under \"Downloads\" " +
+                                      "och \"Last reference rates\")\n" +
                                       "3. Kopiera och klistra in hela första raden med valuta-namn (inkl \"Date\")\n" +
                                       "4. Kopiera och klistra in hela andra raden med växelkurser (inklusive datum)\n");
 
@@ -57,16 +60,16 @@ public class Admin : IUser
                     break;
                 case "2":
                     Console.Clear();
-                    exchangeRate.PrintAllRates();
+                    Bank.exchangeRate.PrintAllRates();
                     Console.WriteLine("\nTryck enter när du är redo att fortsätta");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     break;
                 case "3":
-                    EnumsExchangeRate input = exchangeRate.PasteAndMatchExchangeRates();
+                    EnumsExchangeRate input = Bank.exchangeRate.PasteAndMatchExchangeRates();
                     if (input == EnumsExchangeRate.correct)
                     {
-                        exchangeRate.AddExchangeRates();
-                        bool correctUpdate = exchangeRate.CheckAddedExchangeRates();
+                        Bank.exchangeRate.AddExchangeRates();
+                        bool correctUpdate = Bank.exchangeRate.CheckAddedExchangeRates();
                         if (correctUpdate)
                         {
                             runLoop = false;
