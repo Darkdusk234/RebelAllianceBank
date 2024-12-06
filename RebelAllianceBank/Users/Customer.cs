@@ -396,7 +396,13 @@ namespace RebelAllianceBank.Users
 
         public void ShowAccountLogs()
         {
-            
+            Console.WriteLine("KONTOLOGGAR");
+            foreach (var account in _bankAccounts)
+            {
+                Console.WriteLine(account.AccountName);
+                Console.WriteLine("---------------------------------------------------");
+                account.ShowTransactionLog();
+            }
         }
 
         public void TakeLoan()
