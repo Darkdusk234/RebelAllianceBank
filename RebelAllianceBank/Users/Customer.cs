@@ -16,7 +16,9 @@ namespace RebelAllianceBank.Users
         public string Forename { get; set; }
         public bool LoginLock { get; set; } = false;
 
+
         private List<IBankAccount> _bankAccounts = new List<IBankAccount>();
+
         private List<Loan> _customerLoan = new List<Loan>();
         public Customer() { }
         public Customer(string pNum, string password, string surname, string forename)
@@ -291,13 +293,16 @@ namespace RebelAllianceBank.Users
 
         public void TakeLoan()
         {
-            Loan newLoan = new Loan();
             bool loanComplete = false;
-            decimal availableToLoan = (MaxAccountBalance() * 5) - MaxCurrentLoan();
+           
+            decimal availableToLoan = (MaxAccountBalance() * 5);
             decimal newLoanTaken = availableToLoan;
+
+            int choosenAccountIndex = 0;
 
             while (!loanComplete)
             {
+                Loan newLoan = new Loan();
                 if (_bankAccounts.Count <= 0)
                 {
                     Console.WriteLine("Du har inga konton. Skapa ett konto först innan du tar ett lån.");
@@ -306,7 +311,7 @@ namespace RebelAllianceBank.Users
                 }
                 else
                 {
-                    Console.WriteLine($"Ditt lånetak är: {newLoanTaken} ");
+                    Console.WriteLine($"Ditt lånetak är: {newLoanTaken:F0} ");
                     if (newLoanTaken <= 0)
                     {
                         Console.WriteLine($"Du kan tyvärr inte låna mer än: {newLoanTaken}.");
@@ -319,15 +324,17 @@ namespace RebelAllianceBank.Users
                     if (!decimal.TryParse(Console.ReadLine(), out askedLoan) || askedLoan <= 0)
                     {
                         Console.WriteLine("Felaktig inmatning.");
-                        Thread.Sleep(1000);
+                        Console.WriteLine("\nTryck på valfri tangent för att gå vidare");
+                        Console.ReadKey();
                         Console.Clear();
                         continue;
                     }
                     else if (askedLoan > newLoanTaken)
                     {
-                        Console.WriteLine($"Du kan inte låna mer än {newLoanTaken}.\n"); // known bug, need currency
+                        Console.WriteLine($"Du kan inte låna mer än {newLoanTaken}.\n");
                         continue;
                     }
+                    Console.Clear();
 
                     Console.WriteLine("\nVälj vilket konto du vill sätta in pengarna på:\n");
 
@@ -348,6 +355,7 @@ namespace RebelAllianceBank.Users
                     // Checks if user want to accept the loan with the terms (YES/NO).
                     if (AcceptLoanTerms())
                     {
+                        Console.Clear();
                         newLoan.loanedAmount += askedLoan;
                         _customerLoan.Add(newLoan); // add the loan amount to the loanlist.
                         chosenAccount.Balance += askedLoan; // add the loanamount to the account.
@@ -372,7 +380,7 @@ namespace RebelAllianceBank.Users
             {
                 maxAccountBalance += account.Balance;
             }
-            return maxAccountBalance;
+            return maxAccountBalance - MaxCurrentLoan();
         }
 
         public decimal MaxCurrentLoan()
@@ -394,7 +402,6 @@ namespace RebelAllianceBank.Users
                 Console.WriteLine("\nVill du ansöka om nytt lån? Ja/Nej");
                 Console.Write("svar:");
                 string quitOrNot = Console.ReadLine().ToLower(); // Set ReadKey to true to remove the input text in the consol.
-                Console.Clear();
                 if (quitOrNot == "nej" || quitOrNot == "n")
                 {
                     Console.WriteLine("\nDu har valt att avsluta låneansökan.");
@@ -404,8 +411,7 @@ namespace RebelAllianceBank.Users
                 }
                 else if (quitOrNot == "ja" || quitOrNot == "j")
                 {
-                    Console.WriteLine("Går vidare med en ny ansökan.");
-                    Thread.Sleep(2000);
+                    Console.WriteLine("Tryck på valfri tangent för att gå vidare med en ny ansökan.");
                     Console.Clear();
                     return true;
                 }
@@ -432,21 +438,32 @@ namespace RebelAllianceBank.Users
                 }
                 else if (terms == "nej" || terms == "n")
                 {
-                    Console.WriteLine("Lånet har avbrutits...");
-                    Thread.Sleep(1500);
+                    Console.WriteLine("\nLånet har avbrutits..");
+                    Console.WriteLine("\nTryckk på valfri tangent för att gå vidare.");
+                    Console.ReadKey();
                     Console.Clear();
                     return false;
                 }
                 else
                 {
                     Console.WriteLine("Hint: Testa med ett \"J\" eller \"N\".");
-                    Thread.Sleep(1500);
                     continue;
                 }
             }
         }
 
-
+        public void DisplayLoan()
+        {
+            decimal totalLoanAmount = 0;
+            foreach (var loan in _customerLoan)
+            {
+                totalLoanAmount += loan.loanedAmount;
+            }
+            Console.WriteLine($"\nDu har för närvarande: {totalLoanAmount:F2}kr i lån.");
+            //Console.WriteLine($"\nDin beräknade månadsavgift är: {totalLoanAmount /12:F2}kr");
+            Console.WriteLine("\nTryck på valfri tangent för att fortsätta.");
+            Console.ReadKey();
+        }
 
     }
 }

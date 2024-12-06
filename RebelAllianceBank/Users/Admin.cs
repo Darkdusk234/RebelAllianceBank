@@ -271,8 +271,9 @@ public class Admin : IUser
                                   " Skriv avbryt om du vill gå tillbaka till menyn.");
                 string dayInput = Console.ReadLine();
                 string dateTime = birthYear;
-                dateTime = dateTime.Insert(3, $"/{birthMonth}");
-                dateTime = dateTime.Insert(5, $"/{dayInput}");
+                dateTime = dateTime.Insert(4, $"/{birthMonth}");
+                dateTime = dateTime.Insert(7, $"/{dayInput}");
+                Console.WriteLine(dateTime);
 
                 if (dayInput.ToUpper().Equals("AVBRYT"))
                 {
@@ -491,6 +492,7 @@ public class Admin : IUser
     {
         while (true)
         {
+            Console.Clear();
             Console.WriteLine("Skriv användarnamnet av den användare du vill låsa upp. Skriv exit om du vill gå" +
                               " tillbaka till menyn");
             string usernameInput = Console.ReadLine();

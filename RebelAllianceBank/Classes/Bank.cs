@@ -24,21 +24,31 @@ namespace RebelAllianceBank.Classes
             bool run = true;
             while (run)
             {
-                Login();
-                if (currentUser is Admin)
+                int choice = 0;
+                List<string> options = [ "Login", "Avsluta" ];
+                choice = MarkdownUtils.HighLightChoiceWithMarkdown(false, new[] {"Meny"}, options, inData: option => new[] { option });
+                switch (choice)
                 {
-                    var adminMenu = new AdminMenu(currentUser, users);
-                    
-                    
-                    adminMenu.Show();
-                }
-                else
-                {
-                    var customerMenu = new CustomerMenu(currentUser, users);
-                    customerMenu.Show();
+                    case 0:
+                        Login();
+                        if (currentUser is Admin)
+                        {
+                            var adminMenu = new AdminMenu(currentUser, users);
+                            adminMenu.Show();
+                        }
+                        else
+                        {
+                            var customerMenu = new CustomerMenu(currentUser, users);
+                            customerMenu.Show();
+                        }
+                        break;
+                    case 1:
+                        run = false;
+                        break;
                 }
             }
             manager.Stop();
+            fh.WriteUsersAndAssociatedData(users);
         }
 
         //public void Login()
