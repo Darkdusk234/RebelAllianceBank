@@ -9,7 +9,6 @@ namespace RebelAllianceBank.Menu
     {
         private List<IUser> _users;
         private Customer _currentCustomer;
-        private List<IUser> _users;
 
         public CustomerMenu(IUser currentUser, List<IUser> users) : base(currentUser)
         {
