@@ -81,20 +81,21 @@ namespace RebelAllianceBank.Users
                 {
                     Console.Write("Vad vill du kalla kontot: ");
                     accountName = Console.ReadLine();
+                    accountCurrency = Bank.exchangeRate.SetAccountCurrency();
                 }
 
                 switch (userChoice)
                 {
                     case 1:
-                        _bankAccounts.Add(new CardAccount(accountName, PersonalNum));
+                        _bankAccounts.Add(new CardAccount(accountName, PersonalNum, accountCurrency));
                         createAccount = true;
                         break;
                     case 2:
-                        _bankAccounts.Add(new ISK(accountName, PersonalNum));
+                        _bankAccounts.Add(new ISK(accountName, PersonalNum, accountCurrency));
                         createAccount = true;
                         break;
                     case 3:
-                        _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum));
+                        _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum, accountCurrency));
                         createAccount = true;
                         break;
                     case 4:

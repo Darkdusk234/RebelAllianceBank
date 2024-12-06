@@ -21,11 +21,11 @@ namespace RebelAllianceBank.Accounts
         }
 
 
-        public ISK(string accountName, string userId)
+        public ISK(string accountName, string userId, string accountCurrency)
         {
             UserId = userId;
             AccountName = accountName;
-            AccountCurrency = Bank.exchangeRate.SetAccountCurrency();
+            AccountCurrency = accountCurrency;
             ID = Bank.accountNumberCounter;
             Bank.accountNumberCounter ++; 
         }

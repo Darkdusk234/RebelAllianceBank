@@ -20,11 +20,11 @@ namespace RebelAllianceBank.Accounts
             Bank.accountNumberCounter ++; 
         }
 
-        public CardAccount(string userId, string accountName)
+        public CardAccount(string userId, string accountName, string accountCurrency)
         {
             UserId = userId;
             AccountName = accountName;
-            AccountCurrency = Bank.exchangeRate.SetAccountCurrency();
+            AccountCurrency = accountCurrency;
             ID = Bank.accountNumberCounter;
             Bank.accountNumberCounter++;
         }
