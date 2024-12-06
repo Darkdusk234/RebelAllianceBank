@@ -290,8 +290,6 @@ namespace RebelAllianceBank.Users
 
             while (!loanComplete)
             {
-                Loan newLoan = new Loan(askedLoan, _bankAccounts);
-                newLoan.DisplayAllLoans(_customerLoan);
                 if (_bankAccounts.Count <= 0)
                 {
                     Console.WriteLine("Du har inga konton. Skapa ett konto först innan du tar ett lån.");
@@ -334,6 +332,18 @@ namespace RebelAllianceBank.Users
                         continue;
                     }
 
+                    Console.WriteLine("Hur många månader vill du ha lånet på?");
+                    Console.Write("Svar: ");
+                    int mounthToLoan = 0;
+                    if (!int.TryParse(Console.ReadLine(), out mounthToLoan))
+                    {
+                        Console.WriteLine("Felaktig inmatning.");
+                        continue;
+                    }
+
+                    //Loan newLoan = new Loan(askedLoan, mounthsToLoan, _bankAccounts);
+                    //newLoan.DisplayAllLoans(_customerLoan, _bankAccounts);
+                    
                     foreach (var account in _bankAccounts)
                     {
                         if (account == _bankAccounts[choosenAccountIndex - 1])
