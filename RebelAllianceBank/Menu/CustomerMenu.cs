@@ -75,7 +75,7 @@ namespace RebelAllianceBank.Menu
         }
         public void CustomerMenuAccounts()
         {
-            string[] options = { "Visa konton", "Öppna nytt konto", "Återgå till huvudmenyn" };
+            string[] options = { "Visa konton", "Se kontologgar", "Öppna nytt konto", "Återgå till huvudmenyn" };
             bool runCustomerMenuAccounts = true;
 
             while (runCustomerMenuAccounts)
@@ -95,10 +95,15 @@ namespace RebelAllianceBank.Menu
                         break;
                     case 1:
                         Console.Clear();
-                        _currentCustomer.CreateAccount();
+                            //Se kontologgar
                         Console.ReadKey();
                         break;
                     case 2:
+                        Console.Clear();
+                        _currentCustomer.CreateAccount();
+                        Console.ReadKey();
+                        break;
+                    case 3:
                         runCustomerMenuAccounts = false;
                         break;
                 }

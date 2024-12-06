@@ -254,14 +254,19 @@ namespace RebelAllianceBank.Users
                 Markdown.Paragraph($"Välj ett mindre belopp än {accountFrom.Balance}{accountFrom.AccountCurrency}");
             }
 
-            accountFrom.Balance -= moneyToWithdraw;
-            accountTo.Balance += moneyToWithdraw*Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency, 
-                accountTo.AccountCurrency);
-            Console.Clear();
-            Markdown.Header(HeaderLevel.Header2, "Summering");
-            Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
-            Console.WriteLine("\nTryck enter för att fortsätta");
-            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
+            var newTransaction = new Transaction(moneyToWithdraw, accountFrom, accountTo); 
+            Bank.transactionQueue.Enqueue(newTransaction);
+            
+            
+
+            // accountFrom.Balance -= moneyToWithdraw;
+            // accountTo.Balance += moneyToWithdraw*Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency, 
+            //     accountTo.AccountCurrency);
+            // Console.Clear();
+            // Markdown.Header(HeaderLevel.Header2, "Summering");
+            // Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
+            // Console.WriteLine("\nTryck enter för att fortsätta");
+            // while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
         }
         
         public void Deposit()
@@ -318,10 +323,10 @@ namespace RebelAllianceBank.Users
                 string answer = "";
                 while (answer != "ja" && answer != "j" && answer != "nej" && answer != "n")
                 {
-                    Console.WriteLine($"Du har angett att du vill sätta in {moneyToDeposit} {defaultcurrency} " +
+                    Console.Write($"Du har angett att du vill sätta in {moneyToDeposit} {defaultcurrency} " +
                                       $"({moneyToDepositinAccountCurrency:N2} {accountTo.AccountCurrency})\n" +
                                       $"\n" +
-                                      $"Stämmer detta?");
+                                      $"Stämmer detta? ja/nej: ");
                     answer = Console.ReadLine().ToLower();
                     if (answer != "ja" && answer != "j" && answer == "nej" && answer != "n")
                     {
@@ -334,13 +339,45 @@ namespace RebelAllianceBank.Users
                     runLoopSetAmount = false;
                 }
             }
-            accountTo.Balance += moneyToDepositinAccountCurrency;
+            var newTransaction = new Transaction(moneyToDepositinAccountCurrency, accountTo); 
+            Bank.transactionQueue.Enqueue(newTransaction);
             
-            Console.Clear();
-            Markdown.Header(HeaderLevel.Header2, "Summering");
-            Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
-            Console.WriteLine("\nTryck enter för att fortsätta");
-            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
+            //accountTo.Balance += moneyToDepositinAccountCurrency;
+            
+            // Console.Clear();
+            // Markdown.Header(HeaderLevel.Header2, "Summering");
+            // Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
+            // Console.WriteLine("\nTryck enter för att fortsätta");
+            // while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
+        }
+        
+        /// <summary>
+        /// A method for running queued transactions using the Asynch method
+        /// </summary>
+        public static void RunTransactionsInQueue()
+        {
+            Console.WriteLine($"Nu tömmer vi kön med {Bank.transactionQueue.Count} st transactioner");
+            foreach (var transaction in Bank.transactionQueue)
+            {
+                var nextInQueue = Bank.transactionQueue.Dequeue();
+                //for deposits, there are no accountFrom
+                if (nextInQueue.AccountFrom == null)
+                {
+                    nextInQueue.AccountTo.Balance += nextInQueue.Amount;
+                }
+                else
+                {
+                    //perform the actual transactions
+                    nextInQueue.AccountFrom.Balance -= nextInQueue.Amount;
+                    nextInQueue.AccountTo.Balance += nextInQueue.Amount * Bank.exchangeRate.CalculateExchangeRate
+                        (nextInQueue.AccountFrom.AccountCurrency, nextInQueue.AccountTo.AccountCurrency);
+                }
+                //Set the time of the transaction
+                nextInQueue.Timestamp = DateTime.Now; 
+                nextInQueue.AccountFrom.AddToTransactionLog(nextInQueue);
+                nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
+            }
+            Console.WriteLine("Nu är kön tom igen");
         }
         private static List<string> PopulateAccountDetails(List<IBankAccount> updatedAccounts)
         {

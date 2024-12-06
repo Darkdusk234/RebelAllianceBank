@@ -10,7 +10,9 @@ namespace RebelAllianceBank.Classes
 
         IUser? currentUser;
         List<IUser> users;
+        public static long accountNumberCounter = 1; 
         public static ExchangeRate exchangeRate = new ExchangeRate();
+        public static Queue<Transaction> transactionQueue = new Queue<Transaction>(); 
 
         TaskManager manager = new TaskManager();
         public void Run()

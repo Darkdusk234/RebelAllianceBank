@@ -11,12 +11,11 @@ public class Transaction
     public IBankAccount AccountTo { get; set; }
     public DateTime Timestamp{ get; set; }
     
-    // a constructor for Deposits when there is not accountFrom
+    // a constructor for Deposits and money from a Loan when there is not accountFrom
     public Transaction(decimal amount, IBankAccount accountTo) 
     {
         Amount = amount; 
         AccountTo = accountTo;
-        Timestamp = DateTime.Now;
     }
     //a constructor for transfers
     public Transaction(decimal amount, IBankAccount accountFrom, IBankAccount accountTo)
@@ -24,6 +23,5 @@ public class Transaction
         AccountFrom = accountFrom;
         AccountTo = accountTo; 
         Amount = amount;
-        Timestamp = DateTime.Now;
     }
 }
