@@ -44,9 +44,9 @@ namespace RebelAllianceBank.utils
         {
             // create new tasks
             var task1 = TransactionTimer(TransactionFromQueue, TimeSpan.FromSeconds(30));
-            var task2 = TransactionTimer(ExampleMethod, TimeSpan.FromSeconds(1));
+            //var task2 = TransactionTimer(ExampleMethod, TimeSpan.FromSeconds(1));
             // run the tasks simultaneously
-            await Task.WhenAll(task1, task2);
+            await Task.WhenAll(task1);
         }
         // Method to terminate the Token, closing the thread
         public async Task Stop()

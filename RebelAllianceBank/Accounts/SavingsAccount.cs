@@ -40,29 +40,33 @@ namespace RebelAllianceBank.Accounts
             Console.WriteLine("---------------------------------------------------");
             foreach (var transaction in _transactionsLog)
             {
-                if (transaction.AccountFrom.AccountName == this.AccountName)
+                if (transaction.AccountFrom?.AccountName == this.AccountName)
                 {
                     Console.WriteLine(
-                        $"{transaction.AccountTo}          {-transaction.Amount} {this.AccountCurrency}\n" +
+                        $"{transaction.AccountTo.AccountName}          -{transaction.Amount} {this.AccountCurrency}\n" +
                         $"{transaction.Timestamp}");
                 }
-                else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom.AccountName != null)
+                else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom != null)
                 {
-                    Console.WriteLine($"Insättning          {transaction.Amount} {this.AccountCurrency}\n" +
-                                      $"{transaction.Timestamp}");
+                    Console.WriteLine(
+                        $"Insättning från {transaction.AccountFrom.AccountName}          {transaction.Amount} {this.AccountCurrency}\n" +
+                        $"{transaction.Timestamp}");
+                }
+                else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom == null)
+                {
+                    Console.WriteLine(
+                        $"Direkt insättning          {transaction.Amount} {this.AccountCurrency}\n" +
+                        $"{transaction.Timestamp}");
                 }
                 else
                 {
-                    {
-                        Console.WriteLine(
-                            $"{transaction.AccountFrom}          {transaction.Amount} {this.AccountCurrency}\n" +
-                            $"{transaction.Timestamp}");
-                    }
-                    Console.WriteLine("---------------------------------------------------");
+                    Console.WriteLine(
+                        $"{transaction.AccountFrom?.AccountName ?? "Okänt konto"}          {transaction.Amount} {this.AccountCurrency}\n" +
+                        $"{transaction.Timestamp}");
                 }
-
-                _transactionsLog.Reverse();
+                Console.WriteLine("---------------------------------------------------");
             }
+            _transactionsLog.Reverse();
         }
     }
 }

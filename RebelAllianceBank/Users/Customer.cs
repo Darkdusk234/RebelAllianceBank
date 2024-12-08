@@ -15,7 +15,7 @@ namespace RebelAllianceBank.Users
         public string Surname { get; set; }
         public string Forename { get; set; }
         public bool LoginLock { get; set; } = false;
-        
+
         private List<IBankAccount> _bankAccounts = new List<IBankAccount>();
         private List<Loan> _customerLoan = new List<Loan>();
         public Customer() { }
@@ -54,6 +54,8 @@ namespace RebelAllianceBank.Users
                 bodyKeys.Add(BankAccount.AccountCurrency);
             }
             Markdown.Table(["Konto Namn", "Saldo", "Valuta"], bodyKeys);
+            Console.WriteLine("Tryck på enter för att återgå.");
+            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
         }
         public void CreateAccount()
         {
@@ -235,7 +237,7 @@ namespace RebelAllianceBank.Users
 
             var accountFrom = _bankAccounts[accountFromIndex[0]];
             var accountTo = _bankAccounts[accountToIndex[0]];
-            
+
             List<IBankAccount> updatedAccounts = [
                 accountFrom,
                 accountTo
@@ -248,16 +250,16 @@ namespace RebelAllianceBank.Users
                                                  $"{accountFrom.AccountName} till {accountTo.AccountName}?\n");
             Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
             Console.Write("\nBelopp: ");
-            
+
             decimal moneyToWithdraw;
             while (!decimal.TryParse(Console.ReadLine(), out moneyToWithdraw) || moneyToWithdraw > accountFrom.Balance || moneyToWithdraw < 0)
             {
                 Markdown.Paragraph($"Välj ett mindre belopp än {accountFrom.Balance}{accountFrom.AccountCurrency}");
             }
 
-            var newTransaction = new Transaction(moneyToWithdraw, accountFrom, accountTo); 
+            var newTransaction = new Transaction(moneyToWithdraw, accountFrom, accountTo);
             Bank.transactionQueue.Enqueue(newTransaction);
-            
+
 
             // accountFrom.Balance -= moneyToWithdraw;
             // accountTo.Balance += moneyToWithdraw*Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency, 
@@ -268,7 +270,7 @@ namespace RebelAllianceBank.Users
             // Console.WriteLine("\nTryck enter för att fortsätta");
             // while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
         }
-        
+
         public void Deposit()
         {
             if (_bankAccounts.Count < 1)
@@ -293,7 +295,7 @@ namespace RebelAllianceBank.Users
             Console.Clear();
 
             var accountTo = _bankAccounts[accountToIndex[0]];
-            
+
             List<IBankAccount> updatedAccounts = [
                 accountTo,
             ];
@@ -301,7 +303,7 @@ namespace RebelAllianceBank.Users
             Console.Clear();
 
             // Header
-            decimal moneyToDepositinAccountCurrency = 0; 
+            decimal moneyToDepositinAccountCurrency = 0;
             bool runLoopSetAmount = true;
             while (runLoopSetAmount)
             {
@@ -339,43 +341,49 @@ namespace RebelAllianceBank.Users
                     runLoopSetAmount = false;
                 }
             }
-            var newTransaction = new Transaction(moneyToDepositinAccountCurrency, accountTo); 
+            var newTransaction = new Transaction(moneyToDepositinAccountCurrency, accountTo);
             Bank.transactionQueue.Enqueue(newTransaction);
-            
+
             //accountTo.Balance += moneyToDepositinAccountCurrency;
-            
+
             // Console.Clear();
             // Markdown.Header(HeaderLevel.Header2, "Summering");
             // Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
             // Console.WriteLine("\nTryck enter för att fortsätta");
             // while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
         }
-        
+
         /// <summary>
         /// A method for running queued transactions using the Asynch method
         /// </summary>
         public static void RunTransactionsInQueue()
         {
-            foreach (var transaction in Bank.transactionQueue)
+            while (Bank.transactionQueue.Any())
             {
                 var nextInQueue = Bank.transactionQueue.Dequeue();
-                //Set the time of the transaction
-                nextInQueue.Timestamp = DateTime.Now; 
-                //for deposits, there are no accountFrom
-                if (nextInQueue.AccountFrom == null)
+                try 
                 {
-                    nextInQueue.AccountTo.Balance += nextInQueue.Amount;
-                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
+                    nextInQueue.Timestamp = DateTime.Now;
+                    //for deposits, there are no accountFrom
+                    if (nextInQueue.AccountFrom == null)
+                    {
+                        nextInQueue.AccountTo.Balance += nextInQueue.Amount;
+                        nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
+                    }
+                    else
+                    {
+                        //perform the actual transactions
+                        nextInQueue.AccountFrom.Balance -= nextInQueue.Amount;
+                        //change the amount for the receiving account to the correct currency. 
+                        nextInQueue.AccountTo.Balance += nextInQueue.Amount * Bank.exchangeRate.CalculateExchangeRate
+                            (nextInQueue.AccountFrom.AccountCurrency, nextInQueue.AccountTo.AccountCurrency);
+                        nextInQueue.AccountFrom.AddToTransactionLog(nextInQueue);
+                        nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
+                    }
                 }
-                else
-                {
-                    //perform the actual transactions
-                    nextInQueue.AccountFrom.Balance -= nextInQueue.Amount;
-                    //change the amount for the receiving account to the correct currency. 
-                    nextInQueue.AccountTo.Balance += nextInQueue.Amount * Bank.exchangeRate.CalculateExchangeRate
-                        (nextInQueue.AccountFrom.AccountCurrency, nextInQueue.AccountTo.AccountCurrency);
-                    nextInQueue.AccountFrom.AddToTransactionLog(nextInQueue);
-                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
+                catch (Exception e) 
+                { 
+                    Console.WriteLine($"Transaktion misslyckades {e.Message}");
                 }
             }
         }
@@ -403,6 +411,8 @@ namespace RebelAllianceBank.Users
                 Console.WriteLine("---------------------------------------------------");
                 account.ShowTransactionLog();
             }
+            Console.WriteLine("Tryck på enter för att återgå");
+            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
         }
 
         public void TakeLoan()
