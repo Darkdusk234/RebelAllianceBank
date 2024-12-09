@@ -61,7 +61,7 @@ namespace RebelAllianceBank.Menu
                 switch (choice)
                 {
                     case 0:
-                        _currentCustomer.DisplayLoan();
+                       _currentCustomer.DisplayLoans();
                         break;
                     case 1:
                         _currentCustomer.TakeLoan();
