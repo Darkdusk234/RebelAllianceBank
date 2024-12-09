@@ -33,6 +33,10 @@ namespace RebelAllianceBank.Accounts
         {
             _transactionsLog.Add(newTransaction);
         }
+        public List<Transaction> GetTransactionLog()
+        {
+            return _transactionsLog;
+        }
 
         public void ShowTransactionLog()
         {

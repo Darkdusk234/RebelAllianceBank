@@ -8,10 +8,16 @@ namespace RebelAllianceBank.utils
 {
     public class FileHandler
     {
+        private List<IBankAccount> _accountList;
         // Stores the filepath used for users, accounts and loans.
         private readonly string _usersFilePath = "users.txt";
         private readonly string _accountsFilePath = "accounts.txt";
         private readonly string _loansFilePath = "loans.txt";
+        private readonly string _logsFilePath = "logs.txt";
+        public FileHandler()
+        {
+            _accountList = new List<IBankAccount>();
+        }
         /// <summary>
         /// Reads a list of users from the file. And store accounts and loans related to an user
         /// </summary>
@@ -19,17 +25,22 @@ namespace RebelAllianceBank.utils
         public List<IUser> LoadUsersWithAccountAndLoans()
         {
             // Call method ReadFromFile and stores in correct variable type
-            var userlist = ReadFromFile(_usersFilePath, ParseUserFromData);
-            var accountlist = ReadFromFile(_accountsFilePath, ParseAccountFromData);
-            var loanlist = ReadFromFile(_loansFilePath, ParseLoanFromData);
+            var userList = ReadFromFile(_usersFilePath, ParseUserFromData);
+            _accountList = ReadFromFile(_accountsFilePath, ParseAccountFromData);
+            var loanList = ReadFromFile(_loansFilePath, ParseLoanFromData);
+            var logList = ReadFromFile(_logsFilePath, ParseLogFromData);
             // go through every Customer to find associated bank accounts & loan
             // where PersonalNum matches the UserId add them to current user
-            foreach (var user in userlist.OfType<Customer>())
+            foreach (var user in userList.OfType<Customer>())
             {   
-                user.GetListBankAccount().AddRange(accountlist.Where(account => account.UserId == user.PersonalNum));
-                user.GetListLoan().AddRange(loanlist.Where(loan => loan.UserId == user.PersonalNum));
+                user.GetListBankAccount().AddRange(_accountList.Where(account => account.UserId == user.PersonalNum));
+                user.GetListLoan().AddRange(loanList.Where(loan => loan.UserId == user.PersonalNum));
             }
-            return userlist;
+            foreach (var account in _accountList)
+            {
+                account.GetTransactionLog().AddRange(logList.Where(log => log.AccountTo.ID == account.ID || log.AccountFrom?.ID == account.ID));
+            }
+            return userList;
         }
         /// <summary>
         /// Reads data from a specified file and converts each line into an object of type <typeparamref name="T"/>.
@@ -171,6 +182,34 @@ namespace RebelAllianceBank.utils
             }
             return null;
         }
+        public Transaction ParseLogFromData(string[] dataParts)
+        {
+            if (dataParts.Length == 4)
+            {
+                // Parse the nullable accountFromId
+                long? accountFromId = dataParts[0] == "null" ? null : long.Parse(dataParts[0]);
+
+                // Parse accountToId, amount, and timestamp
+                long accountToId = long.Parse(dataParts[1]);
+                decimal amount = decimal.Parse(dataParts[2]);
+                DateTime timestamp = DateTime.Parse(dataParts[3]);
+
+                // Find the accounts
+                var accountFrom = accountFromId.HasValue
+                    ? _accountList.FirstOrDefault(acc => acc.ID == accountFromId.Value)
+                    : null;
+                var accountTo = _accountList.FirstOrDefault(acc => acc.ID == accountToId);
+
+                // If accountTo exists, create the transaction
+                if (accountTo != null)
+                {
+                    return accountFrom == null
+                        ? new Transaction(amount, accountTo) { Timestamp = timestamp }
+                        : new Transaction(amount, accountFrom, accountTo) { Timestamp = timestamp };
+                }
+            }
+            return null;
+        }
         /// <summary>
         /// Saves user data, including accounts and loan to respective files.
         /// </summary>
@@ -207,6 +246,21 @@ namespace RebelAllianceBank.utils
                     foreach (var loan in customer.GetListLoan())
                     {
                         sw.WriteLine($"{loan.UserId}-{loan.loanedAmount}-{loan.LoanRent}");
+                    }
+                }
+            }
+            using (StreamWriter sw = new StreamWriter(_logsFilePath, false, Encoding.UTF8))
+            {
+                foreach (var customer in userlist.OfType<Customer>())
+                {
+                    foreach (var account in customer.GetListBankAccount())
+                    {
+                        foreach (var log in account.GetTransactionLog())
+                        {
+                            string accountFromId = log.AccountFrom?.ID.ToString() ?? "null";
+                            string accountToId = log.AccountTo.ID.ToString();
+                            sw.WriteLine($"{accountFromId}-{accountToId}-{log.Amount}-{log.Timestamp}");
+                        }
                     }
                 }
             }

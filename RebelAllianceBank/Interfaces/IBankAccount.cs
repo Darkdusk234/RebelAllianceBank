@@ -12,7 +12,9 @@
 
         public void AddToTransactionLog(Transaction newTransaction);
 
-        public void ShowTransactionLog(); 
+        public void ShowTransactionLog();
+
+        List<Transaction> GetTransactionLog();
 
     }
 }
