@@ -18,7 +18,6 @@ namespace RebelAllianceBank.Users
 
 
         private List<IBankAccount> _bankAccounts = new List<IBankAccount>();
-
         private List<Loan> _customerLoan = new List<Loan>();
         public Customer() { }
         public Customer(string pNum, string password, string surname, string forename)
@@ -60,19 +59,10 @@ namespace RebelAllianceBank.Users
         public void CreateAccount()
         {
             bool createAccount = false;
-
+            
             do
             {
-                // Console.WriteLine("Vilket konto vill du skapa?\n");
-                // Console.WriteLine("1. Kreditkort");
-                // Console.WriteLine("2. ISK (investeringssparkonto)");
-                // Console.WriteLine("3. Sparkonto");
-                // Console.WriteLine("4. Avsluta");
-                // string input = Console.ReadLine();
-                // int userChoice;
-                // bool isInt = int.TryParse(input, out userChoice);
-
-                List<string> options = ["Kreditkort", "ISK (investeringssparkonto)", "Sparkonto", "Avsluta"];
+                List<string> options = ["Kortkonto", "Sparkonto", "ISK (investeringssparkonto)", "Avsluta"];
 
                 Markdown.Header(HeaderLevel.Header1, "Vilket konto vill du skapa?");
                 int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
@@ -83,31 +73,34 @@ namespace RebelAllianceBank.Users
 
                 string accountName = "";
                 string accountCurrency = "";
-
-                // if (isInt && userChoice == 4)
-                // {
-                //     break;
-                // }
-                if (choice < 4)
+                
+                if (choice < 3)
                 {
-                    // Console.Write("Vad vill du kalla kontot: ");
-                    Markdown.Paragraph("Vad vill du kalla kontot: ");
-                    accountName = Console.ReadLine();
+                    while (accountName.Length == 0)
+                    {
+                        Markdown.Paragraph("Vad vill du kalla kontot: ");
+                        accountName = Console.ReadLine();
+                    }
+
+                    accountCurrency = Bank.exchangeRate.SetAccountCurrency();
                 }
 
 
                 switch (choice)
                 {
                     case 0:
-                        _bankAccounts.Add(new CardAccount(accountName, PersonalNum));
+                        _bankAccounts.Add(new CardAccount(accountName, PersonalNum, accountCurrency));
+                        PrintResultCreateAccount(options[0], accountName, accountCurrency);
                         createAccount = true;
                         break;
                     case 1:
-                        _bankAccounts.Add(new ISK(accountName, PersonalNum));
+                        _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum, accountCurrency));
+                        PrintResultCreateAccount(options[1], accountName, accountCurrency);
                         createAccount = true;
                         break;
                     case 2:
-                        _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum));
+                        _bankAccounts.Add(new ISK(accountName, PersonalNum, accountCurrency));
+                        PrintResultCreateAccount(options[2], accountName, accountCurrency);
                         createAccount = true;
                         break;
                     case 3:
@@ -124,6 +117,13 @@ namespace RebelAllianceBank.Users
                 }
             } while (createAccount == false);
         }
+
+        public void PrintResultCreateAccount(string accountType, string accountName, string accountCurrency)
+        {
+            Console.Clear();
+            Console.WriteLine($"Du har skapat ett nytt {accountType.ToUpper()} med namn {accountName} och valuta {accountCurrency} ");
+        }
+
         /// <summary>
         /// A method to transfer from one of current users account to another users account.
         /// </summary>

@@ -12,6 +12,7 @@ namespace RebelAllianceBank.Classes
         List<IUser> users;
         //An instance of the exchangerate class for gathering all exchangerates and methods related to them 
         public static ExchangeRate exchangeRate = new ExchangeRate();
+        public static int accountNumberCounter = 1; 
 
         TaskManager manager = new TaskManager();
         public void Run()
@@ -51,75 +52,6 @@ namespace RebelAllianceBank.Classes
             manager.Stop();
             fh.WriteUsersAndAssociatedData(users);
         }
-
-        //public void Login()
-        //{
-        //    while (true)
-        //    {
-        //        Console.Clear();
-        //        Console.WriteLine("Välkommen till Rebel Alliance Bank. Vänligen ange ditt personnummer.");
-        //        Console.Write("Personnummer: ");
-        //        string? usernameInput = Console.ReadLine();
-
-        //        if (string.IsNullOrWhiteSpace(usernameInput))
-        //        {
-        //            Console.WriteLine("Personnummer får inte vara tomt. Försök igen.");
-        //            Console.ReadKey();
-        //            continue;
-        //        }
-
-        //        currentUser = users.FirstOrDefault(user => user.PersonalNum == usernameInput);
-        //        if (currentUser != null)
-        //        {
-        //            if (currentUser.LoginLock)
-        //            {
-        //                Console.WriteLine("Användaren är låst. Kontakta administratör.\n" +
-        //                                  "Tryck på enter för att fortsätta");
-        //                while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
-        //            }
-        //            else if (Authenticate(currentUser))
-        //            {
-        //                break;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Användarnamnet hittades inte. Tryck på enter för att försöka igen.");
-        //            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
-        //        }
-        //    }
-        //}
-        //public bool Authenticate(IUser user)
-        //{
-        //    int tries = 3;
-        //    while (tries > 0)
-        //    {
-        //        Console.Clear();
-        //        Console.WriteLine($"God dag {user.Surname}. Vänligen skriv ditt lösenord. Du har {tries} försök kvar.");
-        //        string? passwordInput = Console.ReadLine();
-
-        //        if (user.Password == passwordInput)
-        //        {
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            tries--;
-        //            Console.WriteLine($"Felaktigt lösenord. Du har {tries} försök kvar.");
-        //            if (tries == 0)
-        //            {
-        //                Console.WriteLine("Användaren är nu låst. Kontakta administratör!\n" +
-        //                    "Tryck på enter för att återgå");
-        //                while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
-        //                user.LoginLock = true;
-        //                return false;
-        //            }
-        //            Console.WriteLine($"Tryck på enter för att försöka igen.");
-        //            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
-        //        }
-        //    }
-        //    return false;
-        //}
 
 
         /// <summary>
@@ -211,109 +143,6 @@ namespace RebelAllianceBank.Classes
                     break;
                 }
             }
-        }
-
-        private static void CustomerMenuLoan()
-        {
-            bool runCustomerMenuLoan = true;
-
-            while (runCustomerMenuLoan)
-            {
-                Console.Clear();
-
-                Console.Write("LÅN:\n" +
-                              "[1] Mina lån\n" +
-                              "[2] Ansök om nytt lån\n" +
-                              "[3] Återgå till huvudmenyn\n" +
-                              "\n" +
-                              "Menyval: ");
-
-                string choice = Console.ReadLine();
-
-                switch (choice)
-                {
-                    case "1":
-                        Console.WriteLine("Mina lån");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
-                        break;
-                    case "2":
-                        Console.WriteLine("Ansök om nytt lån");
-                        Console.ReadKey(); //Ta ev bort sen när det finns en metod
-                        break;
-                    case "3":
-                        runCustomerMenuLoan = false;
-                        break;
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Felaktig input! Tryck enter och försök igen!");
-                        Console.ReadKey();
-                        break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Method that runs function to unlock a locked user.
-        /// </summary>
-        public void UnlockUser()
-        {
-            while (true)
-            {
-                Console.WriteLine("Skriv användarnamnet av den användare du vill låsa upp. Skriv exit om du vill gå" +
-                    " tillbaka till menyn");
-                string usernameInput = Console.ReadLine();
-                bool correctInput = false;
-                bool notLockedUser = false;
-
-                //Checks if user wants to exit from function and breaks loop if exit is inputted.
-                if (usernameInput.ToUpper().Equals("EXIT"))
-                {
-                    break;
-                }
-
-                foreach (var user in users)
-                {
-                    //Checks if users username is the inputted username and checks if that user is locked. If not tells
-                    // current user that that useraccount isn't locked and waits for a key press to go back to input.
-                    if (user.PersonalNum.Equals(usernameInput) && user.LoginLock == false)
-                    {
-                        Console.WriteLine("Användaren är inte låst. Kolla om du skrivit rätt användarnamn. Tryck på valfri rangent" +
-                            " för att gå vidare.");
-                        correctInput = true;
-                        notLockedUser = true;
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    }
-                    //Checks if users username is the inputted username and unlocks that useraccount if it is and it is
-                    //locked.
-                    else if (user.PersonalNum.Equals(usernameInput))
-                    {
-                        user.LoginLock = false;
-                        Console.WriteLine("Användaren har låsts upp. Tryck på valfri tangent för att gå vidare.");
-                        correctInput = true;
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    }
-                }
-
-                //Continues the loop if a correct username was inputted but that useraccount wasn't locked.
-                if (correctInput && notLockedUser)
-                {
-                    continue;
-                }
-                else if (correctInput)
-                {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Det finns ingen användare med det användarnamnet.tryck på " +
-                        "valfri tangent för att gå tillbaka och försök igen.");
-                }
-            }
-
         }
         public void Logo()
         {
