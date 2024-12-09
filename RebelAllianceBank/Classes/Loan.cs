@@ -10,7 +10,7 @@ namespace RebelAllianceBank.Classes
         public int MonthsToPayBack { get; set; }
         public decimal MounthlyPayment { get; set; }
         public decimal RemainingLoan { get; set; }
-        public DateTime LoanDate { get; set; } // Sätter låndatum och tid.
+        public DateTime LoanDate { get; set; }
         
         public List<Loan> LoanList = new List<Loan>();
 
@@ -22,41 +22,20 @@ namespace RebelAllianceBank.Classes
         {
             LoanedAmount = loanedAmount;
             MonthsToPayBack = mounthsToLoan * 12;
-            LoanDate = DateTime.Now;
+            LoanDate = DateTime.Now; // Sets a time and date when customer takes a loan.
             RemainingLoan = LoanedAmount;
             MounthlyPayment = CalculateMounthlyPayment();
             LoanList = account;
         }
-
-        public void DisplayLoans(List<Loan> loanList, List<IBankAccount> accountList)
-        {
-            int count = 0;
-            foreach (var account in accountList)
-            {
-                foreach (var loan in loanList)
-                {
-                    Console.WriteLine($"#{count}.");
-                    Console.WriteLine($"Konto: {account.AccountName}");
-                    Console.WriteLine($"Lånbelopp: {loan.LoanedAmount}{account.AccountCurrency} med räntan {loan.LoanRent}%.");
-                    Console.WriteLine($"Återbetalningstid: {loan.MonthsToPayBack} månader");
-                    Console.WriteLine($"Månatlig betalning: {loan.MounthlyPayment:C}");
-                    Console.WriteLine($"Återstående skuld: {loan.RemainingLoan:C}");
-                    count++;
-                }
-            }
-        }
+        
         public decimal CalculateMounthlyPayment()
         {
-            decimal rent = LoanRent / 100; // Chance rent to better format to calculate %. 5,4 / 100 = 0,054. 
-            decimal mounthlyRent = (LoanedAmount * rent) / MonthsToPayBack; //Calculate mounthly rent 100 000 * 0,054 = 5400
-            decimal mounthlyPayment = (LoanedAmount + mounthlyRent) / 12; // calculate mounthly cost based on loan.
+            decimal rent = LoanRent / 100; // Convert rent to a better format to calculate %. Ex 5,4 / 100 = 0,054. 
+            decimal mounthlyRent = (LoanedAmount * rent) / MonthsToPayBack; // Calculate mounthly rent. Ex (100 000 * 0,054) / 12(1Y). 450
+            decimal mounthlyPayment = (LoanedAmount + mounthlyRent) / 12; // Calculate mounthly cost based on loan. Ex (100 000 + 450) / 12.
 
             return mounthlyPayment;
         }
-        /// <summary>
-        /// Method to pay off loan.
-        /// </summary>
-        /// <param name="amount"></param>
         public void PayOffLoan(decimal amount)
         {
             if (RemainingLoan == 0)

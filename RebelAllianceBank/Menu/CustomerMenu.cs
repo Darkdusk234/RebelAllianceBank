@@ -9,7 +9,6 @@ namespace RebelAllianceBank.Menu
     {
         private List<IUser> _users;
         private Customer _currentCustomer;
-        private List<IUser> _listUsers;
 
         public CustomerMenu(IUser currentUser, List<IUser> users) : base(currentUser)
         {
@@ -62,7 +61,7 @@ namespace RebelAllianceBank.Menu
                 switch (choice)
                 {
                     case 0:
-                        _currentCustomer.DisplayLoans();
+                       _currentCustomer.DisplayLoans();
                         break;
                     case 1:
                         _currentCustomer.TakeLoan();
