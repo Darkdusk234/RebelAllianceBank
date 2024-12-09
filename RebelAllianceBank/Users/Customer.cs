@@ -396,15 +396,40 @@ namespace RebelAllianceBank.Users
                     runLoopSetAmount = false;
                 }
             }
-            accountTo.Balance += moneyToDepositinAccountCurrency;
+            //accountTo.Balance += moneyToDepositinAccountCurrency;
             var newTransaction = new Transaction(moneyToDepositinAccountCurrency, accountTo);
             Bank.transactionQueue.Enqueue(newTransaction);
-            Console.Clear();
-            Markdown.Header(HeaderLevel.Header2, "Summering");
-            Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
-            Console.WriteLine("\nTryck enter för att fortsätta");
-            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
+            //Console.Clear();
+            //Markdown.Header(HeaderLevel.Header2, "Summering");
+            //Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
+            //Console.WriteLine("\nTryck enter för att fortsätta");
+            //while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
         }
+        public static void RunTransactionsInQueue()
+        {
+            while (Bank.transactionQueue.Count > 0)
+            {
+                var nextInQueue = Bank.transactionQueue.Dequeue();
+                nextInQueue.Timestamp = DateTime.Now;
+
+                if (nextInQueue.AccountFrom == null)
+                {
+                    nextInQueue.AccountTo.Balance += nextInQueue.Amount;
+                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
+                }
+                else
+                {
+                    nextInQueue.AccountFrom.Balance -= nextInQueue.Amount;
+                    nextInQueue.AccountTo.Balance += nextInQueue.Amount * Bank.exchangeRate.CalculateExchangeRate(
+                        nextInQueue.AccountFrom.AccountCurrency,
+                        nextInQueue.AccountTo.AccountCurrency
+                    );
+                    nextInQueue.AccountFrom.AddToTransactionLog(nextInQueue);
+                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
+                }
+            }
+        }
+
         private static List<string> PopulateAccountDetails(List<IBankAccount> updatedAccounts)
         {
             List<string> bodyKeys = [];
@@ -429,8 +454,6 @@ namespace RebelAllianceBank.Users
                 Console.WriteLine("---------------------------------------------------");
                 account.ShowTransactionLog();
             }
-            Console.WriteLine("Tryck på enter för att återgå");
-            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
         }
 
         public void TakeLoan()
