@@ -34,14 +34,7 @@ public class Admin : IUser
         {
             Console.Clear();
 
-            // Console.WriteLine("UPPDATERA VÄXELKURS: \n" +
-            //                   "[1] Instruktioner\n" +
-            //                   "[2] Skriv ut växelkurser\n" +
-            //                   "[3] Ladda upp nya växelkurser\n" +
-            //                   "[4] Avbryt och återgå till föregående meny");
-
-            // string choice = Console.ReadLine();
-
+        
             List<string> options = ["Instruktioner", "Skriv ut växelkurse", "Ladda upp nya växelkurser", "Avbryt och återgå till föregående meny"];
 
             int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
@@ -128,11 +121,7 @@ public class Admin : IUser
         while (methodRun)
         {
             Console.Clear();
-            // Console.WriteLine("Vilken typ av användare vill du skapa." +
-            //                   "\n1. Kund" +
-            //                   "\n2. Admin" +
-            //                   "\n3. Gå tillbak till menyn.");
-            // string input = Console.ReadLine();
+           
             List<string> options = ["Kund", "Admin", "Gå tillbak till menyn."];
 
             int choice = MarkdownUtils.HighLightChoiceWithMarkdown(

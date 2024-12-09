@@ -63,15 +63,6 @@ namespace RebelAllianceBank.Users
 
             do
             {
-                // Console.WriteLine("Vilket konto vill du skapa?\n");
-                // Console.WriteLine("1. Kreditkort");
-                // Console.WriteLine("2. ISK (investeringssparkonto)");
-                // Console.WriteLine("3. Sparkonto");
-                // Console.WriteLine("4. Avsluta");
-                // string input = Console.ReadLine();
-                // int userChoice;
-                // bool isInt = int.TryParse(input, out userChoice);
-
                 List<string> options = ["Kreditkort", "ISK (investeringssparkonto)", "Sparkonto", "Avsluta"];
 
                 Markdown.Header(HeaderLevel.Header1, "Vilket konto vill du skapa?");
@@ -83,11 +74,7 @@ namespace RebelAllianceBank.Users
 
                 string accountName = "";
                 string accountCurrency = "";
-
-                // if (isInt && userChoice == 4)
-                // {
-                //     break;
-                // }
+                
                 if (choice < 3)
                 {
                     // Console.Write("Vad vill du kalla kontot: ");
