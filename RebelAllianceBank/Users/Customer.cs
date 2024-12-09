@@ -98,19 +98,19 @@ namespace RebelAllianceBank.Users
 
                 switch (choice)
                 {
-                    case 1:
+                    case 0:
                         _bankAccounts.Add(new CardAccount(accountName, PersonalNum));
                         createAccount = true;
                         break;
-                    case 2:
+                    case 1:
                         _bankAccounts.Add(new ISK(accountName, PersonalNum));
                         createAccount = true;
                         break;
-                    case 3:
+                    case 2:
                         _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum));
                         createAccount = true;
                         break;
-                    case 4:
+                    case 3:
                         createAccount = true;
                         break;
                     default:
