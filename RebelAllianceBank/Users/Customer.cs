@@ -98,19 +98,19 @@ namespace RebelAllianceBank.Users
 
                 switch (choice)
                 {
-                    case 1:
+                    case 0:
                         _bankAccounts.Add(new CardAccount(accountName, PersonalNum));
                         createAccount = true;
                         break;
-                    case 2:
+                    case 1:
                         _bankAccounts.Add(new ISK(accountName, PersonalNum));
                         createAccount = true;
                         break;
-                    case 3:
+                    case 2:
                         _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum));
                         createAccount = true;
                         break;
-                    case 4:
+                    case 3:
                         createAccount = true;
                         break;
                     default:
@@ -310,9 +310,9 @@ namespace RebelAllianceBank.Users
                                                  $"{accountFrom.AccountName} till {accountTo.AccountName}?\n");
             Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
             Console.Write("\nBelopp: ");
-
-            int moneyToWithdraw;
-            while (!int.TryParse(Console.ReadLine(), out moneyToWithdraw) || moneyToWithdraw > accountFrom.Balance || moneyToWithdraw < 0)
+            
+            decimal moneyToWithdraw;
+            while (!decimal.TryParse(Console.ReadLine(), out moneyToWithdraw) || moneyToWithdraw > accountFrom.Balance || moneyToWithdraw < 0)
             {
                 Markdown.Paragraph($"Välj ett mindre belopp än {accountFrom.Balance}{accountFrom.AccountCurrency}");
             }
@@ -323,6 +323,84 @@ namespace RebelAllianceBank.Users
             Console.Clear();
             Markdown.Header(HeaderLevel.Header2, "Summering");
             Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
+        }
+        public void Deposit()
+        {
+            if (_bankAccounts.Count < 1)
+            {
+                Console.WriteLine($"{TextColor.Red}Du har inga konton att sätta in pengar på {TextColor.NORMAL}. " +
+                                  $"\n\nTryck enter för att fortsätta");
+                while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
+                return;
+            }
+            var menu = new SelectOneOrMore(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts));
+
+            Console.Clear();
+            Markdown.Paragraph($"{TextColor.Yellow}Till{TextColor.NORMAL} vilket konto vill du sätta in dina pengar? ");
+            int[] accountToIndex;
+
+            while ((accountToIndex = menu.Show()).Length == 0)
+            {
+                Console.Clear();
+                Markdown.Paragraph($"{TextColor.Red}Välj ett alternativ{TextColor.NORMAL}");
+            }
+
+            Console.Clear();
+
+            var accountTo = _bankAccounts[accountToIndex[0]];
+            
+            List<IBankAccount> updatedAccounts = [
+                accountTo,
+            ];
+
+            Console.Clear();
+
+            // Header
+            decimal moneyToDepositinAccountCurrency = 0; 
+            bool runLoopSetAmount = true;
+            while (runLoopSetAmount)
+            {
+                string defaultcurrency = "SEK";
+                Markdown.Header(HeaderLevel.Header2, $"Hur mycket i {defaultcurrency} vill du sätta in på " +
+                                                     $"{accountTo.AccountName}?\n");
+                Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
+                Console.Write("\nBelopp: ");
+
+                decimal moneyToDeposit;
+                while (!decimal.TryParse(Console.ReadLine(), out moneyToDeposit) || moneyToDeposit < 0)
+                {
+                    Markdown.Paragraph($"Välj ett nytt belopp som är större än 0");
+                }
+
+                moneyToDepositinAccountCurrency = moneyToDeposit *
+                                                          Bank.exchangeRate.CalculateExchangeRate(defaultcurrency,
+                                                              accountTo.AccountCurrency);
+                string answer = "";
+                while (answer != "ja" && answer != "j" && answer != "nej" && answer != "n")
+                {
+                    Console.WriteLine($"Du har angett att du vill sätta in {moneyToDeposit} {defaultcurrency} " +
+                                      $"({moneyToDepositinAccountCurrency:N2} {accountTo.AccountCurrency})\n" +
+                                      $"\n" +
+                                      $"Stämmer detta?");
+                    answer = Console.ReadLine().ToLower();
+                    if (answer != "ja" && answer != "j" && answer != "nej" && answer != "n")
+                    {
+                        Console.WriteLine("Ogiltigt val!Tryck enter för att lägga in ett nytt belopp!");
+                        while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+                    }
+                }
+               if (answer == "ja" || answer == "j")
+                {
+                    runLoopSetAmount = false;
+                }
+            }
+            accountTo.Balance += moneyToDepositinAccountCurrency;
+            
+            Console.Clear();
+            Markdown.Header(HeaderLevel.Header2, "Summering");
+            Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
+            Console.WriteLine("\nTryck enter för att fortsätta");
+            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
         }
         private static List<string> PopulateAccountDetails(List<IBankAccount> updatedAccounts)
         {
