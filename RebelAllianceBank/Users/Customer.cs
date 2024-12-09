@@ -87,6 +87,7 @@ namespace RebelAllianceBank.Users
                 {
                     case 0:
                         _bankAccounts.Add(new CardAccount(accountName, PersonalNum));
+                        Console.WriteLine("Du har skapat ett nytt {}");
                         createAccount = true;
                         break;
                     case 1:
