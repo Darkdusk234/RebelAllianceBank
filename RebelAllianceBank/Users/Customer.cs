@@ -79,7 +79,7 @@ namespace RebelAllianceBank.Users
                 if (choice < 3)
                 {
                     while (accountName.Length == 0)
-                    {
+                    { ;
                         Markdown.Paragraph("\nVad vill du kalla kontot: ");
                         accountName = Console.ReadLine();
                     }
@@ -451,8 +451,9 @@ namespace RebelAllianceBank.Users
             Console.WriteLine("KONTOLOGGAR");
             foreach (var account in _bankAccounts)
             {
+                Console.WriteLine();
                 Console.WriteLine(account.AccountName);
-                Console.WriteLine("---------------------------------------------------");
+                Console.WriteLine("-------------------------------------------------------------------------------------");
                 account.ShowTransactionLog();
             }
         }

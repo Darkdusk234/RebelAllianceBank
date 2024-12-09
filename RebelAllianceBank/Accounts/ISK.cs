@@ -38,31 +38,29 @@ namespace RebelAllianceBank.Accounts
             Console.WriteLine("---------------------------------------------------");
             foreach (var transaction in _transactionsLog)
             {
+                const string format = "{0,-30} {1,-40} {2, -30}";
+                
                 if (transaction.AccountFrom?.AccountName == this.AccountName)
                 {
-                    Console.WriteLine(
-                        $"{transaction.AccountTo.AccountName}          -{transaction.Amount} {this.AccountCurrency}\n" +
-                        $"{transaction.Timestamp}");
+                    Console.WriteLine(format, $"{transaction.Timestamp}", $"Överföring till {transaction.AccountTo.AccountName.ToUpper()}",
+                        $"-{transaction.Amount:N2} {this.AccountCurrency}");
                 }
                 else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom != null)
                 {
-                    Console.WriteLine(
-                        $"Insättning från {transaction.AccountFrom.AccountName}          {transaction.Amount} {this.AccountCurrency}\n" +
-                        $"{transaction.Timestamp}");
+                    Console.WriteLine(format, $"{transaction.Timestamp}", $"Insättning från {transaction.AccountFrom.AccountName.ToUpper()}",
+                        $"{transaction.Amount:N2} {this.AccountCurrency}");
                 }
                 else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom == null)
                 {
-                    Console.WriteLine(
-                        $"Direkt insättning          {transaction.Amount} {this.AccountCurrency}\n" +
-                        $"{transaction.Timestamp}");
+                    Console.WriteLine(format, $"{transaction.Timestamp}", $"Direkt insättning",
+                        $"{transaction.Amount:N2} {this.AccountCurrency}");
                 }
                 else
                 {
-                    Console.WriteLine(
-                        $"{transaction.AccountFrom?.AccountName ?? "Okänt konto"}          {transaction.Amount} {this.AccountCurrency}\n" +
-                        $"{transaction.Timestamp}");
+                    Console.WriteLine(format, $"{transaction.Timestamp}", $"{transaction.AccountFrom?.AccountName ?? "Okänt konto"}",
+                        $"{transaction.Amount:N2} {this.AccountCurrency}"); 
                 }
-                Console.WriteLine("---------------------------------------------------");
+                Console.WriteLine("----------------------------------------------------------------------------");
             }
             _transactionsLog.Reverse();
         }
