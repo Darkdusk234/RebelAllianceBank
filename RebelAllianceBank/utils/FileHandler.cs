@@ -165,7 +165,7 @@ namespace RebelAllianceBank.utils
                 return new Loan
                 {
                     UserId = dataParts[0],
-                    loanedAmount = Convert.ToDecimal(dataParts[1]),
+                    LoanedAmount = Convert.ToDecimal(dataParts[1]),
                     LoanRent = Convert.ToDecimal(dataParts[2])
                 };
             }
@@ -206,7 +206,7 @@ namespace RebelAllianceBank.utils
                 {
                     foreach (var loan in customer.GetListLoan())
                     {
-                        sw.WriteLine($"{loan.UserId}-{loan.loanedAmount}-{loan.LoanRent}");
+                        sw.WriteLine($"{loan.UserId}-{loan.LoanedAmount}-{loan.LoanRent}");
                     }
                 }
             }

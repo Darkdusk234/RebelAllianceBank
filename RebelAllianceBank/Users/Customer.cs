@@ -176,7 +176,7 @@ namespace RebelAllianceBank.Users
                 Console.WriteLine("Vilken användare vill du föra över till? (ange personnummer), skriv 'avsluta' för att återgå till menyn.");
                 string otherUserPersonalNum = Console.ReadLine();
                 otherUser = users.OfType<Customer>().FirstOrDefault(user => user.PersonalNum == otherUserPersonalNum);
-                
+
                 if ("avsluta" == otherUserPersonalNum.ToLower())
                 {
                     return;
@@ -240,7 +240,7 @@ namespace RebelAllianceBank.Users
                 {
                     Console.WriteLine("Felaktigt belopp. Det måste vara positivt och inte större än saldot på avsändarkontot.\n" +
                         "Tryck på 'enter' för att försöka igen");
-                    while(Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+                    while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     Console.Clear();
                 }
             }
@@ -249,12 +249,12 @@ namespace RebelAllianceBank.Users
             //CheckMethodForCurrency(currentUserAccount, otherAccount);
             if (amount > 0)
             {
-            currentUserAccount.Balance -= amount;
-            otherAccount.Balance += amount * Bank.exchangeRate.CalculateExchangeRate(currentUserAccount.AccountCurrency, otherAccount.AccountCurrency);
-            Console.WriteLine($"Överföring lyckades! {amount:N2} överfördes från {currentUserAccount.AccountName} till {otherAccount.AccountName}.");
-            Console.WriteLine($"Nytt saldo för {currentUserAccount.AccountName}: {currentUserAccount.Balance:N2} {currentUserAccount.AccountCurrency}");
-            Console.WriteLine($"Nytt saldo för {otherAccount.AccountName}: {otherAccount.Balance:N2} {otherAccount.AccountCurrency}");
-            Console.ReadKey();
+                currentUserAccount.Balance -= amount;
+                otherAccount.Balance += amount * Bank.exchangeRate.CalculateExchangeRate(currentUserAccount.AccountCurrency, otherAccount.AccountCurrency);
+                Console.WriteLine($"Överföring lyckades! {amount:N2} överfördes från {currentUserAccount.AccountName} till {otherAccount.AccountName}.");
+                Console.WriteLine($"Nytt saldo för {currentUserAccount.AccountName}: {currentUserAccount.Balance:N2} {currentUserAccount.AccountCurrency}");
+                Console.WriteLine($"Nytt saldo för {otherAccount.AccountName}: {otherAccount.Balance:N2} {otherAccount.AccountCurrency}");
+                Console.ReadKey();
             }
         }
 
@@ -297,7 +297,7 @@ namespace RebelAllianceBank.Users
 
             var accountFrom = _bankAccounts[accountFromIndex[0]];
             var accountTo = _bankAccounts[accountToIndex[0]];
-            
+
             List<IBankAccount> updatedAccounts = [
                 accountFrom,
                 accountTo
@@ -318,7 +318,7 @@ namespace RebelAllianceBank.Users
             }
 
             accountFrom.Balance -= moneyToWithdraw;
-            accountTo.Balance += moneyToWithdraw*Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency, 
+            accountTo.Balance += moneyToWithdraw * Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency,
                 accountTo.AccountCurrency);
             Console.Clear();
             Markdown.Header(HeaderLevel.Header2, "Summering");
@@ -420,15 +420,14 @@ namespace RebelAllianceBank.Users
         public void TakeLoan()
         {
             bool loanComplete = false;
-           
+
             decimal availableToLoan = (MaxAccountBalance() * 5);
             decimal newLoanTaken = availableToLoan;
 
-            int choosenAccountIndex = 0;
+            int choosenAccountIndex;
 
             while (!loanComplete)
             {
-                Loan newLoan = new Loan();
                 if (_bankAccounts.Count <= 0)
                 {
                     Console.WriteLine("Du har inga konton. Skapa ett konto först innan du tar ett lån.");
@@ -464,10 +463,21 @@ namespace RebelAllianceBank.Users
 
                     Console.WriteLine("\nVälj vilket konto du vill sätta in pengarna på:\n");
 
-                    // int choosenAccountIndex = MarkdownUtils.HighLightChoiceWithMarkdown(false, ["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts), option => [option]);
+                    //int choosenAccountIndex = MarkdownUtils.HighLightChoiceWithMarkdown(false, ["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts), option => [option]);
                     choosenAccountIndex = new SelectOneOrMore(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts)).Show()[0];
 
                     var chosenAccount = _bankAccounts[choosenAccountIndex];
+
+                    Console.WriteLine("Hur många månader vill du ha lånet på?");
+                    Console.Write("Svar: ");
+                    int mounthToLoan = 0;
+                    if (!int.TryParse(Console.ReadLine(), out mounthToLoan))
+                    {
+                        Console.WriteLine("Felaktig inmatning.");
+                        continue;
+                    }
+
+                    Loan newLoan = new Loan(askedLoan, mounthToLoan, _customerLoan);
 
                     foreach (var account in _bankAccounts)
                     {
@@ -482,7 +492,7 @@ namespace RebelAllianceBank.Users
                     if (AcceptLoanTerms())
                     {
                         Console.Clear();
-                        newLoan.loanedAmount += askedLoan;
+                        newLoan.LoanedAmount += askedLoan;
                         _customerLoan.Add(newLoan); // add the loan amount to the loanlist.
                         chosenAccount.Balance += askedLoan; // add the loanamount to the account.
                         newLoanTaken -= askedLoan; // Removes the loanamount from the allowed loan ammount.
@@ -514,7 +524,7 @@ namespace RebelAllianceBank.Users
             decimal maxCurrentLoans = 0;
             foreach (var loan in _customerLoan)
             {
-                maxCurrentLoans += loan.loanedAmount;
+                maxCurrentLoans += loan.LoanedAmount;
             }
             return maxCurrentLoans;
         }
@@ -578,18 +588,25 @@ namespace RebelAllianceBank.Users
             }
         }
 
-        public void DisplayLoan()
+        public void DisplayLoans()
         {
-            decimal totalLoanAmount = 0;
-            foreach (var loan in _customerLoan)
+            int count = 0;
+            foreach (var account in _bankAccounts)
             {
-                totalLoanAmount += loan.loanedAmount;
+                foreach (var loan in _customerLoan)
+                {
+                    Console.WriteLine($"Lån #{count}.");
+                    Console.WriteLine($"Konto: {account.AccountName}");
+                    Console.WriteLine($"Lånbelopp: {loan.LoanedAmount} {account.AccountCurrency}.");
+                    Console.WriteLine($"Ränta för lånet: {loan.LoanRent}%.");
+                    Console.WriteLine($"Återbetalningstid: {loan.MonthsToPayBack:F2} månader");
+                    Console.WriteLine($"Månadskostnad: {loan.MounthlyPayment:F2} {account.AccountCurrency}");
+                    Console.WriteLine($"Återstående skuld: {loan.RemainingLoan} {account.AccountCurrency}\n");
+                    count++;
+                }
             }
-            Console.WriteLine($"\nDu har för närvarande: {totalLoanAmount:F2}kr i lån.");
-            //Console.WriteLine($"\nDin beräknade månadsavgift är: {totalLoanAmount /12:F2}kr");
-            Console.WriteLine("\nTryck på valfri tangent för att fortsätta.");
+            Console.WriteLine("Tryck på valfi tangent för att fortsätta.");
             Console.ReadKey();
         }
-
     }
 }
