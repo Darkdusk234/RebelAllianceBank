@@ -76,9 +76,12 @@ namespace RebelAllianceBank.Users
                 
                 if (choice < 3)
                 {
-                    // Console.Write("Vad vill du kalla kontot: ");
-                    Markdown.Paragraph("Vad vill du kalla kontot: ");
-                    accountName = Console.ReadLine();
+                    while (accountName.Length < 0)
+                    {
+                        Markdown.Paragraph("Vad vill du kalla kontot: ");
+                        accountName = Console.ReadLine();
+                    }
+
                     accountCurrency = Bank.exchangeRate.SetAccountCurrency();
                 }
 
@@ -86,17 +89,17 @@ namespace RebelAllianceBank.Users
                 switch (choice)
                 {
                     case 0:
-                        _bankAccounts.Add(new CardAccount(accountName, PersonalNum));
+                        _bankAccounts.Add(new CardAccount(accountName, PersonalNum, accountCurrency));
                         PrintResultCreateAccount(options[0], accountName, accountCurrency);
                         createAccount = true;
                         break;
                     case 1:
-                        _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum));
+                        _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum, accountCurrency));
                         PrintResultCreateAccount(options[1], accountName, accountCurrency);
                         createAccount = true;
                         break;
                     case 2:
-                        _bankAccounts.Add(new ISK(accountName, PersonalNum));
+                        _bankAccounts.Add(new ISK(accountName, PersonalNum, accountCurrency));
                         PrintResultCreateAccount(options[2], accountName, accountCurrency);
                         createAccount = true;
                         break;
