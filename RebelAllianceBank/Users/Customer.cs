@@ -318,11 +318,12 @@ namespace RebelAllianceBank.Users
             {
                 Markdown.Paragraph($"Välj ett mindre belopp än {accountFrom.Balance}{accountFrom.AccountCurrency}");
             }
-
-            accountFrom.Balance -= moneyToWithdraw;
-            accountTo.Balance += moneyToWithdraw * Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency,
-                accountTo.AccountCurrency);
-            Console.Clear();
+            var newTransaction = new Transaction(moneyToWithdraw, accountFrom, accountTo);
+            Bank.transactionQueue.Enqueue(newTransaction);
+            //accountFrom.Balance -= moneyToWithdraw;
+            //accountTo.Balance += moneyToWithdraw * Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency,
+            //    accountTo.AccountCurrency);
+            //Console.Clear();
             Markdown.Header(HeaderLevel.Header2, "Summering");
             Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
         }
