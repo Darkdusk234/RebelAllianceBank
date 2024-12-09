@@ -12,20 +12,17 @@ namespace RebelAllianceBank.Classes
         public decimal RemainingLoan { get; set; }
         public DateTime LoanDate { get; set; }
         
-        public List<Loan> LoanList = new List<Loan>();
-
         public Loan()
         {
 
         }
-        public Loan(decimal loanedAmount, int mounthsToLoan, List<Loan> account)
+        public Loan(decimal loanedAmount, int mounthsToLoan)
         {
             LoanedAmount = loanedAmount;
             MonthsToPayBack = mounthsToLoan * 12;
             LoanDate = DateTime.Now; // Sets a time and date when customer takes a loan.
             RemainingLoan = LoanedAmount;
             MounthlyPayment = CalculateMounthlyPayment();
-            LoanList = account;
         }
         
         public decimal CalculateMounthlyPayment()

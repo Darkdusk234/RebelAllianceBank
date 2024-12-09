@@ -477,7 +477,7 @@ namespace RebelAllianceBank.Users
                         continue;
                     }
 
-                    Loan newLoan = new Loan(askedLoan, mounthToLoan, _customerLoan);
+                    Loan newLoan = new Loan(askedLoan, mounthToLoan);
 
                     foreach (var account in _bankAccounts)
                     {
@@ -590,12 +590,13 @@ namespace RebelAllianceBank.Users
 
         public void DisplayLoans()
         {
-            int count = 0;
+            int count = 1;
             foreach (var account in _bankAccounts)
             {
                 foreach (var loan in _customerLoan)
                 {
-                    Console.WriteLine($"Lån #{count}.");
+                    Console.WriteLine($"\nLån #{count}.\n");
+                    Console.WriteLine($"Lånet utbetalt: {loan.LoanDate}");
                     Console.WriteLine($"Konto: {account.AccountName}");
                     Console.WriteLine($"Lånbelopp: {loan.LoanedAmount} {account.AccountCurrency}.");
                     Console.WriteLine($"Ränta för lånet: {loan.LoanRent}%.");
