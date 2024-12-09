@@ -1,10 +1,12 @@
 ﻿using RebelAllianceBank.Classes;
 using RebelAllianceBank.Interfaces;
+
 namespace RebelAllianceBank.Accounts
 {
     public class CardAccount : IBankAccount
     {
-        public int ID { get; set; }
+        private List<Transaction> _transactionsLog = new List<Transaction>();
+        public long ID { get; set; }
         public string UserId { get; set; }
         public int AccountType { get; set; } = 0;
         public string AccountName { get; set; }
@@ -25,5 +27,47 @@ namespace RebelAllianceBank.Accounts
             ID = Bank.accountNumberCounter;
             Bank.accountNumberCounter++;
         }
+
+        public void AddToTransactionLog(Transaction newTransaction)
+        {
+            _transactionsLog.Add(newTransaction);
+        }
+
+        public void ShowTransactionLog()
+        {
+            _transactionsLog.Reverse();
+            Console.WriteLine($"Nuvarande saldo på konto: {this.Balance}");
+            Console.WriteLine("---------------------------------------------------");
+            foreach (var transaction in _transactionsLog)
+            {
+                if (transaction.AccountFrom?.AccountName == this.AccountName)
+                {
+                    Console.WriteLine(
+                        $"{transaction.AccountTo.AccountName}          -{transaction.Amount} {this.AccountCurrency}\n" +
+                        $"{transaction.Timestamp}");
+                }
+                else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom != null)
+                {
+                    Console.WriteLine(
+                        $"Insättning från {transaction.AccountFrom.AccountName}          {transaction.Amount} {this.AccountCurrency}\n" +
+                        $"{transaction.Timestamp}");
+                }
+                else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom == null)
+                {
+                    Console.WriteLine(
+                        $"Direkt insättning          {transaction.Amount} {this.AccountCurrency}\n" +
+                        $"{transaction.Timestamp}");
+                }
+                else
+                {
+                    Console.WriteLine(
+                        $"{transaction.AccountFrom?.AccountName ?? "Okänt konto"}          {transaction.Amount} {this.AccountCurrency}\n" +
+                        $"{transaction.Timestamp}");
+                }
+                Console.WriteLine("---------------------------------------------------");
+            }
+            _transactionsLog.Reverse();
+        }
+
     }
 }

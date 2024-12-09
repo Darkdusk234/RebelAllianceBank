@@ -4,7 +4,8 @@ namespace RebelAllianceBank.Accounts
 {
     public class ISK : IBankAccount
     {
-        public int ID { get; set; }
+        private List<Transaction> _transactionsLog = new List<Transaction>(); 
+        public long ID { get; set; }
         public string UserId { get; set; }
         public int AccountType { get; set; } = 2;
         public string AccountName { get; set;  }
@@ -17,14 +18,53 @@ namespace RebelAllianceBank.Accounts
             ID = Bank.accountNumberCounter; 
             Bank.accountNumberCounter ++; 
         }
-        
         public ISK(string accountName, string userId, string accountCurrency)
         {
             UserId = userId;
             AccountName = accountName;
             AccountCurrency = accountCurrency;
             ID = Bank.accountNumberCounter;
-            Bank.accountNumberCounter++;
+            Bank.accountNumberCounter ++; 
+        }
+        public void AddToTransactionLog(Transaction newTransaction)
+        {
+            _transactionsLog.Add(newTransaction);
+        }
+
+        public void ShowTransactionLog()
+        {
+            _transactionsLog.Reverse();
+            Console.WriteLine($"Nuvarande saldo på konto: {this.Balance}");
+            Console.WriteLine("---------------------------------------------------");
+            foreach (var transaction in _transactionsLog)
+            {
+                if (transaction.AccountFrom?.AccountName == this.AccountName)
+                {
+                    Console.WriteLine(
+                        $"{transaction.AccountTo.AccountName}          -{transaction.Amount} {this.AccountCurrency}\n" +
+                        $"{transaction.Timestamp}");
+                }
+                else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom != null)
+                {
+                    Console.WriteLine(
+                        $"Insättning från {transaction.AccountFrom.AccountName}          {transaction.Amount} {this.AccountCurrency}\n" +
+                        $"{transaction.Timestamp}");
+                }
+                else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom == null)
+                {
+                    Console.WriteLine(
+                        $"Direkt insättning          {transaction.Amount} {this.AccountCurrency}\n" +
+                        $"{transaction.Timestamp}");
+                }
+                else
+                {
+                    Console.WriteLine(
+                        $"{transaction.AccountFrom?.AccountName ?? "Okänt konto"}          {transaction.Amount} {this.AccountCurrency}\n" +
+                        $"{transaction.Timestamp}");
+                }
+                Console.WriteLine("---------------------------------------------------");
+            }
+            _transactionsLog.Reverse();
         }
     }
 }

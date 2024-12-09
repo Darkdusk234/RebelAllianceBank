@@ -55,6 +55,8 @@ namespace RebelAllianceBank.Users
                 bodyKeys.Add(BankAccount.AccountCurrency);
             }
             Markdown.Table(["Konto Namn", "Saldo", "Valuta"], bodyKeys);
+            Console.WriteLine("Tryck på enter för att återgå.");
+            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
         }
         public void CreateAccount()
         {
@@ -316,11 +318,12 @@ namespace RebelAllianceBank.Users
             {
                 Markdown.Paragraph($"Välj ett mindre belopp än {accountFrom.Balance}{accountFrom.AccountCurrency}");
             }
-
-            accountFrom.Balance -= moneyToWithdraw;
-            accountTo.Balance += moneyToWithdraw * Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency,
-                accountTo.AccountCurrency);
-            Console.Clear();
+            var newTransaction = new Transaction(moneyToWithdraw, accountFrom, accountTo);
+            Bank.transactionQueue.Enqueue(newTransaction);
+            //accountFrom.Balance -= moneyToWithdraw;
+            //accountTo.Balance += moneyToWithdraw * Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency,
+            //    accountTo.AccountCurrency);
+            //Console.Clear();
             Markdown.Header(HeaderLevel.Header2, "Summering");
             Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
         }
@@ -394,14 +397,40 @@ namespace RebelAllianceBank.Users
                     runLoopSetAmount = false;
                 }
             }
-            accountTo.Balance += moneyToDepositinAccountCurrency;
-            
-            Console.Clear();
-            Markdown.Header(HeaderLevel.Header2, "Summering");
-            Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
-            Console.WriteLine("\nTryck enter för att fortsätta");
-            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
+            //accountTo.Balance += moneyToDepositinAccountCurrency;
+            var newTransaction = new Transaction(moneyToDepositinAccountCurrency, accountTo);
+            Bank.transactionQueue.Enqueue(newTransaction);
+            //Console.Clear();
+            //Markdown.Header(HeaderLevel.Header2, "Summering");
+            //Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
+            //Console.WriteLine("\nTryck enter för att fortsätta");
+            //while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
         }
+        public static void RunTransactionsInQueue()
+        {
+            while (Bank.transactionQueue.Count > 0)
+            {
+                var nextInQueue = Bank.transactionQueue.Dequeue();
+                nextInQueue.Timestamp = DateTime.Now;
+
+                if (nextInQueue.AccountFrom == null)
+                {
+                    nextInQueue.AccountTo.Balance += nextInQueue.Amount;
+                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
+                }
+                else
+                {
+                    nextInQueue.AccountFrom.Balance -= nextInQueue.Amount;
+                    nextInQueue.AccountTo.Balance += nextInQueue.Amount * Bank.exchangeRate.CalculateExchangeRate(
+                        nextInQueue.AccountFrom.AccountCurrency,
+                        nextInQueue.AccountTo.AccountCurrency
+                    );
+                    nextInQueue.AccountFrom.AddToTransactionLog(nextInQueue);
+                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
+                }
+            }
+        }
+
         private static List<string> PopulateAccountDetails(List<IBankAccount> updatedAccounts)
         {
             List<string> bodyKeys = [];
@@ -415,6 +444,17 @@ namespace RebelAllianceBank.Users
             }
 
             return bodyKeys;
+        }
+
+        public void ShowAccountLogs()
+        {
+            Console.WriteLine("KONTOLOGGAR");
+            foreach (var account in _bankAccounts)
+            {
+                Console.WriteLine(account.AccountName);
+                Console.WriteLine("---------------------------------------------------");
+                account.ShowTransactionLog();
+            }
         }
 
         public void TakeLoan()
