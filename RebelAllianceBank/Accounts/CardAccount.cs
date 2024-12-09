@@ -16,10 +16,9 @@ namespace RebelAllianceBank.Accounts
 
         public CardAccount()
         {
-            ID = Bank.accountNumberCounter;
-            Bank.accountNumberCounter++;
+            ID = Bank.accountNumberCounter; 
+            Bank.accountNumberCounter ++; 
         }
-
         public CardAccount(string accountName, string userId, string accountCurrency)
         {
             UserId = userId;

@@ -12,15 +12,12 @@ namespace RebelAllianceBank.Accounts
         public decimal Balance { get; set; } = 0; 
         public string AccountCurrency { get;  set;  }
         public decimal IntrestRate { get; set; } = 3.47m;
-        public List<Transaction> transactionsLog { get; set; }
 
         public ISK()
         {
-            ID = Bank.accountNumberCounter;
+            ID = Bank.accountNumberCounter; 
             Bank.accountNumberCounter ++; 
         }
-
-
         public ISK(string accountName, string userId, string accountCurrency)
         {
             UserId = userId;

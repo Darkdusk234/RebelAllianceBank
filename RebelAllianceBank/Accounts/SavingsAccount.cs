@@ -16,10 +16,9 @@ namespace RebelAllianceBank.Accounts
 
         public SavingsAccount()
         {
-            ID = Bank.accountNumberCounter;
+            ID = Bank.accountNumberCounter; 
             Bank.accountNumberCounter ++; 
         }
-
         public SavingsAccount(string accountName, string userId, string accountCurrency )
         {
             UserId = userId;
@@ -68,5 +67,7 @@ namespace RebelAllianceBank.Accounts
             }
             _transactionsLog.Reverse();
         }
+        
+        
     }
 }
