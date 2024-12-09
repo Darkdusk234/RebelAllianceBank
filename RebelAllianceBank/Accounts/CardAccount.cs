@@ -43,13 +43,15 @@ namespace RebelAllianceBank.Accounts
                 if (transaction.AccountFrom?.AccountName == this.AccountName)
                 {
                     Console.WriteLine(
-                        $"{transaction.AccountTo.AccountName}          -{transaction.Amount} {this.AccountCurrency}\n" +
+                        $"Överföring till {transaction.AccountTo.AccountName.ToUpper()}          -{transaction.Amount} " +
+                        $"{this.AccountCurrency}\n" +
                         $"{transaction.Timestamp}");
                 }
                 else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom != null)
                 {
                     Console.WriteLine(
-                        $"Insättning från {transaction.AccountFrom.AccountName}          {transaction.Amount} {this.AccountCurrency}\n" +
+                        $"Insättning från {transaction.AccountFrom.AccountName.ToUpper()}          {transaction.Amount} " +
+                        $"{this.AccountCurrency}\n" +
                         $"{transaction.Timestamp}");
                 }
                 else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom == null)

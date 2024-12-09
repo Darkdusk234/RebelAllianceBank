@@ -341,7 +341,7 @@ public class ExchangeRate
                     }
                     break; 
                 case "3":
-                    return "quit";
+                    return "AVBRYT";
                 default:
                     Markdown.Paragraph("\nOgiltig input! Tryck enter för att fortsätta");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
