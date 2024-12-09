@@ -79,6 +79,7 @@ namespace RebelAllianceBank.Users
                     // Console.Write("Vad vill du kalla kontot: ");
                     Markdown.Paragraph("Vad vill du kalla kontot: ");
                     accountName = Console.ReadLine();
+                    accountCurrency = Bank.exchangeRate.SetAccountCurrency();
                 }
 
 
