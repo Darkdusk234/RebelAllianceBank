@@ -55,7 +55,7 @@ namespace RebelAllianceBank.Users
                 bodyKeys.Add(BankAccount.AccountCurrency);
             }
             Markdown.Table(["Konto Namn", "Saldo", "Valuta"], bodyKeys);
-            Console.WriteLine("Tryck på enter för att återgå.");
+            Console.WriteLine("\nTryck på enter för att återgå.");
             while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
         }
         public void CreateAccount()
@@ -80,7 +80,7 @@ namespace RebelAllianceBank.Users
                 {
                     while (accountName.Length == 0)
                     {
-                        Markdown.Paragraph("Vad vill du kalla kontot: ");
+                        Markdown.Paragraph("\nVad vill du kalla kontot: ");
                         accountName = Console.ReadLine();
                     }
 
@@ -384,7 +384,7 @@ namespace RebelAllianceBank.Users
                     Console.WriteLine($"Du har angett att du vill sätta in {moneyToDeposit} {defaultcurrency} " +
                                       $"({moneyToDepositinAccountCurrency:N2} {accountTo.AccountCurrency})\n" +
                                       $"\n" +
-                                      $"Stämmer detta?");
+                                      $"Stämmer detta? ja/nej");
                     answer = Console.ReadLine().ToLower();
                     if (answer != "ja" && answer != "j" && answer != "nej" && answer != "n")
                     {
