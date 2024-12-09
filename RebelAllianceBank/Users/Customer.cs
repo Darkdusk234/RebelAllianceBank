@@ -400,7 +400,7 @@ namespace RebelAllianceBank.Users
                     }
 
                     Loan newLoan = new Loan(askedLoan, mounthToLoan, _customerLoan);
-                    newLoan.DisplayAllLoans(_customerLoan, _bankAccounts);
+                    newLoan.DisplayLoans(_customerLoan, _bankAccounts);
 
                     foreach (var account in _bankAccounts)
                     {

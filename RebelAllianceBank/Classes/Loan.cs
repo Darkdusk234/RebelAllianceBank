@@ -12,15 +12,8 @@ namespace RebelAllianceBank.Classes
         public decimal RemainingLoan { get; set; }
         public DateTime LoanDate { get; set; } // Sätter låndatum och tid.
         
-        public List<Loan> LoanList = new List<IBankAccount>();
+        public List<Loan> LoanList = new List<Loan>();
 
-        //public Loan(decimal loandAmount, IBankAccount konto)
-        //{
-        //    LoanedAmount = loandAmount;
-        //    MonthsToPayBack = 12;
-        //    LoanDate = DateTime.Now;
-
-        //}
         public Loan()
         {
 
@@ -35,7 +28,7 @@ namespace RebelAllianceBank.Classes
             LoanList = account;
         }
 
-        public void DisplayAllLoans(List<Loan> loanList, List<IBankAccount> accountList)
+        public void DisplayLoans(List<Loan> loanList, List<IBankAccount> accountList)
         {
             int count = 0;
             foreach (var account in accountList)
@@ -66,7 +59,7 @@ namespace RebelAllianceBank.Classes
         /// <param name="amount"></param>
         public void PayOffLoan(decimal amount)
         {
-            if (RemainingLoan = 0)
+            if (RemainingLoan == 0)
             {
                 Console.WriteLine("Du har inget lån att betala tillbaka.");
                 return;
