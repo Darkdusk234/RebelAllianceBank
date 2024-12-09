@@ -599,8 +599,8 @@ namespace RebelAllianceBank.Users
                     Console.WriteLine($"Konto: {account.AccountName}");
                     Console.WriteLine($"Lånbelopp: {loan.LoanedAmount} {account.AccountCurrency}.");
                     Console.WriteLine($"Ränta för lånet: {loan.LoanRent}%.");
-                    Console.WriteLine($"Återbetalningstid: {loan.MonthsToPayBack} månader");
-                    Console.WriteLine($"Månadskostnad: {loan.MounthlyPayment} {account.AccountCurrency}");
+                    Console.WriteLine($"Återbetalningstid: {loan.MonthsToPayBack:F2} månader");
+                    Console.WriteLine($"Månadskostnad: {loan.MounthlyPayment:F2} {account.AccountCurrency}");
                     Console.WriteLine($"Återstående skuld: {loan.RemainingLoan} {account.AccountCurrency}\n");
                     count++;
                 }
