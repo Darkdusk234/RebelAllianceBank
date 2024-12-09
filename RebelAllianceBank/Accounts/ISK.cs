@@ -4,7 +4,7 @@ namespace RebelAllianceBank.Accounts
 {
     public class ISK : IBankAccount
     {
-        public long ID { get; set; }
+        public int ID { get; set; }
         public string UserId { get; set; }
         public int AccountType { get; set; } = 2;
         public string AccountName { get; set;  }

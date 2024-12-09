@@ -76,7 +76,7 @@ namespace RebelAllianceBank.Users
                 
                 if (choice < 3)
                 {
-                    while (accountName.Length < 0)
+                    while (accountName.Length == 0)
                     {
                         Markdown.Paragraph("Vad vill du kalla kontot: ");
                         accountName = Console.ReadLine();
