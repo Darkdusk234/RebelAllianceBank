@@ -12,8 +12,6 @@ namespace RebelAllianceBank.Classes
         public decimal RemainingLoan { get; set; }
         public DateTime LoanDate { get; set; }
         
-        //public List<Loan> LoanList = new List<Loan>();
-
         public Loan()
         {
 
@@ -25,7 +23,6 @@ namespace RebelAllianceBank.Classes
             LoanDate = DateTime.Now; // Sets a time and date when customer takes a loan.
             RemainingLoan = LoanedAmount;
             MounthlyPayment = CalculateMounthlyPayment();
-            //LoanList = account; 
         }
         
         public decimal CalculateMounthlyPayment()
