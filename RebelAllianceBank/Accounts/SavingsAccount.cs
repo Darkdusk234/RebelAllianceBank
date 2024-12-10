@@ -35,8 +35,9 @@ namespace RebelAllianceBank.Accounts
         public void ShowTransactionLog()
         {
             _transactionsLog.Reverse();
+            Console.WriteLine("-------------------------------------------------------------------------------------");
             Console.WriteLine($"Nuvarande saldo på konto: {this.Balance}");
-            Console.WriteLine("---------------------------------------------------");
+            Console.WriteLine("-------------------------------------------------------------------------------------");
             _transactionsLog.Reverse();
             foreach (var transaction in _transactionsLog)
             {
@@ -49,18 +50,21 @@ namespace RebelAllianceBank.Accounts
                 }
                 else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom != null)
                 {
-                    Console.WriteLine(format, $"{transaction.Timestamp}", $"Insättning från {transaction.AccountFrom.AccountName.ToUpper()}",
-                        $"{transaction.Amount:N2} {this.AccountCurrency}");
+                    Console.WriteLine(format, $"{transaction.Timestamp}", $"Insättning från " + $"{transaction.AccountFrom.AccountName.ToUpper()}",
+                        $"{(transaction.Amount * Bank.exchangeRate.CalculateExchangeRate(transaction.AccountFrom.AccountCurrency, 
+                            transaction.AccountTo.AccountCurrency)):N2} {this.AccountCurrency}");
                 }
                 else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom == null)
                 {
                     Console.WriteLine(format, $"{transaction.Timestamp}", $"Direkt insättning",
-                        $"{transaction.Amount:N2} {this.AccountCurrency}");
+                        $"{(transaction.Amount * Bank.exchangeRate.CalculateExchangeRate(transaction.AccountFrom.AccountCurrency, 
+                            transaction.AccountTo.AccountCurrency)):N2} {this.AccountCurrency}");
                 }
                 else
                 {
                     Console.WriteLine(format, $"{transaction.Timestamp}", $"{transaction.AccountFrom?.AccountName ?? "Okänt konto"}",
-                        $"{transaction.Amount:N2} {this.AccountCurrency}"); 
+                        $"{(transaction.Amount * Bank.exchangeRate.CalculateExchangeRate(transaction.AccountFrom.AccountCurrency, 
+                            transaction.AccountTo.AccountCurrency)):N2} {this.AccountCurrency}"); 
                 }
                 Console.WriteLine("----------------------------------------------------------------------------");
             }
