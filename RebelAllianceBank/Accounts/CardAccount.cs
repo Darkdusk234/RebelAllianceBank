@@ -42,6 +42,12 @@ namespace RebelAllianceBank.Accounts
             {
                 const string format = "{0,-30} {1,-40} {2, -30}";
                 
+                //change the amount to the correct currenct for receiving account
+                decimal amountToInCorrectCurrency = transaction.Amount *
+                                                           Bank.exchangeRate.CalculateExchangeRate(
+                                                               transaction.AccountFrom.AccountCurrency,
+                                                               transaction.AccountTo.AccountCurrency);
+                
                 if (transaction.AccountFrom?.AccountName == this.AccountName)
                 {
                     Console.WriteLine(format, $"{transaction.Timestamp}", $"Överföring till {transaction.AccountTo.AccountName.ToUpper()}",
@@ -50,19 +56,19 @@ namespace RebelAllianceBank.Accounts
                 else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom != null)
                 {
                     Console.WriteLine(format, $"{transaction.Timestamp}", $"Insättning från {transaction.AccountFrom.AccountName.ToUpper()}",
-                        $"{transaction.Amount:N2} {this.AccountCurrency}");
+                        $"{amountToInCorrectCurrency:N2} {this.AccountCurrency}");
                 }
                 else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom == null)
                 {
                     Console.WriteLine(format, $"{transaction.Timestamp}", $"Direkt insättning",
-                        $"{transaction.Amount:N2} {this.AccountCurrency}");
+                        $"{amountToInCorrectCurrency:N2} {this.AccountCurrency}");
                 }
                 else
                 {
                     Console.WriteLine(format, $"{transaction.Timestamp}", $"{transaction.AccountFrom?.AccountName ?? "Okänt konto"}",
-                        $"{transaction.Amount:N2} {this.AccountCurrency}"); 
+                        $"{amountToInCorrectCurrency:N2} {this.AccountCurrency}"); 
                 }
-                Console.WriteLine("----------------------------------------------------------------------------");
+                Console.WriteLine("-------------------------------------------------------------------------------------");
             }
             _transactionsLog.Reverse();
         }

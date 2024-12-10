@@ -470,7 +470,7 @@ namespace RebelAllianceBank.Users
                     }
 
                     decimal askedLoan;
-                    Console.Write("\nHur stort lån vill du ansöka om:  ");
+                    Console.Write("\nHur stort lån vill du ansöka om (i SEK):  ");
                     if (!decimal.TryParse(Console.ReadLine(), out askedLoan) || askedLoan <= 0)
                     {
                         Console.WriteLine("Felaktig inmatning.");
@@ -519,8 +519,11 @@ namespace RebelAllianceBank.Users
                         Console.Clear();
                         newLoan.LoanedAmount += askedLoan;
                         _customerLoan.Add(newLoan); // add the loan amount to the loanlist.
-                        
-                        var newTransaction = new Transaction(askedLoan, chosenAccount);
+
+                        decimal askedLoanCurrencyOfAccountTo = askedLoan *
+                                                               Bank.exchangeRate.CalculateExchangeRate("SEK",
+                                                                   chosenAccount.AccountCurrency);
+                        var newTransaction = new Transaction(askedLoanCurrencyOfAccountTo, chosenAccount);
                         Bank.transactionQueue.Enqueue(newTransaction);
                         
                         //chosenAccount.Balance += askedLoan; // add the loanamount to the account.
@@ -543,7 +546,7 @@ namespace RebelAllianceBank.Users
             decimal maxAccountBalance = 0;
             foreach (var account in _bankAccounts)
             {
-                maxAccountBalance += account.Balance;
+                maxAccountBalance += account.Balance * Bank.exchangeRate.CalculateExchangeRate(account.AccountCurrency, "SEK");
             }
             return maxAccountBalance - MaxCurrentLoan();
         }
