@@ -44,7 +44,7 @@ namespace RebelAllianceBank.utils
         public async Task Start()
         {
             // create new tasks
-            var task1 = TransactionTimer(TransactionFromQueue, TimeSpan.FromSeconds(30));
+            var task1 = TransactionTimer(TransactionFromQueue, TimeSpan.FromSeconds(10));
             //var task2 = TransactionTimer(ExampleMethod, TimeSpan.FromSeconds(1));
             // run the tasks simultaneously
             await Task.WhenAll(task1);
