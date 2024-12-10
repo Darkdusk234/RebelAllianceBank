@@ -18,7 +18,6 @@ namespace RebelAllianceBank.Users
 
 
         private List<IBankAccount> _bankAccounts = new List<IBankAccount>();
-
         private List<Loan> _customerLoan = new List<Loan>();
         public Customer() { }
         public Customer(string pNum, string password, string surname, string forename)
@@ -56,23 +55,16 @@ namespace RebelAllianceBank.Users
                 bodyKeys.Add(BankAccount.AccountCurrency);
             }
             Markdown.Table(["Konto Namn", "Saldo", "Valuta"], bodyKeys);
+            Console.WriteLine("Tryck på enter för att återgå.");
+            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
         }
         public void CreateAccount()
         {
             bool createAccount = false;
-
+            
             do
             {
-                // Console.WriteLine("Vilket konto vill du skapa?\n");
-                // Console.WriteLine("1. Kreditkort");
-                // Console.WriteLine("2. ISK (investeringssparkonto)");
-                // Console.WriteLine("3. Sparkonto");
-                // Console.WriteLine("4. Avsluta");
-                // string input = Console.ReadLine();
-                // int userChoice;
-                // bool isInt = int.TryParse(input, out userChoice);
-
-                List<string> options = ["Kreditkort", "ISK (investeringssparkonto)", "Sparkonto", "Avsluta"];
+                List<string> options = ["Kortkonto", "Sparkonto", "ISK (investeringssparkonto)", "Avsluta"];
 
                 Markdown.Header(HeaderLevel.Header1, "Vilket konto vill du skapa?");
                 int choice = MarkdownUtils.HighLightChoiceWithMarkdown(
@@ -83,31 +75,34 @@ namespace RebelAllianceBank.Users
 
                 string accountName = "";
                 string accountCurrency = "";
-
-                // if (isInt && userChoice == 4)
-                // {
-                //     break;
-                // }
-                if (choice < 4)
+                
+                if (choice < 3)
                 {
-                    // Console.Write("Vad vill du kalla kontot: ");
-                    Markdown.Paragraph("Vad vill du kalla kontot: ");
-                    accountName = Console.ReadLine();
+                    while (accountName.Length == 0)
+                    {
+                        Markdown.Paragraph("Vad vill du kalla kontot: ");
+                        accountName = Console.ReadLine();
+                    }
+
+                    accountCurrency = Bank.exchangeRate.SetAccountCurrency();
                 }
 
 
                 switch (choice)
                 {
                     case 0:
-                        _bankAccounts.Add(new CardAccount(accountName, PersonalNum));
+                        _bankAccounts.Add(new CardAccount(accountName, PersonalNum, accountCurrency));
+                        PrintResultCreateAccount(options[0], accountName, accountCurrency);
                         createAccount = true;
                         break;
                     case 1:
-                        _bankAccounts.Add(new ISK(accountName, PersonalNum));
+                        _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum, accountCurrency));
+                        PrintResultCreateAccount(options[1], accountName, accountCurrency);
                         createAccount = true;
                         break;
                     case 2:
-                        _bankAccounts.Add(new SavingsAccount(accountName, PersonalNum));
+                        _bankAccounts.Add(new ISK(accountName, PersonalNum, accountCurrency));
+                        PrintResultCreateAccount(options[2], accountName, accountCurrency);
                         createAccount = true;
                         break;
                     case 3:
@@ -124,6 +119,13 @@ namespace RebelAllianceBank.Users
                 }
             } while (createAccount == false);
         }
+
+        public void PrintResultCreateAccount(string accountType, string accountName, string accountCurrency)
+        {
+            Console.Clear();
+            Console.WriteLine($"Du har skapat ett nytt {accountType.ToUpper()} med namn {accountName} och valuta {accountCurrency} ");
+        }
+
         /// <summary>
         /// A method to transfer from one of current users account to another users account.
         /// </summary>
@@ -316,11 +318,12 @@ namespace RebelAllianceBank.Users
             {
                 Markdown.Paragraph($"Välj ett mindre belopp än {accountFrom.Balance}{accountFrom.AccountCurrency}");
             }
-
-            accountFrom.Balance -= moneyToWithdraw;
-            accountTo.Balance += moneyToWithdraw * Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency,
-                accountTo.AccountCurrency);
-            Console.Clear();
+            var newTransaction = new Transaction(moneyToWithdraw, accountFrom, accountTo);
+            Bank.transactionQueue.Enqueue(newTransaction);
+            //accountFrom.Balance -= moneyToWithdraw;
+            //accountTo.Balance += moneyToWithdraw * Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency,
+            //    accountTo.AccountCurrency);
+            //Console.Clear();
             Markdown.Header(HeaderLevel.Header2, "Summering");
             Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
         }
@@ -394,14 +397,40 @@ namespace RebelAllianceBank.Users
                     runLoopSetAmount = false;
                 }
             }
-            accountTo.Balance += moneyToDepositinAccountCurrency;
-
-            Console.Clear();
-            Markdown.Header(HeaderLevel.Header2, "Summering");
-            Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
-            Console.WriteLine("\nTryck enter för att fortsätta");
-            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
+            //accountTo.Balance += moneyToDepositinAccountCurrency;
+            var newTransaction = new Transaction(moneyToDepositinAccountCurrency, accountTo);
+            Bank.transactionQueue.Enqueue(newTransaction);
+            //Console.Clear();
+            //Markdown.Header(HeaderLevel.Header2, "Summering");
+            //Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
+            //Console.WriteLine("\nTryck enter för att fortsätta");
+            //while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
         }
+        public static void RunTransactionsInQueue()
+        {
+            while (Bank.transactionQueue.Count > 0)
+            {
+                var nextInQueue = Bank.transactionQueue.Dequeue();
+                nextInQueue.Timestamp = DateTime.Now;
+
+                if (nextInQueue.AccountFrom == null)
+                {
+                    nextInQueue.AccountTo.Balance += nextInQueue.Amount;
+                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
+                }
+                else
+                {
+                    nextInQueue.AccountFrom.Balance -= nextInQueue.Amount;
+                    nextInQueue.AccountTo.Balance += nextInQueue.Amount * Bank.exchangeRate.CalculateExchangeRate(
+                        nextInQueue.AccountFrom.AccountCurrency,
+                        nextInQueue.AccountTo.AccountCurrency
+                    );
+                    nextInQueue.AccountFrom.AddToTransactionLog(nextInQueue);
+                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
+                }
+            }
+        }
+
         private static List<string> PopulateAccountDetails(List<IBankAccount> updatedAccounts)
         {
             List<string> bodyKeys = [];
@@ -415,6 +444,17 @@ namespace RebelAllianceBank.Users
             }
 
             return bodyKeys;
+        }
+
+        public void ShowAccountLogs()
+        {
+            Console.WriteLine("KONTOLOGGAR");
+            foreach (var account in _bankAccounts)
+            {
+                Console.WriteLine(account.AccountName);
+                Console.WriteLine("---------------------------------------------------");
+                account.ShowTransactionLog();
+            }
         }
 
         public void TakeLoan()
@@ -593,7 +633,6 @@ namespace RebelAllianceBank.Users
         public void DisplayLoans()
         {
             int count = 1;
-            decimal currentLoan = 0;
             foreach (var account in _bankAccounts)
             {
                 foreach (var loan in _customerLoan)
