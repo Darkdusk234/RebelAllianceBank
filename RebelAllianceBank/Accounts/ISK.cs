@@ -35,7 +35,7 @@ namespace RebelAllianceBank.Accounts
         {
             _transactionsLog.Reverse();
             Console.WriteLine($"Nuvarande saldo på konto: {this.Balance}");
-            Console.WriteLine("---------------------------------------------------");
+            Console.WriteLine("----------------------------------------------------------------------------");
             foreach (var transaction in _transactionsLog)
             {
                 const string format = "{0,-30} {1,-40} {2, -30}";
