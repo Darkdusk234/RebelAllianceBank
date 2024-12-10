@@ -78,7 +78,7 @@ namespace RebelAllianceBank.Users
                 {
                     while (accountName.Length == 0)
                     {
-                        Markdown.Paragraph("Vad vill du kalla kontot: ");
+                        Markdown.Paragraph("\nVad vill du kalla kontot: ");
                         accountName = Console.ReadLine();
                     }
 
@@ -121,7 +121,7 @@ namespace RebelAllianceBank.Users
         public void PrintResultCreateAccount(string accountType, string accountName, string accountCurrency)
         {
             Console.Clear();
-            Console.WriteLine($"Du har skapat ett nytt {accountType.ToUpper()} med namn {accountName} och valuta {accountCurrency} ");
+            Console.WriteLine($"Du har skapat ett nytt {accountType.ToUpper()} med namn <<{accountName}>> och valuta {accountCurrency} ");
         }
 
         /// <summary>

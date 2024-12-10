@@ -271,6 +271,7 @@ public class ExchangeRate
 
                         while (!getanswer)
                         {
+                            Console.Clear();
                             Markdown.Paragraph(
                                 $"Du har angett att du vill ha valuta {currency} på ditt konto.\n\nStämmer det? ja/nej: " );
                             string answer2 = Console.ReadLine().ToLower();
@@ -331,6 +332,7 @@ public class ExchangeRate
                     //a loop that runs until the currency is in the coorrect format, or the user wish to abort. 
                     while ((currency.Length != 3 || _exchangeRates.ContainsKey(currency) == false) && currency != "AVBRYT")
                     {
+                        Console.Clear();
                         Markdown.Header(Enums.HeaderLevel.Header2,"Ange den valuta du önskar (tre bokstäver). Skriv AVBRYT för att återgå till " +
                                           "föregående meny");
                         if (currency == "AVBRYT")
