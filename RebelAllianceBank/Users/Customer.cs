@@ -121,7 +121,8 @@ namespace RebelAllianceBank.Users
         public void PrintResultCreateAccount(string accountType, string accountName, string accountCurrency)
         {
             Console.Clear();
-            Console.WriteLine($"Du har skapat ett nytt {accountType.ToUpper()} med namn << {accountName} >> och valuta {accountCurrency} ");
+            Console.WriteLine($"Du har skapat ett nytt {accountType.ToUpper()} med namn << {accountName.ToUpper()} >> " +
+                              $"och valuta {accountCurrency} ");
         }
 
         /// <summary>
