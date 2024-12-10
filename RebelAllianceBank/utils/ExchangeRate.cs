@@ -356,7 +356,7 @@ public class ExchangeRate
     /// <summary>
     /// A metod that calculates the ExchangeRates that will be used when transfering mony betyween accounts.
     /// Calc example: 1 SEK = 11,5030 EUR.    =>   1 EUR = 1/11,5030 SEK, 1 USD = 1,0495.   => 1 EUR = 1/1,0495 USD.
-    /// 1/1,0495 USD = 1/11,5030 SEK   =>   1 USD = 
+    /// 1/1,0495 USD = 1/11,5030 SEK   =>   1 SEK = 1,0495 / 11,5030 (i.e. 1 SEK = exchangeRateUSD / exchangeRateSEK) 
     /// </summary>
     /// <param name="CurrencyFrom"></param>
     /// <param name="CurrencyTo"></param>
