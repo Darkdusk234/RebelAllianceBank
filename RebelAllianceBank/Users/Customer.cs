@@ -55,8 +55,6 @@ namespace RebelAllianceBank.Users
                 bodyKeys.Add(BankAccount.AccountCurrency);
             }
             Markdown.Table(["Konto Namn", "Saldo", "Valuta"], bodyKeys);
-            Console.WriteLine("Tryck på enter för att återgå.");
-            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
         }
         public void CreateAccount()
         {
@@ -510,14 +508,14 @@ namespace RebelAllianceBank.Users
 
                     Console.WriteLine("Hur många månader vill du ha lånet på?");
                     Console.Write("Svar: ");
-                    int mounthToLoan = 0;
-                    if (!int.TryParse(Console.ReadLine(), out mounthToLoan))
+                    int mounthsToLoan = 0;
+                    if (!int.TryParse(Console.ReadLine(), out mounthsToLoan))
                     {
                         Console.WriteLine("Felaktig inmatning.");
                         continue;
                     }
 
-                    Loan newLoan = new Loan(askedLoan, mounthToLoan);
+                    Loan newLoan = new Loan(askedLoan, mounthsToLoan);
 
                     foreach (var account in _bankAccounts)
                     {
@@ -633,6 +631,7 @@ namespace RebelAllianceBank.Users
         public void DisplayLoans()
         {
             int count = 1;
+            decimal currentLoan = 0;
             foreach (var account in _bankAccounts)
             {
                 foreach (var loan in _customerLoan)
