@@ -79,6 +79,10 @@ public class ExchangeRate
         _exchangeRates.Add("THB", thb);
         var zar = new Currency("rand", "Sydafrika");
         _exchangeRates.Add("ZAR", zar);
+        var eur = new Currency("euro", "Euroland");
+        _exchangeRates.Add("EUR", eur);
+
+        eur.ExchangeRateToEUR = 1;
         
         AddDefaultExchangeRates();
     }
@@ -90,11 +94,11 @@ public class ExchangeRate
         //default data from ECB on nov 25th 2024. 
         string currenciesStringDefault = "Date, USD, JPY, BGN, CZK, DKK, GBP, HUF, PLN, RON, SEK, CHF, ISK, NOK, " +
                                          "TRY, AUD, BRL, CAD, CNY, HKD, IDR, ILS, INR, KRW, MXN, MYR, NZD, PHP, SGD, " +
-                                         "THB, ZAR";
+                                         "THB, ZAR, EUR";
         string exchangeRateStringDefault = "25 November 2024, 1.0495, 161.64, 1.9558, 25.295, 7.4586, 0.83465, 409.78, " +
                                            "4.3185, 4.9767, 11.5030, 0.9324, 145.30, 11.5865, 36.3020, 1.6111, 6.0941, " +
                                            "1.4648, 7.6018, 8.1659, 16651.89, 3.8493, 88.4595, 1469.87, 21.3301, 4.6724, " +
-                                           "1.7926, 61.936, 1.4128, 36.271, 18.9592, ";
+                                           "1.7926, 61.936, 1.4128, 36.271, 18.9592, 1";
         
         SplitStrings(currenciesStringDefault, exchangeRateStringDefault);
 
@@ -166,8 +170,8 @@ public class ExchangeRate
         //Since the currency data contains "Date", while exchange rate containse e.g."25 november 2024",the legnth of 
         //the exchangerates array needs to be decreased with 2 to match currencies. 
         if (_currenciesToUpdate.Length != _exchangeRatesToUpdate.Length - 2 || 
-            _currenciesToUpdate.Length -1 != Bank.exchangeRate._exchangeRates.Count ||
-            _exchangeRatesToUpdate.Length - 3 != Bank.exchangeRate._exchangeRates.Count )
+            _currenciesToUpdate.Length != Bank.exchangeRate._exchangeRates.Count ||
+            _exchangeRatesToUpdate.Length - 2 != Bank.exchangeRate._exchangeRates.Count )
         {
             return EnumsExchangeRate.incorrect;
         }
