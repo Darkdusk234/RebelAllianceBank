@@ -18,6 +18,7 @@ namespace RebelAllianceBank.Classes
         }
         public Loan(decimal loanedAmount, int mounthsToLoan)
         {
+            // implement ID
             LoanedAmount = loanedAmount;
             MonthsToPayBack = mounthsToLoan;
             LoanDate = DateTime.Now; // Sets a time and date when customer takes a loan.
