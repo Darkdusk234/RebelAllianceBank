@@ -19,7 +19,7 @@ namespace RebelAllianceBank.Classes
         public Loan(decimal loanedAmount, int mounthsToLoan)
         {
             LoanedAmount = loanedAmount;
-            MonthsToPayBack = mounthsToLoan * 12;
+            MonthsToPayBack = mounthsToLoan;
             LoanDate = DateTime.Now; // Sets a time and date when customer takes a loan.
             RemainingLoan = LoanedAmount;
             MounthlyPayment = CalculateMounthlyPayment();
@@ -27,11 +27,9 @@ namespace RebelAllianceBank.Classes
         
         public decimal CalculateMounthlyPayment()
         {
-            decimal rent = LoanRent / 100; // Convert rent to a better format to calculate %. Ex 5,4 / 100 = 0,054. 
-            decimal mounthlyRent = (LoanedAmount * rent) / MonthsToPayBack; // Calculate mounthly rent. Ex (100 000 * 0,054) / 12(1Y). 450
-            decimal mounthlyPayment = (LoanedAmount + mounthlyRent) / 12; // Calculate mounthly cost based on loan. Ex (100 000 + 450) / 12.
-
-            return mounthlyPayment;
+            decimal rentOnLoan = (LoanedAmount / 100) * LoanRent;
+            decimal sum = LoanedAmount / MonthsToPayBack + rentOnLoan;
+            return sum;
         }
         public void PayOffLoan(decimal amount)
         {

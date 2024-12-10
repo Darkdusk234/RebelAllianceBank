@@ -310,7 +310,7 @@ namespace RebelAllianceBank.Users
                                                  $"{accountFrom.AccountName} till {accountTo.AccountName}?\n");
             Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
             Console.Write("\nBelopp: ");
-            
+
             decimal moneyToWithdraw;
             while (!decimal.TryParse(Console.ReadLine(), out moneyToWithdraw) || moneyToWithdraw > accountFrom.Balance || moneyToWithdraw < 0)
             {
@@ -348,7 +348,7 @@ namespace RebelAllianceBank.Users
             Console.Clear();
 
             var accountTo = _bankAccounts[accountToIndex[0]];
-            
+
             List<IBankAccount> updatedAccounts = [
                 accountTo,
             ];
@@ -356,7 +356,7 @@ namespace RebelAllianceBank.Users
             Console.Clear();
 
             // Header
-            decimal moneyToDepositinAccountCurrency = 0; 
+            decimal moneyToDepositinAccountCurrency = 0;
             bool runLoopSetAmount = true;
             while (runLoopSetAmount)
             {
@@ -389,13 +389,13 @@ namespace RebelAllianceBank.Users
                         while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     }
                 }
-               if (answer == "ja" || answer == "j")
+                if (answer == "ja" || answer == "j")
                 {
                     runLoopSetAmount = false;
                 }
             }
             accountTo.Balance += moneyToDepositinAccountCurrency;
-            
+
             Console.Clear();
             Markdown.Header(HeaderLevel.Header2, "Summering");
             Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
@@ -421,7 +421,7 @@ namespace RebelAllianceBank.Users
         {
             bool loanComplete = false;
 
-            decimal availableToLoan = (MaxAccountBalance() * 5);
+            decimal availableToLoan = MaxAccountBalance(); // Maxtak
             decimal newLoanTaken = availableToLoan;
 
             int choosenAccountIndex;
@@ -492,7 +492,7 @@ namespace RebelAllianceBank.Users
                     if (AcceptLoanTerms())
                     {
                         Console.Clear();
-                        newLoan.LoanedAmount += askedLoan;
+                        newLoan.LoanedAmount = askedLoan;
                         _customerLoan.Add(newLoan); // add the loan amount to the loanlist.
                         chosenAccount.Balance += askedLoan; // add the loanamount to the account.
                         newLoanTaken -= askedLoan; // Removes the loanamount from the allowed loan ammount.
@@ -508,7 +508,7 @@ namespace RebelAllianceBank.Users
                 }
             }
         }
-
+        // sammanlagda konto balansen
         public decimal MaxAccountBalance()
         {
             decimal maxAccountBalance = 0;
@@ -516,9 +516,11 @@ namespace RebelAllianceBank.Users
             {
                 maxAccountBalance += account.Balance;
             }
-            return maxAccountBalance - MaxCurrentLoan();
+            decimal balance = Math.Abs(maxAccountBalance - MaxCurrentLoan());
+            decimal test = balance * 5;
+            return Math.Abs(MaxCurrentLoan() - test);
         }
-
+        // Sammanlagda lånet
         public decimal MaxCurrentLoan()
         {
             decimal maxCurrentLoans = 0;
@@ -591,6 +593,7 @@ namespace RebelAllianceBank.Users
         public void DisplayLoans()
         {
             int count = 1;
+            decimal currentLoan = 0;
             foreach (var account in _bankAccounts)
             {
                 foreach (var loan in _customerLoan)
@@ -600,9 +603,10 @@ namespace RebelAllianceBank.Users
                     Console.WriteLine($"Konto: {account.AccountName}");
                     Console.WriteLine($"Lånbelopp: {loan.LoanedAmount} {account.AccountCurrency}.");
                     Console.WriteLine($"Ränta för lånet: {loan.LoanRent}%.");
-                    Console.WriteLine($"Återbetalningstid: {loan.MonthsToPayBack:F2} månader");
+                    Console.WriteLine($"Återbetalningstid: {loan.MonthsToPayBack} månader");
                     Console.WriteLine($"Månadskostnad: {loan.MounthlyPayment:F2} {account.AccountCurrency}");
                     Console.WriteLine($"Återstående skuld: {loan.RemainingLoan} {account.AccountCurrency}\n");
+                    currentLoan = loan.LoanedAmount;
                     count++;
                 }
             }
