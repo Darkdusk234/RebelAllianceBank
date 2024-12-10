@@ -519,7 +519,11 @@ namespace RebelAllianceBank.Users
                         Console.Clear();
                         newLoan.LoanedAmount += askedLoan;
                         _customerLoan.Add(newLoan); // add the loan amount to the loanlist.
-                        chosenAccount.Balance += askedLoan; // add the loanamount to the account.
+                        
+                        var newTransaction = new Transaction(askedLoan, chosenAccount);
+                        Bank.transactionQueue.Enqueue(newTransaction);
+                        
+                        //chosenAccount.Balance += askedLoan; // add the loanamount to the account.
                         newLoanTaken -= askedLoan; // Removes the loanamount from the allowed loan ammount.
 
                         Console.WriteLine($"{askedLoan} {chosenAccount.AccountCurrency}" +
