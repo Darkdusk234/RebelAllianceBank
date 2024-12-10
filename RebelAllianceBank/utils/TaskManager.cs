@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RebelAllianceBank.Classes;
 using RebelAllianceBank.Users;
 
 namespace RebelAllianceBank.utils
@@ -33,7 +34,7 @@ namespace RebelAllianceBank.utils
         // will go through the queued list of transactions that will be made.
         public async Task TransactionFromQueue()
         {
-            Customer.RunTransactionsInQueue();
+            Bank.RunTransactionsInQueue();
         }
         public async Task ExampleMethod()
         {

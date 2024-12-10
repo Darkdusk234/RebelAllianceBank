@@ -414,30 +414,6 @@ namespace RebelAllianceBank.Users
             //Console.WriteLine("\nTryck enter för att fortsätta");
             //while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
         }
-        public static void RunTransactionsInQueue()
-        {
-            while (Bank.transactionQueue.Count > 0)
-            {
-                var nextInQueue = Bank.transactionQueue.Dequeue();
-                nextInQueue.Timestamp = DateTime.Now;
-
-                if (nextInQueue.AccountFrom == null)
-                {
-                    nextInQueue.AccountTo.Balance += nextInQueue.Amount;
-                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
-                }
-                else
-                {
-                    nextInQueue.AccountFrom.Balance -= nextInQueue.Amount;
-                    nextInQueue.AccountTo.Balance += nextInQueue.Amount * Bank.exchangeRate.CalculateExchangeRate(
-                        nextInQueue.AccountFrom.AccountCurrency,
-                        nextInQueue.AccountTo.AccountCurrency
-                    );
-                    nextInQueue.AccountFrom.AddToTransactionLog(nextInQueue);
-                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
-                }
-            }
-        }
 
         private static List<string> PopulateAccountDetails(List<IBankAccount> updatedAccounts)
         {
