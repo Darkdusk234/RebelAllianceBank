@@ -121,7 +121,7 @@ namespace RebelAllianceBank.Users
         public void PrintResultCreateAccount(string accountType, string accountName, string accountCurrency)
         {
             Console.Clear();
-            Console.WriteLine($"Du har skapat ett nytt {accountType.ToUpper()} med namn <<{accountName}>> och valuta {accountCurrency} ");
+            Console.WriteLine($"Du har skapat ett nytt {accountType.ToUpper()} med namn << {accountName} >> och valuta {accountCurrency} ");
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace RebelAllianceBank.Users
                 Console.WriteLine("Skriv namnet på det konto du vill föra över från, skriv 'avsluta' för att återgå till menyn");
                 foreach (var account in _bankAccounts)
                 {
-                    Console.WriteLine($"{account.AccountName} (Saldo: {account.Balance:N2})");
+                    Console.WriteLine($"{account.AccountName} (Saldo: {account.Balance:N2} {account.AccountCurrency})");
                 }
                 string currentUserAccountName = Console.ReadLine();
                 currentUserAccount = _bankAccounts.FirstOrDefault(account => account.AccountName.Equals(currentUserAccountName, StringComparison.OrdinalIgnoreCase));
@@ -326,8 +326,11 @@ namespace RebelAllianceBank.Users
             //accountTo.Balance += moneyToWithdraw * Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency,
             //    accountTo.AccountCurrency);
             //Console.Clear();
-            Markdown.Header(HeaderLevel.Header2, "Summering av resultatet efter nästa transactionskörning");
-            Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
+            Console.WriteLine($"Följande överföring kommer uföras vid nästa körning: \n" +
+                              $"{moneyToWithdraw:N2} {accountFrom.AccountCurrency} kommer över föras från " +
+                              $"{accountFrom.AccountName} till {accountTo.AccountName}.");
+            // Markdown.Header(HeaderLevel.Header2, "Summering av resultatet efter nästa transactionskörning");
+            // Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
         }
         public void Deposit()
         {
@@ -518,10 +521,10 @@ namespace RebelAllianceBank.Users
                         newLoan.LoanedAmount = askedLoan;
                         _customerLoan.Add(newLoan); // add the loan amount to the loanlist.
 
-                        decimal askedLoanCurrencyOfAccountTo = askedLoan *
+                        decimal askedLoanCurrencyAccountTo = askedLoan *
                                                                Bank.exchangeRate.CalculateExchangeRate("SEK",
                                                                    chosenAccount.AccountCurrency);
-                        var newTransaction = new Transaction(askedLoanCurrencyOfAccountTo, chosenAccount);
+                        var newTransaction = new Transaction(askedLoanCurrencyAccountTo, chosenAccount);
                         Bank.transactionQueue.Enqueue(newTransaction);
                         
                         //chosenAccount.Balance += askedLoan; // add the loanamount to the account.
