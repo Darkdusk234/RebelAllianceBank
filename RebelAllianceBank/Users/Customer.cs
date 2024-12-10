@@ -251,14 +251,13 @@ namespace RebelAllianceBank.Users
             {
                 var newTransaction = new Transaction(amount, currentUserAccount, otherAccount);
                 Bank.transactionQueue.Enqueue(newTransaction);
-               // currentUserAccount.Balance -= amount;
-                //otherAccount.Balance += amount * Bank.exchangeRate.CalculateExchangeRate(currentUserAccount.AccountCurrency, otherAccount.AccountCurrency);
-                Console.WriteLine($"Följande överföring kommer uföras vid nästa körning: \n" +
+                Console.Clear();
+                Console.WriteLine($"Följande överföring kommer uföras vid nästa körning: \n\n" +
                                   $"{amount:N2} {currentUserAccount.AccountCurrency} kommer över föras från " +
-                                  $"{currentUserAccount.AccountName} till {otherAccount.AccountName}.");
-                // Console.WriteLine($"Nytt saldo för {currentUserAccount.AccountName}: {currentUserAccount.Balance:N2} {currentUserAccount.AccountCurrency}");
-                // Console.WriteLine($"Nytt saldo för {otherAccount.AccountName}: {otherAccount.Balance:N2} {otherAccount.AccountCurrency}");
-                Console.ReadKey();
+                                  $"{currentUserAccount.AccountName.ToUpper()} till kund {otherAccount.UserId}.");
+                
+                Console.WriteLine("\nTryck enter för att återgå till menyn.");
+                while (Console.ReadKey(true).Key != ConsoleKey.Enter) { } 
             }
         }
 
@@ -322,15 +321,13 @@ namespace RebelAllianceBank.Users
             }
             var newTransaction = new Transaction(moneyToWithdraw, accountFrom, accountTo);
             Bank.transactionQueue.Enqueue(newTransaction);
-            //accountFrom.Balance -= moneyToWithdraw;
-            //accountTo.Balance += moneyToWithdraw * Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency,
-            //    accountTo.AccountCurrency);
-            //Console.Clear();
-            Console.WriteLine($"Följande överföring kommer uföras vid nästa körning: \n" +
+            
+            Console.Clear();
+            Console.WriteLine($"Följande överföring kommer uföras vid nästa körning:\n\n" +
                               $"{moneyToWithdraw:N2} {accountFrom.AccountCurrency} kommer över föras från " +
-                              $"{accountFrom.AccountName} till {accountTo.AccountName}.");
-            // Markdown.Header(HeaderLevel.Header2, "Summering av resultatet efter nästa transactionskörning");
-            // Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
+                              $"{accountFrom.AccountName.ToUpper()} till {accountTo.AccountName.ToUpper()}.");
+            Console.WriteLine("\nTryck enter för att återgå till menyn.");
+            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { } 
         }
         public void Deposit()
         {
@@ -406,14 +403,12 @@ namespace RebelAllianceBank.Users
             var newTransaction = new Transaction(moneyToDepositinAccountCurrency, accountTo);
             Bank.transactionQueue.Enqueue(newTransaction);
             Console.Clear();
-            Console.WriteLine($"Fölande instättning är loggad och kommer utföras vid nästa körning: \n" +
+            Console.WriteLine($"Fölande instättning är loggad och kommer utföras vid nästa körning:\n\n" +
                               $"{moneyToDeposit:N2} {defaultcurrency} " +
-                              $"({moneyToDepositinAccountCurrency:N2} {accountTo.AccountCurrency})\n" +
-                              $"kommer sättas in på {accountTo}");
-            //Markdown.Header(HeaderLevel.Header2, "Summering");
-            //Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
-            //Console.WriteLine("\nTryck enter för att fortsätta");
-            //while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
+                              $"({moneyToDepositinAccountCurrency:N2} {accountTo.AccountCurrency})" +
+                              $"kommer sättas in på {accountTo.AccountName.ToUpper()}");
+            Console.WriteLine("\nTryck enter för att återgå till menyn.");
+            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { } 
         }
 
         private static List<string> PopulateAccountDetails(List<IBankAccount> updatedAccounts)

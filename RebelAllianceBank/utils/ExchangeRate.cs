@@ -256,6 +256,7 @@ public class ExchangeRate
     {
         while (true)
         {
+            Console.Clear();
             Markdown.Header(Enums.HeaderLevel.Header2, "\tBESTÄM VALUTA\n");
             Markdown.Paragraph("Önskar du annan valuta än SEK på ditt konto? ja/nej");
             string answer = Console.ReadLine();
