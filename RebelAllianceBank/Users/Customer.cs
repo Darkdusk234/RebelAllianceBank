@@ -251,11 +251,15 @@ namespace RebelAllianceBank.Users
             //CheckMethodForCurrency(currentUserAccount, otherAccount);
             if (amount > 0)
             {
-                currentUserAccount.Balance -= amount;
-                otherAccount.Balance += amount * Bank.exchangeRate.CalculateExchangeRate(currentUserAccount.AccountCurrency, otherAccount.AccountCurrency);
-                Console.WriteLine($"Överföring lyckades! {amount:N2} överfördes från {currentUserAccount.AccountName} till {otherAccount.AccountName}.");
-                Console.WriteLine($"Nytt saldo för {currentUserAccount.AccountName}: {currentUserAccount.Balance:N2} {currentUserAccount.AccountCurrency}");
-                Console.WriteLine($"Nytt saldo för {otherAccount.AccountName}: {otherAccount.Balance:N2} {otherAccount.AccountCurrency}");
+                var newTransaction = new Transaction(amount, currentUserAccount, otherAccount);
+                Bank.transactionQueue.Enqueue(newTransaction);
+               // currentUserAccount.Balance -= amount;
+                //otherAccount.Balance += amount * Bank.exchangeRate.CalculateExchangeRate(currentUserAccount.AccountCurrency, otherAccount.AccountCurrency);
+                Console.WriteLine($"Följande överföring kommer uföras vid nästa körning: \n" +
+                                  $"{amount:N2} {currentUserAccount.AccountCurrency} kommer över föras från " +
+                                  $"{currentUserAccount.AccountName} till {otherAccount.AccountName}.");
+                // Console.WriteLine($"Nytt saldo för {currentUserAccount.AccountName}: {currentUserAccount.Balance:N2} {currentUserAccount.AccountCurrency}");
+                // Console.WriteLine($"Nytt saldo för {otherAccount.AccountName}: {otherAccount.Balance:N2} {otherAccount.AccountCurrency}");
                 Console.ReadKey();
             }
         }
@@ -324,7 +328,7 @@ namespace RebelAllianceBank.Users
             //accountTo.Balance += moneyToWithdraw * Bank.exchangeRate.CalculateExchangeRate(accountFrom.AccountCurrency,
             //    accountTo.AccountCurrency);
             //Console.Clear();
-            Markdown.Header(HeaderLevel.Header2, "Summering");
+            Markdown.Header(HeaderLevel.Header2, "Summering av resultatet efter nästa transactionskörning");
             Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
         }
         public void Deposit()
@@ -359,17 +363,17 @@ namespace RebelAllianceBank.Users
             Console.Clear();
 
             // Header
+            decimal moneyToDeposit = 0; 
+            string defaultcurrency = "SEK";
             decimal moneyToDepositinAccountCurrency = 0; 
             bool runLoopSetAmount = true;
             while (runLoopSetAmount)
             {
-                string defaultcurrency = "SEK";
                 Markdown.Header(HeaderLevel.Header2, $"Hur mycket i {defaultcurrency} vill du sätta in på " +
                                                      $"{accountTo.AccountName}?\n");
                 Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
                 Console.Write("\nBelopp: ");
-
-                decimal moneyToDeposit;
+                
                 while (!decimal.TryParse(Console.ReadLine(), out moneyToDeposit) || moneyToDeposit < 0)
                 {
                     Markdown.Paragraph($"Välj ett nytt belopp som är större än 0");
@@ -400,7 +404,11 @@ namespace RebelAllianceBank.Users
             //accountTo.Balance += moneyToDepositinAccountCurrency;
             var newTransaction = new Transaction(moneyToDepositinAccountCurrency, accountTo);
             Bank.transactionQueue.Enqueue(newTransaction);
-            //Console.Clear();
+            Console.Clear();
+            Console.WriteLine($"Fölande instättning är loggad och kommer utföras vid nästa körning: \n" +
+                              $"{moneyToDeposit:N2} {defaultcurrency} " +
+                              $"({moneyToDepositinAccountCurrency:N2} {accountTo.AccountCurrency})\n" +
+                              $"kommer sättas in på {accountTo}");
             //Markdown.Header(HeaderLevel.Header2, "Summering");
             //Markdown.Table(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(updatedAccounts));
             //Console.WriteLine("\nTryck enter för att fortsätta");
