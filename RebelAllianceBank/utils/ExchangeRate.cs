@@ -79,6 +79,10 @@ public class ExchangeRate
         _exchangeRates.Add("THB", thb);
         var zar = new Currency("rand", "Sydafrika");
         _exchangeRates.Add("ZAR", zar);
+        var eur = new Currency("euro", "Euroland");
+        _exchangeRates.Add("EUR", eur);
+
+        eur.ExchangeRateToEUR = 1;
         
         AddDefaultExchangeRates();
     }
@@ -90,11 +94,11 @@ public class ExchangeRate
         //default data from ECB on nov 25th 2024. 
         string currenciesStringDefault = "Date, USD, JPY, BGN, CZK, DKK, GBP, HUF, PLN, RON, SEK, CHF, ISK, NOK, " +
                                          "TRY, AUD, BRL, CAD, CNY, HKD, IDR, ILS, INR, KRW, MXN, MYR, NZD, PHP, SGD, " +
-                                         "THB, ZAR";
+                                         "THB, ZAR, EUR";
         string exchangeRateStringDefault = "25 November 2024, 1.0495, 161.64, 1.9558, 25.295, 7.4586, 0.83465, 409.78, " +
                                            "4.3185, 4.9767, 11.5030, 0.9324, 145.30, 11.5865, 36.3020, 1.6111, 6.0941, " +
                                            "1.4648, 7.6018, 8.1659, 16651.89, 3.8493, 88.4595, 1469.87, 21.3301, 4.6724, " +
-                                           "1.7926, 61.936, 1.4128, 36.271, 18.9592, ";
+                                           "1.7926, 61.936, 1.4128, 36.271, 18.9592, 1";
         
         SplitStrings(currenciesStringDefault, exchangeRateStringDefault);
 
@@ -166,8 +170,8 @@ public class ExchangeRate
         //Since the currency data contains "Date", while exchange rate containse e.g."25 november 2024",the legnth of 
         //the exchangerates array needs to be decreased with 2 to match currencies. 
         if (_currenciesToUpdate.Length != _exchangeRatesToUpdate.Length - 2 || 
-            _currenciesToUpdate.Length -1 != Bank.exchangeRate._exchangeRates.Count ||
-            _exchangeRatesToUpdate.Length - 3 != Bank.exchangeRate._exchangeRates.Count )
+            _currenciesToUpdate.Length != Bank.exchangeRate._exchangeRates.Count ||
+            _exchangeRatesToUpdate.Length - 2 != Bank.exchangeRate._exchangeRates.Count )
         {
             return EnumsExchangeRate.incorrect;
         }
@@ -252,6 +256,7 @@ public class ExchangeRate
     {
         while (true)
         {
+            Console.Clear();
             Markdown.Header(Enums.HeaderLevel.Header2, "\tBESTÄM VALUTA\n");
             Markdown.Paragraph("Önskar du annan valuta än SEK på ditt konto? ja/nej");
             string answer = Console.ReadLine();
@@ -267,6 +272,7 @@ public class ExchangeRate
 
                         while (!getanswer)
                         {
+                            Console.Clear();
                             Markdown.Paragraph(
                                 $"Du har angett att du vill ha valuta {currency} på ditt konto.\n\nStämmer det? ja/nej: " );
                             string answer2 = Console.ReadLine().ToLower();
@@ -327,6 +333,7 @@ public class ExchangeRate
                     //a loop that runs until the currency is in the coorrect format, or the user wish to abort. 
                     while ((currency.Length != 3 || _exchangeRates.ContainsKey(currency) == false) && currency != "AVBRYT")
                     {
+                        Console.Clear();
                         Markdown.Header(Enums.HeaderLevel.Header2,"Ange den valuta du önskar (tre bokstäver). Skriv AVBRYT för att återgå till " +
                                           "föregående meny");
                         if (currency == "AVBRYT")
@@ -341,7 +348,7 @@ public class ExchangeRate
                     }
                     break; 
                 case "3":
-                    return "quit";
+                    return "AVBRYT";
                 default:
                     Markdown.Paragraph("\nOgiltig input! Tryck enter för att fortsätta");
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
@@ -350,15 +357,17 @@ public class ExchangeRate
         }
     }
     /// <summary>
-    /// A metod that calculates the ExchangeRates that will be used when transfering mony betyween accounts. 
+    /// A metod that calculates the ExchangeRates that will be used when transfering mony betyween accounts.
+    /// Calc example: 1 SEK = 11,5030 EUR.    =>   1 EUR = 1/11,5030 SEK, 1 USD = 1,0495.   => 1 EUR = 1/1,0495 USD.
+    /// 1/1,0495 USD = 1/11,5030 SEK   =>   1 SEK = 1,0495 / 11,5030 (i.e. 1 SEK = exchangeRateUSD / exchangeRateSEK) 
     /// </summary>
     /// <param name="CurrencyFrom"></param>
     /// <param name="CurrencyTo"></param>
     /// <returns></returns>
-    public decimal CalculateExchangeRate(string CurrencyFrom, string CurrencyTo)
+    public decimal CalculateExchangeRate(string CurrencyAccountFrom, string CurrencyAccountTo)
     {
-        decimal calcExchangeRate = _exchangeRates[CurrencyTo].ExchangeRateToEUR /
-                                   _exchangeRates[CurrencyFrom].ExchangeRateToEUR;
+        decimal calcExchangeRate = _exchangeRates[CurrencyAccountTo].ExchangeRateToEUR /
+                                   _exchangeRates[CurrencyAccountFrom].ExchangeRateToEUR;
         
         return calcExchangeRate; 
     }

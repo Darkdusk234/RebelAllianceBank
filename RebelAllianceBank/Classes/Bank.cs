@@ -145,6 +145,30 @@ namespace RebelAllianceBank.Classes
                 }
             }
         }
+        public static void RunTransactionsInQueue()
+        {
+            while (transactionQueue.Count > 0)
+            {
+                var nextInQueue = transactionQueue.Dequeue();
+                nextInQueue.Timestamp = DateTime.Now;
+
+                if (nextInQueue.AccountFrom == null)
+                {
+                    nextInQueue.AccountTo.Balance += nextInQueue.Amount;
+                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
+                }
+                else
+                {
+                    nextInQueue.AccountFrom.Balance -= nextInQueue.Amount;
+                    nextInQueue.AccountTo.Balance += nextInQueue.Amount * exchangeRate.CalculateExchangeRate(
+                        nextInQueue.AccountFrom.AccountCurrency,
+                        nextInQueue.AccountTo.AccountCurrency
+                    );
+                    nextInQueue.AccountFrom.AddToTransactionLog(nextInQueue);
+                    nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
+                }
+            }
+        }
         public void Logo()
         {
             string[] ascii1 = {
