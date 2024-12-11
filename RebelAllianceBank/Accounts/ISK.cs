@@ -34,35 +34,62 @@ namespace RebelAllianceBank.Accounts
         public void ShowTransactionLog()
         {
             _transactionsLog.Reverse();
-            Console.WriteLine($"Nuvarande saldo på konto: {this.Balance}");
-            Console.WriteLine("---------------------------------------------------");
+            
+            Console.WriteLine("-------------------------------------------------------------------------------------");
+            Console.WriteLine($"Nuvarande saldo på konto: {this.Balance:N2} {AccountCurrency}");
+            Console.WriteLine("-------------------------------------------------------------------------------------");
+            
+            const string format = "{0,-30} {1,-40} {2, -30}";
+            
             foreach (var transaction in _transactionsLog)
             {
-                if (transaction.AccountFrom?.AccountName == this.AccountName)
+               
+                //Valid for transaktions between the users own accounts
+                if (transaction.AccountFrom != null && transaction.AccountFrom.AccountName == this.AccountName && 
+                    transaction.AccountTo.UserId == this.UserId)
                 {
-                    Console.WriteLine(
-                        $"{transaction.AccountTo.AccountName}          -{transaction.Amount} {this.AccountCurrency}\n" +
-                        $"{transaction.Timestamp}");
+                    Console.WriteLine(format, $"{transaction.Timestamp}", $"Till konto {transaction.AccountTo.AccountName.ToUpper()}",
+                        $"-{transaction.Amount:N2} {this.AccountCurrency}");
                 }
-                else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom != null)
+                //for transaktions from this account to another customer
+                else if (transaction.AccountFrom != null && transaction.AccountFrom.AccountName == this.AccountName &&
+                         transaction.AccountTo.UserId != this.UserId)
                 {
-                    Console.WriteLine(
-                        $"Insättning från {transaction.AccountFrom.AccountName}          {transaction.Amount} {this.AccountCurrency}\n" +
-                        $"{transaction.Timestamp}");
+                    Console.WriteLine(format, $"{transaction.Timestamp}",
+                        $"Till kund {transaction.AccountTo.UserId}", $"-{transaction.Amount:N2} {this.AccountCurrency}");
                 }
+                //A deposit from loan or deposit-method
                 else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom == null)
                 {
-                    Console.WriteLine(
-                        $"Direkt insättning          {transaction.Amount} {this.AccountCurrency}\n" +
-                        $"{transaction.Timestamp}");
+                    Console.WriteLine(format, $"{transaction.Timestamp}", $"Insättning",
+                        $"{transaction.Amount:N2} {this.AccountCurrency}");
                 }
-                else
+                //A transfer from another account of the same user
+                else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom != null && 
+                         transaction.AccountFrom.UserId == UserId)
                 {
-                    Console.WriteLine(
-                        $"{transaction.AccountFrom?.AccountName ?? "Okänt konto"}          {transaction.Amount} {this.AccountCurrency}\n" +
-                        $"{transaction.Timestamp}");
+                    //change the amount to the correct currenct for receiving account
+                    decimal amountToInCorrectCurrency = transaction.Amount *
+                                                        Bank.exchangeRate.CalculateExchangeRate(
+                                                            transaction.AccountFrom.AccountCurrency,
+                                                            transaction.AccountTo.AccountCurrency);
+                    
+                    Console.WriteLine(format, $"{transaction.Timestamp}", $"Från konto {transaction.AccountFrom.AccountName.ToUpper()}",
+                        $"{amountToInCorrectCurrency:N2} {this.AccountCurrency}");
                 }
-                Console.WriteLine("---------------------------------------------------");
+                //A transfer from another user
+                else if (transaction.AccountTo.AccountName == this.AccountName && transaction.AccountFrom != null && 
+                         transaction.AccountFrom.UserId != UserId)
+                {
+                    //change the amount to the correct currenct for receiving account
+                    decimal amountToInCorrectCurrency = transaction.Amount *
+                                                        Bank.exchangeRate.CalculateExchangeRate(
+                                                            transaction.AccountFrom.AccountCurrency,
+                                                            transaction.AccountTo.AccountCurrency);
+                    Console.WriteLine(format, $"{transaction.Timestamp}", $"Från kund {transaction.AccountFrom.UserId}",
+                        $"{amountToInCorrectCurrency:N2} {this.AccountCurrency}");
+                }
+                Console.WriteLine("-------------------------------------------------------------------------------------");
             }
             _transactionsLog.Reverse();
         }

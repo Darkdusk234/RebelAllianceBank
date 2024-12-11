@@ -92,7 +92,7 @@ namespace RebelAllianceBank.Menu
                         Console.Clear();
                         _currentCustomer.ShowBankAccounts();
                         Console.WriteLine("\nTryck enter för att återgå till menyn.");
-                        while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+                        while (Console.ReadKey(true).Key != ConsoleKey.Enter) { } 
                         break;
                     case 1:
                         Console.Clear();
