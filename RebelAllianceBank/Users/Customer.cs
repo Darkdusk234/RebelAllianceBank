@@ -318,7 +318,7 @@ namespace RebelAllianceBank.Users
             decimal moneyToWithdraw;
             while (!decimal.TryParse(Console.ReadLine(), out moneyToWithdraw) || moneyToWithdraw > accountFrom.Balance || moneyToWithdraw < 0)
             {
-                Markdown.Paragraph($"Välj ett mindre belopp än {accountFrom.Balance}{accountFrom.AccountCurrency}");
+                Markdown.Paragraph($"Välj ett mindre belopp än {accountFrom.Balance:N2} {accountFrom.AccountCurrency}");
             }
             var newTransaction = new Transaction(moneyToWithdraw, accountFrom, accountTo);
             Bank.transactionQueue.Enqueue(newTransaction);
