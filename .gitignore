@@ -362,6 +362,12 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+# Docker Continer 
+/.devcontainer
+
+#Vs code
+.vscode
+
 # Rider
 bin/
 obj/
@@ -397,3 +403,5 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+.idea
+
