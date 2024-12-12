@@ -1,5 +1,8 @@
-namespace RebelAllianceBank.Classes
+namespace RebelAllianceBank.Other
 {
+       /// <summary>
+       /// Instances of this class is used to store data related to the specific currencies. 
+       /// </summary>
        public class Currency
        {
               //The data that will ube used to update the exchangerates come from European Central Bank. Therefore, 

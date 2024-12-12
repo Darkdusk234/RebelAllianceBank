@@ -1,12 +1,8 @@
-using System.Collections.Concurrent;
-using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Cryptography;
-using System.Threading.Channels;
-using RebelAllianceBank.Classes;
-using RebelAllianceBank.utils;
-
+using RebelAllianceBank.Other;
 namespace RebelAllianceBank.utils;
+/// <summary>
+/// A class that handles everything related to the echange-rates stored int all the crrency-objects. 
+/// </summary>
 public class ExchangeRate
 {
     //A dictionary to gather all currency options. Key is the abbreviation of the currency and value are instances of
@@ -16,7 +12,9 @@ public class ExchangeRate
     //These lists will be used when updating the exchange rates of the currencis (and when setting defautl values)
     private string[] _currenciesToUpdate; 
     private string[] _exchangeRatesToUpdate;
-        
+    /// <summary>
+    /// A constructor that creates all currency instances needed and adds it to the _exchangeRates-doctionary
+    /// </summary>
     public ExchangeRate()
     {
         var usd = new Currency("dollar", "USA");
@@ -81,8 +79,6 @@ public class ExchangeRate
         _exchangeRates.Add("ZAR", zar);
         var eur = new Currency("euro", "Euroland");
         _exchangeRates.Add("EUR", eur);
-
-        eur.ExchangeRateToEUR = 1;
         
         AddDefaultExchangeRates();
     }
@@ -124,7 +120,7 @@ public class ExchangeRate
         }
     }
     /// <summary>
-    /// In this method, the usesr will paste currencies and exchangerates from ECB data according to instructions.
+    /// In this method, the user will paste currencies and exchangerates from ECB data according to instructions.
     /// Strings will be made into arrays with SplitStrings(). If the correlated lengths of the arrays are correct,
     /// the method will return "correct".
     /// </summary>
@@ -222,30 +218,6 @@ public class ExchangeRate
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     break;
             }
-        }
-    }
-    /// <summary>
-    /// A method for printing all rates int the exchange dictionary. 
-    /// </summary>
-    public void PrintAllRates()
-    {
-        Markdown.Header(Enums.HeaderLevel.Header2, "\tVÄXELKURS:");
-        foreach (var currency in _exchangeRates)
-        {
-            Console.WriteLine(currency.Key + "   " + currency.Value.ExchangeRateToEUR);
-        }
-        Console.WriteLine($"\nSenast uppdaterad den {_exchangeRatesToUpdate[0]} {_exchangeRatesToUpdate[1]} " +
-                          $"{_exchangeRatesToUpdate[2]}");
-    }
-    /// <summary>
-    /// A method for printing all currencies to the console, inkluding name and country. 
-    /// </summary>
-    public void PrintAllCurrencies()
-    {
-        Markdown.Header(Enums.HeaderLevel.Header2, "\tVALUTOR:");
-        foreach (var currency in _exchangeRates)
-        {
-            Console.WriteLine($"{currency.Key}   {currency.Value.Name}, {currency.Value.Country}");
         }
     }
     /// <summary>
@@ -354,6 +326,30 @@ public class ExchangeRate
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter) { };
                     break; 
             }
+        }
+    }
+    /// <summary>
+    /// A method for printing all rates int the exchange dictionary. 
+    /// </summary>
+    public void PrintAllRates()
+    {
+        Markdown.Header(Enums.HeaderLevel.Header2, "\tVÄXELKURS:");
+        foreach (var currency in _exchangeRates)
+        {
+            Console.WriteLine(currency.Key + "   " + currency.Value.ExchangeRateToEUR);
+        }
+        Console.WriteLine($"\nSenast uppdaterad den {_exchangeRatesToUpdate[0]} {_exchangeRatesToUpdate[1]} " +
+                          $"{_exchangeRatesToUpdate[2]}");
+    }
+    /// <summary>
+    /// A method for printing all currencies to the console, inkluding name and country. 
+    /// </summary>
+    public void PrintAllCurrencies()
+    {
+        Markdown.Header(Enums.HeaderLevel.Header2, "\tVALUTOR:");
+        foreach (var currency in _exchangeRates)
+        {
+            Console.WriteLine($"{currency.Key}   {currency.Value.Name}, {currency.Value.Country}");
         }
     }
     /// <summary>
