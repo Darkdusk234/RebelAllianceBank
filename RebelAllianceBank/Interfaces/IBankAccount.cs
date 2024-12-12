@@ -1,4 +1,6 @@
-﻿namespace RebelAllianceBank.Interfaces
+﻿using RebelAllianceBank.Other;
+
+namespace RebelAllianceBank.Interfaces
 {
     public interface IBankAccount
     {

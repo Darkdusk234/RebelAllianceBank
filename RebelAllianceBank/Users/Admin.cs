@@ -1,7 +1,7 @@
 ﻿using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.utils;
 using System.Globalization;
-using RebelAllianceBank.Classes;
+using RebelAllianceBank.Other;
 
 namespace RebelAllianceBank.Users;
 

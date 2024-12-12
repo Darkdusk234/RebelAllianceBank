@@ -1,5 +1,5 @@
-﻿using RebelAllianceBank.Classes;
-using RebelAllianceBank.Interfaces;
+﻿using RebelAllianceBank.Interfaces;
+using RebelAllianceBank.Other;
 
 namespace RebelAllianceBank.Accounts
 {
@@ -13,9 +13,11 @@ namespace RebelAllianceBank.Accounts
         public decimal Balance { get; set; } = 0;
         public string AccountCurrency { get; set; }
         public decimal IntrestRate { get; set; } = 0.2m;
-
+        
+        //An empty constructor needed for Filehandler.cs
         public CardAccount()
         {
+            //The accounts where lacking an indivual nr. This was a super basic way to add one that was needed in the log
             ID = Bank.accountNumberCounter; 
             Bank.accountNumberCounter ++; 
         }
@@ -27,18 +29,27 @@ namespace RebelAllianceBank.Accounts
             ID = Bank.accountNumberCounter;
             Bank.accountNumberCounter++;
         }
-
+        
+        /// <summary>
+        /// A method for accessing the _transaction log list and add a new transaction to it, 
+        /// </summary>
+        /// <param name="newTransaction"></param>
         public void AddToTransactionLog(Transaction newTransaction)
         {
             _transactionsLog.Add(newTransaction);
         }
-
+        /// <summary>
+        /// A method for printing out the transaction log of each account. 
+        /// </summary>
         public void ShowTransactionLog()
         {
+            //start by reversing the looged transactions so that the latest one is at the top
              _transactionsLog.Reverse();
             Console.WriteLine("-------------------------------------------------------------------------------------");
             Console.WriteLine($"Nuvarande saldo på konto: {this.Balance:N2} {AccountCurrency}");
             Console.WriteLine("-------------------------------------------------------------------------------------");
+            
+            //A format varialbe for the Console.WriteLine that alignes text in colums
             const string format = "{0,-30} {1,-40} {2, -30}";
             
             foreach (var transaction in _transactionsLog)
@@ -91,6 +102,7 @@ namespace RebelAllianceBank.Accounts
                 }
                 Console.WriteLine("-------------------------------------------------------------------------------------");
             }
+            //reverse the log back again. 
             _transactionsLog.Reverse();
         }
 
