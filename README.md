@@ -116,6 +116,9 @@ Have generic methods with delegated functions to handle the Columns and table da
 #### Filehandler.cs
 This class handles reading and writing user, bankaccount, and loan data from text files. It includes methods to load users with their associated accounts and loans, and save updates back to the files.
 
+#### DataFiles
+Is a mapp containing the .txt files for users, accounts and loan that the FileHandler.cs uses to read and write users from.
+
 #### TaskManager.cs
 Provides asynchronous task management, including a timer-based execution. A recurring task like processing queued transactions at specified intervals. It supports starting and stopping tasks, utilizing cancellation tokens to handle that.
 
