@@ -12,7 +12,6 @@ public class ExchangeRate
     //These lists will be used when updating the exchange rates of the currencis (and when setting defautl values)
     private string[] _currenciesToUpdate; 
     private string[] _exchangeRatesToUpdate;
-    
     /// <summary>
     /// A constructor that creates all currency instances needed and adds it to the _exchangeRates-doctionary
     /// </summary>
