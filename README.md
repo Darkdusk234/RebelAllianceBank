@@ -4,13 +4,9 @@ This internet bank assignement is a group project assignement in the course 'Obj
 
 ## Innehållsförteckning
 
-1. [Overall Description](#descripton)
-2. [Installation](#installation)
-3. [Användning](#användning)
-4. [Funktioner](#funktioner)
-5. [Bidra](#bidra)
-6. [Licens](#licens)
-7. [Kontakt](#kontakt)
+1. [Overall Description](#overall-description)
+2. [Code Structure](#code-structure)
+3. [UML](#uml)
 
 ---
 
@@ -18,12 +14,12 @@ This internet bank assignement is a group project assignement in the course 'Obj
 
 The assignment was to develop a internet bank app, according to a initial backlog. 
 
+Core functionality in the backlog stories: 
+- Create accounts
+- Transfer money between accounns
+- Tako loans
+- Financial Management
 
-Ge en mer detaljerad beskrivning av projektet, dess syfte, och varför det är användbart.  
-Exempel:
-- **Teknologier:** Lista de viktigaste teknologierna som används.
-- **Status:** Pågående, färdigt, eller i planeringsfas.
-  
 ---
 
 ## Code structure
@@ -96,7 +92,7 @@ Instances of this class is used to store data related to the specific currencies
 #### Transaction.cs
 A class for storing relavant data for doing transactions. 
 
-### Utils
+### Utils.cs
 
 #### Exchange.cs
 A class that handles everything related to the echange-rates stored int all the currency-objects. The central field is the _exchangeRates dictionary that gather all currency options. Key is the abbreviation of the currency and value are instances of the currency class. 
@@ -109,30 +105,40 @@ The main methods contained in this class are for…
 - Calculating the exchange rates from one rate to another. 
 and methods that are called from the UpdateCurrency() method int the Admin-class.
 
+#### InlaneColor.cs
+Used when you want to change the color of a certain word in, for example, a `Console.WriteLine();`. This is done by converting the [ANSI escape sequence](https://en.wikipedia.org/wiki/ANSI_escape_code) into a more readable property. 
 
-```c#
-Console.WriteLine("Hej!");
-```
+#### Markdown.cs
+Used to print [markdown code](https://www.markdownguide.org) in the console. The class comes with a table, heading and a paragraph method that will print the chorus markdown code. 
+
+#### MarkdownUtils.cs
+Have generic methods with delegated functions to handle the Columns and table data to send to markdown class. Implements arrows to navigate through menus
+
+#### Filehandler.cs
+This class handles reading and writing user, bankaccount, and loan data from text files. It includes methods to load users with their associated accounts and loans, and save updates back to the files.
+
+#### TaskManager.cs
+Provides asynchronous task management, including a timer-based execution. A recurring task like processing queued transactions at specified intervals. It supports starting and stopping tasks, utilizing cancellation tokens to handle that.
+
+#### SelectOneOrMore.cs
+To be able to use this class, you first create an instance of it and fill the class with the column headings you want and a list of values that go into all rows under the column headings. To then be able to use it, you call the Show method.
 
 ### Enums
 
-  
+#### EnumsExchangeRate
+Store a set number of values to be returned from a method (quit, correct, incorrecy).
+
+#### HeaderLevels
+Used to describe the levels of headings that exist. For example, the markdown header method uses it to remove unnecessary user errors when you want to use the header method.
+
 ---
+
 ## UML
 
-link to UML???
+A html file of the UML diagram can be found [here](). It needs to be downloaded before you open it. 
 
-## Function
-Details about core functionality of the application
-- Create accounts
-- Transfer money between accounns
-- Tako loans
-- Financial Management
 ---
-## Installation      
 
-Ta bort?????
-
-# Klona repositoriet
+# Clone repository
 ```bash
 git clone https://github.com/Darkdusk234/RebelAllianceBank.git
