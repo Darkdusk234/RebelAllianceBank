@@ -247,7 +247,6 @@ namespace RebelAllianceBank.Users
             }
 
             // Some method to check currency, implement when currency method is viable
-            //CheckMethodForCurrency(currentUserAccount, otherAccount);
             if (amount > 0)
             {
                 var newTransaction = new Transaction(amount, currentUserAccount, otherAccount);
@@ -400,7 +399,6 @@ namespace RebelAllianceBank.Users
                     runLoopSetAmount = false;
                 }
             }
-            //accountTo.Balance += moneyToDepositinAccountCurrency;
             var newTransaction = new Transaction(moneyToDepositinAccountCurrency, accountTo);
             Bank.transactionQueue.Enqueue(newTransaction);
             Console.Clear();
@@ -443,7 +441,7 @@ namespace RebelAllianceBank.Users
         {
             bool loanComplete = false;
 
-            decimal availableToLoan = MaxAccountBalance(); // Maxtak
+            decimal availableToLoan = MaxAccountBalance(); // Checks how much loan is accepteble.
             decimal newLoanTaken = availableToLoan;
 
             int choosenAccountIndex;
@@ -485,7 +483,6 @@ namespace RebelAllianceBank.Users
 
                     Console.WriteLine("\nVälj vilket konto du vill sätta in pengarna på:\n");
 
-                    //int choosenAccountIndex = MarkdownUtils.HighLightChoiceWithMarkdown(false, ["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts), option => [option]);
                     choosenAccountIndex = new SelectOneOrMore(["id", "Konto Namn", "Saldo", "Valuta"], PopulateAccountDetails(_bankAccounts)).Show()[0];
 
                     var chosenAccount = _bankAccounts[choosenAccountIndex];
@@ -515,7 +512,7 @@ namespace RebelAllianceBank.Users
                     {
                         Console.Clear();
                         newLoan.LoanedAmount = askedLoan;
-                        _customerLoan.Add(newLoan); // add the loan amount to the loanlist.
+                        _customerLoan.Add(newLoan); // Add the loan amount to the loanlist.
 
                         decimal askedLoanCurrencyAccountTo = askedLoan *
                                                                Bank.exchangeRate.CalculateExchangeRate("SEK",
@@ -523,7 +520,6 @@ namespace RebelAllianceBank.Users
                         var newTransaction = new Transaction(askedLoanCurrencyAccountTo, chosenAccount);
                         Bank.transactionQueue.Enqueue(newTransaction);
                         
-                        //chosenAccount.Balance += askedLoan; // add the loanamount to the account.
                         newLoanTaken -= askedLoan; // Removes the loanamount from the allowed loan ammount.
 
                         Console.WriteLine($"{askedLoan} {chosenAccount.AccountCurrency}" +
@@ -537,7 +533,7 @@ namespace RebelAllianceBank.Users
                 }
             }
         }
-        // sammanlagda konto balansen
+        // Total account balance
         public decimal MaxAccountBalance()
         {
             decimal maxAccountBalance = 0;
@@ -549,7 +545,7 @@ namespace RebelAllianceBank.Users
             decimal test = balance * 5;
             return Math.Abs(MaxCurrentLoan() - test);
         }
-        // Sammanlagda lånet
+        // Checks total amount of loans.
         public decimal MaxCurrentLoan()
         {
             decimal maxCurrentLoans = 0;
@@ -563,7 +559,6 @@ namespace RebelAllianceBank.Users
         public bool ContinueLoan()
         {
             // Checks if customer want to quit the current method or ask for a new loan.
-
             while (true)
             {
                 Console.WriteLine("\nVill du ansöka om nytt lån? Ja/Nej");
@@ -592,7 +587,6 @@ namespace RebelAllianceBank.Users
 
         public bool AcceptLoanTerms()
         {
-
             while (true)
             {
                 // Checks if user want to accept the loan with the terms (YES/NO).
