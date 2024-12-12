@@ -9,9 +9,9 @@ namespace RebelAllianceBank.utils
     public class FileHandler
     {
         // Stores the filepath used for users, accounts and loans.
-        private readonly string _usersFilePath = "users.txt";
-        private readonly string _accountsFilePath = "accounts.txt";
-        private readonly string _loansFilePath = "loans.txt";
+        private readonly string _usersFilePath = Path.Combine("..","..", "..", "DataFiles", "users.txt");
+        private readonly string _accountsFilePath = Path.Combine("..", "..", "..", "DataFiles", "accounts.txt");
+        private readonly string _loansFilePath = Path.Combine("..", "..", "..", "DataFiles", "loans.txt");
         /// <summary>
         /// Reads a list of users from the file. And store accounts and loans related to an user
         /// </summary>
@@ -36,10 +36,10 @@ namespace RebelAllianceBank.utils
         /// </summary>
         /// <typeparam name="T">The type of objects to be created from the file data.</typeparam>
         /// <param name="filePath">The path to the file that contains the data to be read.</param>
-        /// <param name="aMethod">A delegate method that takes a string array (representing a line split into parts)
+        /// <param name="aDelegatedMethod">A delegate method that takes a string array (representing a line split into parts)
         /// and returns an object of type <typeparamref name="T"/>.</param>
         /// <returns>A list of objects of type <typeparamref name="T"/> created from the file data.</returns>
-        public static List<T> ReadFromFile<T>(string filePath, Func<string[], T> aMethod)
+        public static List<T> ReadFromFile<T>(string filePath, Func<string[], T> aDelegatedMethod)
         {
             // creates empty list to store objects created from the stored data.
             List<T> savedList = new List<T>();
@@ -60,7 +60,7 @@ namespace RebelAllianceBank.utils
                         // Use the provided method function to convert the parts into an object of type T (IUsers, IBankAccount or Loan).
                         // "aMethod" is a delegate, meaning a method passed as an argument.
                         // It takes a "string[]" as input (using the one stored from above).
-                        T parsedObjects = aMethod(dataParts);
+                        T parsedObjects = aDelegatedMethod(dataParts);
                         // If the parsed objects is not null
                         if (parsedObjects != null)
                         {

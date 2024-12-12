@@ -1,0 +1,5 @@
+﻿9101010101-12345-Göran-Andersson-false-false
+9202020202-12345-Lisbeth-Larsson-false-false
+9303030303-12345-Gunnar-Larsson-false-false
+9404040404-12345-Anders-Falk-false-false
+9505050505-12345-Lars-Johansson-true-false
