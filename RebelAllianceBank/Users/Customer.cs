@@ -516,7 +516,7 @@ namespace RebelAllianceBank.Users
                     {
                         if (account == chosenAccount)
                         {
-                            Console.WriteLine($"Din lånansökan på {askedLoan} {chosenAccount.AccountCurrency} har accepterats.\n" +
+                            Console.WriteLine($"Din lånansökan på {askedLoan} SEK har accepterats.\n" +
                                               $"Räntan för detta lån ligger på {newLoan.LoanRent}%");
                         }
                     }
