@@ -1,10 +1,8 @@
-﻿using System.Linq;
-using RebelAllianceBank.Interfaces;
+﻿using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.utils;
 using RebelAllianceBank.Accounts;
 using RebelAllianceBank.Enums;
-using RebelAllianceBank.Classes;
-using RebelAllianceBank.Menu;
+using RebelAllianceBank.Other;
 namespace RebelAllianceBank.Users
 {
     public class Customer : IUser

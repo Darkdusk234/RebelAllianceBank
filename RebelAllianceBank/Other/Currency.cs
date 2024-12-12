@@ -1,4 +1,4 @@
-namespace RebelAllianceBank.Classes
+namespace RebelAllianceBank.Other
 {
        public class Currency
        {

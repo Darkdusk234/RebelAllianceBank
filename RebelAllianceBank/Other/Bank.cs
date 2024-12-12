@@ -3,7 +3,7 @@ using RebelAllianceBank.Users;
 using RebelAllianceBank.Menu;
 using RebelAllianceBank.utils;
 
-namespace RebelAllianceBank.Classes
+namespace RebelAllianceBank.Other
 {
     public class Bank
     {

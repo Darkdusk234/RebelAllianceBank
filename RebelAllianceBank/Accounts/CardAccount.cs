@@ -1,5 +1,5 @@
-﻿using RebelAllianceBank.Classes;
-using RebelAllianceBank.Interfaces;
+﻿using RebelAllianceBank.Interfaces;
+using RebelAllianceBank.Other;
 
 namespace RebelAllianceBank.Accounts
 {
