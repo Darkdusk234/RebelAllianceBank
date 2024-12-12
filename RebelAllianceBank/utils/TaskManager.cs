@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RebelAllianceBank.Classes;
-using RebelAllianceBank.Users;
+﻿using RebelAllianceBank.Other;
 
 namespace RebelAllianceBank.utils
 {

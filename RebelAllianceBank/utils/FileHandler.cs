@@ -1,8 +1,8 @@
 ﻿using RebelAllianceBank.Accounts;
-using RebelAllianceBank.Classes;
 using RebelAllianceBank.Interfaces;
 using RebelAllianceBank.Users;
 using System.Text;
+using RebelAllianceBank.Other;
 
 namespace RebelAllianceBank.utils
 {

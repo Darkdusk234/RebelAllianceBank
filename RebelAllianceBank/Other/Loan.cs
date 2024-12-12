@@ -1,6 +1,4 @@
-﻿using RebelAllianceBank.Interfaces;
-
-namespace RebelAllianceBank.Classes
+﻿namespace RebelAllianceBank.Other
 {
     public class Loan
     {

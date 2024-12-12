@@ -1,6 +1,6 @@
 using RebelAllianceBank.Interfaces;
 
-namespace RebelAllianceBank;
+namespace RebelAllianceBank.Other;
 /// <summary>
 /// A transaction class (copied from the work of Kim with the log) 
 /// </summary>
