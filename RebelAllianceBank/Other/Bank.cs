@@ -145,18 +145,27 @@ namespace RebelAllianceBank.Other
                 }
             }
         }
+        /// <summary>
+        /// A method for running transactions in the transactionQueue()
+        /// </summary>
         public static void RunTransactionsInQueue()
         {
             while (transactionQueue.Count > 0)
             {
+                //The next transaction on the que is dequeued and saved to the variable nextInQueue
                 var nextInQueue = transactionQueue.Dequeue();
+                //set the timestamp-field in the transaction-instans to now (for the log)
                 nextInQueue.Timestamp = DateTime.Now;
-
+                
+                //If it is deposit och a "loan-deposit", the balance will only be adjusted at the "To-account" and the 
                 if (nextInQueue.AccountFrom == null)
                 {
                     nextInQueue.AccountTo.Balance += nextInQueue.Amount;
+                    //once the transaction is made, it is added to the transactionlog of the specific account. 
                     nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
                 }
+                //For transfer-methods, the balance of the "to-account" is increased while the "from-account" balance
+                //is decreased. The amount of the Tp-account is also adjusted in regards to its currency. 
                 else
                 {
                     nextInQueue.AccountFrom.Balance -= nextInQueue.Amount;
@@ -164,6 +173,7 @@ namespace RebelAllianceBank.Other
                         nextInQueue.AccountFrom.AccountCurrency,
                         nextInQueue.AccountTo.AccountCurrency
                     );
+                    //once the transaction is made, it is added to the transactionlog of the specific accounts. 
                     nextInQueue.AccountFrom.AddToTransactionLog(nextInQueue);
                     nextInQueue.AccountTo.AddToTransactionLog(nextInQueue);
                 }

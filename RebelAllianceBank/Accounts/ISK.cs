@@ -13,9 +13,11 @@ namespace RebelAllianceBank.Accounts
         public decimal Balance { get; set; } = 0; 
         public string AccountCurrency { get;  set;  }
         public decimal IntrestRate { get; set; } = 3.47m;
-
+        
+        //An empty constructor needed for Filehandler.cs
         public ISK()
         {
+            //The accounts where lacking an indivual nr. This was a super basic way to add one that was needed in the log
             ID = Bank.accountNumberCounter; 
             Bank.accountNumberCounter ++; 
         }
@@ -27,13 +29,22 @@ namespace RebelAllianceBank.Accounts
             ID = Bank.accountNumberCounter;
             Bank.accountNumberCounter ++; 
         }
+        /// <summary>
+        /// A method for accessing the _transaction log list and add a new transaction to it, 
+        /// </summary>
+        /// <param name="newTransaction"></param>
         public void AddToTransactionLog(Transaction newTransaction)
         {
             _transactionsLog.Add(newTransaction);
         }
-
+        
+        /// <summary>
+        /// A method for printing out the transaction log of each account. 
+        /// </summary>
+        /// </summary>
         public void ShowTransactionLog()
         {
+            //start by reversing the looged transactions so that the latest one is at the top
             _transactionsLog.Reverse();
             
             Console.WriteLine("-------------------------------------------------------------------------------------");
@@ -92,6 +103,7 @@ namespace RebelAllianceBank.Accounts
                 }
                 Console.WriteLine("-------------------------------------------------------------------------------------");
             }
+            //reverse the log back again. 
             _transactionsLog.Reverse();
         }
     }

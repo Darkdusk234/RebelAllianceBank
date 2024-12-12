@@ -13,8 +13,7 @@ namespace RebelAllianceBank.Users
         public string Surname { get; set; }
         public string Forename { get; set; }
         public bool LoginLock { get; set; } = false;
-
-
+        
         private List<IBankAccount> _bankAccounts = new List<IBankAccount>();
         private List<Loan> _customerLoan = new List<Loan>();
         public Customer() { }
@@ -79,7 +78,7 @@ namespace RebelAllianceBank.Users
                         Markdown.Paragraph("\nVad vill du kalla kontot: ");
                         accountName = Console.ReadLine();
                     }
-
+                    
                     accountCurrency = Bank.exchangeRate.SetAccountCurrency();
                 }
 
@@ -243,12 +242,12 @@ namespace RebelAllianceBank.Users
                     Console.Clear();
                 }
             }
-
-            // Some method to check currency, implement when currency method is viable
-            //CheckMethodForCurrency(currentUserAccount, otherAccount);
+            
             if (amount > 0)
             {
+                //creates a new transaction object that will be used for transaction queue (Asynch) and trasnaction-log
                 var newTransaction = new Transaction(amount, currentUserAccount, otherAccount);
+                //Add the new transactiont to the queue
                 Bank.transactionQueue.Enqueue(newTransaction);
                 Console.Clear();
                 Console.WriteLine($"Följande överföring kommer uföras vid nästa körning: \n\n" +
@@ -318,7 +317,10 @@ namespace RebelAllianceBank.Users
             {
                 Markdown.Paragraph($"Välj ett mindre belopp än {accountFrom.Balance:N2} {accountFrom.AccountCurrency}");
             }
+            //creates a new transaction object that will be used for transaction queue (Asynch) and trasnaction-log
             var newTransaction = new Transaction(moneyToWithdraw, accountFrom, accountTo);
+            
+            //Add the new transactiont to the queue
             Bank.transactionQueue.Enqueue(newTransaction);
             
             Console.Clear();
