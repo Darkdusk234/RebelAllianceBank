@@ -2,7 +2,7 @@
 
 This internet bank assignement is a group project assignement in the course 'Object Oriented Programming' at System development .NET program at Campus Varberg.
 
-## Innehållsförteckning
+## Table of Contents
 
 1. [Overall Description](#overall-description)
 2. [Code Structure](#code-structure)
